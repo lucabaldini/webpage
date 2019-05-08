@@ -264,7 +264,7 @@ def footer_html() -> str:
     return FOOTER_TEMPLATE.strip('\n')
 
 
-def read_page_content(file_path: Optional[str]=None) -> str:
+def _read_page_content(file_path: Optional[str]=None) -> str:
     """Retrieve the actual content for a given page.
 
     This is reading the local html file pointed by the function argument and
@@ -293,7 +293,7 @@ def page_html(title: str, menu_entry: Optional[str]=None,
     # Indent all the elements properly.
     footer = _indent(footer_html(), 3)
     menu = _indent(MENU.to_html(menu_entry), 4)
-    content = _indent(read_page_content(file_path), 5)
+    content = _indent(_read_page_content(file_path), 5)
     # Fill in the template.
     return (PAGE_TEMPLATE % (title, menu, title, content, footer)).strip('\n')
 
