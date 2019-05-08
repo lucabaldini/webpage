@@ -168,7 +168,7 @@ class Menu(dict):
         """
         self[title] = target
 
-    def target(self, title: str) -> str:
+    def target(self, title: str):
         """Return the target corresponding to a given title.
         """
         return self.get(title)
@@ -193,8 +193,9 @@ class Menu(dict):
         Return None is the target is not a file.
         """
         target = self.target(title)
-        if self.target_is_file(target):
-            return os.path.join(folder, target)
+        if not self.target_is_file(target):
+            return None
+        return os.path.join(folder, target)
 
     def content_file_path(self, title: str) -> Optional[str]:
         """Return the path to the local html file containing the body of the
@@ -298,7 +299,7 @@ def page_html(title: str, menu_entry: Optional[str]=None,
     return (PAGE_TEMPLATE % (title, menu, title, content, footer)).strip('\n')
 
 
-def write_page(title: str, menu_entry: str, file_path: Optional[str]=None):
+def write_page(title: str, menu_entry: str, file_path: str):
     """Write a single html page to file.
     """
     logging.info('Processing page "%s"...' % title)
