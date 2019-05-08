@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Module containing all the facilities for the static html generation.
+"""
 
 import datetime
 import os
-import sys
 import shutil
 import glob
 import logging
@@ -26,8 +27,8 @@ import logging
 from typing import Optional
 
 
-"""Basic configuration.
-"""
+# Basic configuration.
+#
 PAGE_AUTHOR = 'Luca Baldini'
 PAGE_DESCRIPTION = '%s\'s home page' % PAGE_AUTHOR
 PAGE_BASE_TITLE = 'Luca Baldini @ UNIPI/INFN&ndash;Pisa'
@@ -52,15 +53,15 @@ STYLE_SHEETS = ['default.css']
 DEFAULT_STYLE_SHEET = STYLE_SHEETS[0]
 
 
-"""Basic remote environment.
-"""
+# Basic remote environment.
+#
 REMOTE_CSS_FOLDER = 'css'
 REMOTE_IMG_FOLDER = 'images'
 DEFAULT_CSS_HREF = '%s/%s' % (REMOTE_CSS_FOLDER, DEFAULT_STYLE_SHEET)
 
 
-"""Basic local environment.
-"""
+# Basic local environment.
+#
 BASE_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 CONTENTS_FOLDER = os.path.join(BASE_FOLDER, 'contents')
 CSS_FOLDER = os.path.join(BASE_FOLDER, 'css')
@@ -75,7 +76,7 @@ def create_local_tree():
     """
     for folder in [HTML_OUTPUT_FOLDER, CSS_OUTPUT_FOLDER, IMG_OUTPUT_FOLDER]:
         if not os.path.exists(folder):
-            logging.info('Creating output folder %s...' % folder)
+            logging.info('Creating output folder %s...', folder)
             os.mkdir(folder)
 
 
@@ -92,8 +93,6 @@ def html_output_file_path(file_path: str) -> str:
     return os.path.join(HTML_OUTPUT_FOLDER, file_name)
 
 
-"""The basic template for all the web pages in the site.
-"""
 PAGE_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -131,8 +130,6 @@ PAGE_TEMPLATE = """
        DEFAULT_CSS_HREF, PAGE_HEADER_TEXT)
 
 
-"""Template for the page footer.
-"""
 FOOTER_TEMPLATE = """
 Copyright &copy; %d&ndash;%d Luca Baldini
 (<a href=about.html>about this website</a>).
@@ -152,14 +149,14 @@ class Menu(dict):
 
     """Class representing the logical structure of the page menu.
 
-    A menu is a essentially a series of entries, each of which includes a 
+    A menu is a essentially a series of entries, each of which includes a
     title and a target. The title is the title of the web page, while the
     target can either be a html file or a folder, and is always intented to
     be in the (remote, or relative) html space.
 
     Note that the class is inheriting from dict and the fact that the entries
     are expected to appear in order in the output html relies on the fact that
-    dictionaries are now guaranteed to preserve the insertion order in 
+    dictionaries are now guaranteed to preserve the insertion order in
     Python.
     """
 
@@ -174,11 +171,11 @@ class Menu(dict):
         return self.get(title)
 
     @classmethod
-    def target_is_file(self, target: str) -> bool:
-        """Return True if the given target represents a html file name 
+    def target_is_file(cls, target: str) -> bool:
+        """Return True if the given target represents a html file name
         (i.e., not a folder).
         """
-        return target.endswith('.html')        
+        return target.endswith('.html')
 
     def target_points_to_file(self, title: str) -> bool:
         """Return True if the target corresponding to the given title represents
@@ -205,7 +202,7 @@ class Menu(dict):
         """
         return self._target_file_path(title, CONTENTS_FOLDER)
 
-    def to_html(self, current_page_title: Optional[str]=None) -> str:
+    def to_html(self, current_page_title: Optional[str] = None) -> str:
         """Return the html representation of the menu.
         """
         text = '<ul>\n'
@@ -240,7 +237,7 @@ MENU.add_entry('Didattica', 'teaching.html')
 MENU.add_entry('Private area', 'private')
 
 
-def _indent(text: str, indent_level: int=0) -> str:
+def _indent(text: str, indent_level: int = 0) -> str:
     """Small utility function indent full paragraphs.
 
     This is essentially replacing any newline character prepending to it the
@@ -258,19 +255,19 @@ def _indent(text: str, indent_level: int=0) -> str:
 def footer_html() -> str:
     """Return the full html for the page footer.
 
-    At this point in time the footer is the same for all pages and this is 
-    essentially returning the template (modulo the newline strip). In the 
+    At this point in time the footer is the same for all pages and this is
+    essentially returning the template (modulo the newline strip). In the
     future this might extended with additional, per-page, customization.
     """
     return FOOTER_TEMPLATE.strip('\n')
 
 
-def _read_page_content(file_path: Optional[str]=None) -> str:
+def _read_page_content(file_path: Optional[str] = None) -> str:
     """Retrieve the actual content for a given page.
 
     This is reading the local html file pointed by the function argument and
     returning its content verbatim.
-    
+
     If the file path is None or the file does not exist, this is returning
     an empty string.
     """
@@ -278,16 +275,16 @@ def _read_page_content(file_path: Optional[str]=None) -> str:
     if file_path is None:
         return content
     if not os.path.exists(file_path):
-        logging.warning('Could not find %s.' % file_path)
+        logging.warning('Could not find %s.', file_path)
         return content
-    logging.info('Reading page content from %s...' % file_path)
-    with open(file_path, 'r') as f:
-        content = f.read()
+    logging.info('Reading page content from %s...', file_path)
+    with open(file_path, 'r') as input_file:
+        content = input_file.read()
     return content
 
 
-def page_html(title: str, menu_entry: Optional[str]=None,
-              file_path: Optional[str]=None) -> str: 
+def page_html(title: str, menu_entry: Optional[str] = None,
+              file_path: Optional[str] = None) -> str:
     """Return the full html for a generic web page, given all the relevant
     content.
     """
@@ -302,12 +299,12 @@ def page_html(title: str, menu_entry: Optional[str]=None,
 def write_page(title: str, menu_entry: str, file_path: str):
     """Write a single html page to file.
     """
-    logging.info('Processing page "%s"...' % title)
+    logging.info('Processing page "%s"...', title)
     output_file_path = html_output_file_path(file_path)
-    logging.info('Writing output file to %s...' % output_file_path)
+    logging.info('Writing output file to %s...', output_file_path)
     text = page_html(title, menu_entry, file_path)
-    with open(output_file_path, 'w') as f:
-        f.write(text)
+    with open(output_file_path, 'w') as output_file:
+        output_file.write(text)
     logging.info('Done.')
 
 
@@ -334,9 +331,9 @@ def write_about_page():
 def _copy(src: str, dest: str):
     """Small utility functions to copy files.
     """
-    logging.info('Copying %s -> %s...' % (src, dest))
+    logging.info('Copying %s -> %s...', src, dest)
     shutil.copyfile(src, dest)
-    
+
 
 def copy_style_sheets():
     """Copy the relevant style sheets from the local source folder to the
@@ -349,7 +346,7 @@ def copy_style_sheets():
         _copy(src, dest)
 
 
-def copy_images(file_formats=['png']):
+def copy_images(file_formats=('png',)):
     """Copy all the relevant images into the output folder.
     """
     logging.info('Copying images...')
