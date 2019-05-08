@@ -79,6 +79,19 @@ def create_local_tree():
             os.mkdir(folder)
 
 
+def content_file_path(file_name: str) -> str:
+    """Return the path to a content file path.
+    """
+    return os.path.join(CONTENTS_FOLDER, file_name)
+
+
+def html_output_file_path(file_path: str) -> str:
+    """Return the path to a generic output file path.
+    """
+    file_name = os.path.basename(file_path)
+    return os.path.join(HTML_OUTPUT_FOLDER, file_name)
+
+
 """The basic template for all the web pages in the site.
 """
 PAGE_TEMPLATE = """
@@ -135,77 +148,95 @@ Last update on %s.
 """ % (COPYRIGHT_START_YEAR, COPYRIGHT_END_YEAR, LAST_UPDATE_STRING)
 
 
-"""Basic structure of the menu for the website.
+class Menu(dict):
 
-This is essentially a tuple of (title, targte) tuples, which is used to 
-control the menu and to pupulate the actual html of the pages themselves.
+    """Class representing the logical structure of the page menu.
 
-Note that the target is intented in the html space, and can be either 
-a file name or a folder name.
+    A menu is a essentially a series of entries, each of which includes a 
+    title and a target. The title is the title of the web page, while the
+    target can either be a html file or a folder, and is always intented to
+    be in the (remote, or relative) html space.
 
-The mechanism relies on the fact that the dictionary are now preserving the
-insertion order in Python.
-"""
-MENU_DICT = {
-    'Home': 'index.html',
-    'Curriculum vit&aelig;': 'cv.html',
-    'Publications': 'publications.html',
-    'Presentations': 'talks.html',
-    'About me': 'aboutme.html',
-    'Links': 'links.html',
-    'Miscellanea': 'misc.html',
-    'Didattica': 'teaching.html',
-    'Private area': 'private'
-}
-
-
-def menu_target(title: str) -> str:
-    """Return the menu target associated with a given title.
+    Note that the class is inheriting from dict and the fact that the entries
+    are expected to appear in order in the output html relies on the fact that
+    dictionaries are now guaranteed to preserve the insertion order in 
+    Python.
     """
-    return MENU_DICT[title]
+
+    def add_entry(self, title: str, target: str):
+        """Add an entry to the menu.
+        """
+        self[title] = target
+
+    def target(self, title: str) -> str:
+        """Return the target corresponding to a given title.
+        """
+        return self.get(title)
+
+    @classmethod
+    def target_is_file(self, target: str) -> bool:
+        """Return True if the given target represents a html file name 
+        (i.e., not a folder).
+        """
+        return target.endswith('.html')        
+
+    def target_points_to_file(self, title: str) -> bool:
+        """Return True if the target corresponding to the given title represents
+        a html file name (i.e., not a folder).
+        """
+        return self.target_is_file(self.target(title))
+
+    def _target_file_path(self, title: str, folder: str) -> Optional[str]:
+        """Convert the raw target into a file path, prepending the folder
+        passed as an argument.
+
+        Return None is the target is not a file.
+        """
+        target = self.target(title)
+        if self.target_is_file(target):
+            return os.path.join(folder, target)
+
+    def content_file_path(self, title: str) -> Optional[str]:
+        """Return the path to the local html file containing the body of the
+        web page corresponding to a given title.
+
+        Return None is the target is not a file.
+        """
+        return self._target_file_path(title, CONTENTS_FOLDER)
+
+    def to_html(self, current_page_title: Optional[str]=None) -> str:
+        """Return the html representation of the menu.
+        """
+        text = '<ul>\n'
+        for title, target in self.items():
+            if title == current_page_title:
+                text += '%s<li class=current>%s</li>\n' %\
+                    (INDENT_STRING, title)
+            else:
+                text += '%s<li><a href=%s>%s</a></li>\n' %\
+                    (INDENT_STRING, target, title)
+        text = '%s</ul>' % text
+        return text
+
+    def __str__(self) -> str:
+        """Text representation.
+        """
+        text = 'Page menu:\n'
+        for title, target in self.items():
+            text += '- %s -> %s\n' % (title, target)
+        return text
 
 
-def menu_has_target_file(title: str) -> bool:
-    """Return true if an actual html file is associated with a page title in
-    the menu.
-    """
-    return menu_target(title).endswith('.html')
-    
-
-def menu_file_name(title: str) -> Optional[str]:
-    """Return the name of the html target file for a given page title.
-
-    If the target is not a html file name (i.e., does not end with ".html")
-    the function is returning None.
-    """
-    if menu_has_target_file(title):
-        return menu_target(title)
-
-
-def _menu_file_path(title: str, folder: str) -> Optional[str]:
-    """Small convenience function to joint a menu target file name with a
-    generic folder path.
-    """
-    file_name = menu_file_name(title)
-    if file_name is not None:
-        return os.path.join(folder, file_name)
-
-
-def content_file_path(title: str) -> Optional[str]:
-    """Return the full absolulte path to the (local) file containing the
-    actual content for the page with a given title.
-
-    This assumes that names of the local files map one to one into the 
-    file names for the actual web pages.
-    """
-    return _menu_file_path(title, CONTENTS_FOLDER)
-
-
-def output_file_path(title: str) -> Optional[str]:
-    """Return the full ansolute path to the output html file, i.e., the local
-    file that eventually needs to be copied over to the remote server.
-    """
-    return _menu_file_path(title, HTML_OUTPUT_FOLDER)
+MENU = Menu()
+MENU.add_entry('Home', 'index.html')
+MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
+MENU.add_entry('Publications', 'publications.html')
+MENU.add_entry('Presentations', 'talks.html')
+MENU.add_entry('About me', 'aboutme.html')
+MENU.add_entry('Links', 'links.html')
+MENU.add_entry('Miscellanea', 'misc.html')
+MENU.add_entry('Didattica', 'teaching.html')
+MENU.add_entry('Private area', 'private')
 
 
 def _indent(text: str, indent_level: int=0) -> str:
@@ -223,30 +254,25 @@ def _indent(text: str, indent_level: int=0) -> str:
     return text
 
 
-def menu_html(current_title: str) -> str:
-    """Return the full html for the page menu.
-    """
-    menu = '<ul>\n'
-    for title, target in MENU_DICT.items():
-        if title == current_title:
-            menu += '%s<li class=current>%s</li>\n' % (INDENT_STRING, title)
-        else:
-            menu += '%s<li><a href=%s>%s</a></li>\n' %\
-                    (INDENT_STRING, target, title)
-    menu = '%s</ul>' % menu
-    return menu
-    
-
 def footer_html() -> str:
     """Return the full html for the page footer.
+
+    At this point in time the footer is the same for all pages and this is 
+    essentially returning the template (modulo the newline strip). In the 
+    future this might extended with additional, per-page, customization.
     """
     return FOOTER_TEMPLATE.strip('\n')
 
 
-def page_content_html(title: str) -> str:
+def read_page_content(file_path: Optional[str]=None) -> str:
     """Retrieve the actual content for a given page.
+
+    This is reading the local html file pointed by the function argument and
+    returning its content verbatim.
+    
+    If the file path is None or the file does not exist, this is returning
+    an empty string.
     """
-    file_path = content_file_path(title)
     content = ''
     if file_path is None:
         return content
@@ -259,26 +285,27 @@ def page_content_html(title: str) -> str:
     return content
 
 
-def page_html(title: str) -> str: 
+def page_html(title: str, menu_entry: Optional[str]=None,
+              file_path: Optional[str]=None) -> str: 
     """Return the full html for a generic web page, given all the relevant
     content.
     """
     # Indent all the elements properly.
     footer = _indent(footer_html(), 3)
-    menu = _indent(menu_html(title), 4)
-    content = _indent(page_content_html(title), 5)
+    menu = _indent(MENU.to_html(menu_entry), 4)
+    content = _indent(read_page_content(file_path), 5)
     # Fill in the template.
     return (PAGE_TEMPLATE % (title, menu, title, content, footer)).strip('\n')
 
 
-def write_page(title: str):
+def write_page(title: str, menu_entry: str, file_path: Optional[str]=None):
     """Write a single html page to file.
     """
     logging.info('Processing page "%s"...' % title)
-    file_path = output_file_path(title)
-    logging.info('Writing output file to %s...' % file_path)
-    text = page_html(title)
-    with open(file_path, 'w') as f:
+    output_file_path = html_output_file_path(file_path)
+    logging.info('Writing output file to %s...' % output_file_path)
+    text = page_html(title, menu_entry, file_path)
+    with open(output_file_path, 'w') as f:
         f.write(text)
     logging.info('Done.')
 
@@ -286,10 +313,21 @@ def write_page(title: str):
 def write_menu_pages():
     """Write all the html pages in the menu to file.
     """
-    logging.info('Writing all menu pages...')
-    for title, target in MENU_DICT.items():
-        if menu_has_target_file(title):
-            write_page(title)
+    for title in MENU:
+        if MENU.target_points_to_file(title):
+            file_path = MENU.content_file_path(title)
+            write_page(title, title, file_path)
+
+
+def write_about_page():
+    """Write the "About this website" page.
+
+    This needs a separate method, as it is not driven by the menu, nor linked
+    therein.
+    """
+    title = 'About this website'
+    target = content_file_path('about.html')
+    write_page(title, None, target)
 
 
 def _copy(src: str, dest: str):
@@ -328,6 +366,7 @@ def deploy(logging_level=logging.DEBUG):
     logging.basicConfig(level=logging_level)
     create_local_tree()
     write_menu_pages()
+    write_about_page()
     copy_style_sheets()
     copy_images()
 
