@@ -18,11 +18,11 @@
 """Test suite for the core module.
 """
 
-from context import core
-
 import unittest
 
 from typing import Optional
+
+from context import core
 
 
 
@@ -40,7 +40,7 @@ class TestTimeSpan(unittest.TestCase):
         print(span.html())
         print(span.latex())
         self.assertEqual(span.is_single_day(), single_day)
-        
+
     def test_basic(self):
         """Test the normal constructor.
         """
@@ -60,7 +60,7 @@ class TestTimeSpan(unittest.TestCase):
 
 class TestContribution(unittest.TestCase):
 
-    """Unit tests for the Contribution class. 
+    """Unit tests for the Contribution class.
     """
 
     def _test(self, title: str, invited: bool = False, poster: bool = False,

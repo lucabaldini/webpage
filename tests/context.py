@@ -18,11 +18,10 @@
 """Context module for the unit tests.
 """
 
-import os
 import sys
 
-base_folder = os.path.join(os.path.dirname(__file__), '..', 'webpage')
-base_folder = os.path.abspath(base_folder)
-sys.path.insert(0, base_folder)
+from os.path import join, dirname, abspath
+
+sys.path.insert(0, abspath(join(dirname(__file__), '..', 'webpage')))
 
 import core

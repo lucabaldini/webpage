@@ -47,7 +47,7 @@ class TimeSpan:
         self.begin_date = self.str_to_date(begin)
         self.end_date = self.str_to_date(end)
         # Make sure we did not get the bounds backward.
-        assert(self.end_date >= self.begin_date)
+        assert self.end_date >= self.begin_date
 
     @classmethod
     def str_to_date(cls, string: str) -> datetime.date:
@@ -57,22 +57,19 @@ class TimeSpan:
 
     @classmethod
     def date_to_str(cls, date: datetime.date, month: bool = True,
-                    year: bool = True, year_comma: bool = True) -> str:
+                    year: bool = True) -> str:
         """Format a datetime.date object to an output string.
 
         By default this returns the full date in the form of 05 April 1977,
         but the method is adding optional flexibility to suppress the year
-        and/or the month, in order to be able to express time spans in a 
+        and/or the month, in order to be able to express time spans in a
         human-readable format.
         """
         fmt = '%d'
         if month is True:
             fmt += ' %B'
         if year is True:
-            if year_comma:
-                fmt += ', %Y'
-            else:
-                fmt += ' %Y'
+            fmt += ', %Y'
         return date.strftime(fmt)
 
     def is_single_day(self) -> bool:
