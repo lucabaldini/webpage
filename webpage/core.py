@@ -142,7 +142,7 @@ class Contribution:
         """
         text = '"\\emph{{{}}}"'.format(self.title)
         if self.notes:
-            text += ' ({\\bfseries {{}}})'.format(self.notes)
+            text += ' ({{\\bfseries {}}})'.format(self.notes)
         elif self.invited:
             text += ' ({\\bfseries invited talk})'
         elif self.poster:
@@ -212,16 +212,3 @@ class Conference:
         """String formatting.
         """
         return '{}, {}, {}'.format(self.name, self.location, self.time_span)
-
-
-
-
-
-    
-        
-        
-
-
-if __name__ == '__main__':
-    talk = Contribution('My paper title', invited=True)
-    print(talk)

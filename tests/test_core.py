@@ -28,7 +28,7 @@ from typing import Optional
 
 class TestTimeSpan(unittest.TestCase):
 
-    """Unit test for the TimeSpan class.
+    """Unit tests for the TimeSpan class.
     """
 
     def _test(self, begin: str, end: Optional[str] = None,
@@ -58,9 +58,45 @@ class TestTimeSpan(unittest.TestCase):
 
 
 
+class TestContribution(unittest.TestCase):
+
+    """Unit tests for the Contribution class. 
+    """
+
+    def _test(self, title: str, invited: bool = False, poster: bool = False,
+              notes: Optional[str] = None):
+        """Basic test worker.
+        """
+        contribution = core.Contribution(title, invited, poster, notes)
+        print(contribution)
+        print(contribution.html())
+        print(contribution.latex())
+
+    def test_basic(self):
+        """Basic test.
+        """
+        self._test('My paper title')
+
+    def test_invited(self):
+        """Invited talk.
+        """
+        self._test('My paper title', invited=True)
+
+    def test_poster(self):
+        """Invited talk.
+        """
+        self._test('My paper title', poster=True)
+
+    def test_notes(self):
+        """Test a contribution with notes.
+        """
+        self._test('Lecture', invited=True, notes='Series of invited lectures')
+
+
+
 class TestConference(unittest.TestCase):
 
-    """Unit test for the Conference class.
+    """Unit tests for the Conference class.
     """
 
     def test_basic(self):
