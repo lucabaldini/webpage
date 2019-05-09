@@ -181,8 +181,12 @@ class Conference:
 
     def add_contribution(self, contribution: Contribution):
         """Add a contribution to the conference.
+
+        Mind this is returning the conference object itself so that multiple
+        additions can be chained.
         """
         self.contributions.append(contribution)
+        return self
 
     def html(self) -> str:
         """HTML formatting.
@@ -219,24 +223,5 @@ class Conference:
 
 
 if __name__ == '__main__':
-    s = TimeSpan('1977-05-10', '2019-05-10')
-    print(s)
-    print(s.html())
-    print(s.latex())
-    print(s.is_single_day())
-    s = TimeSpan('1977-05-10', '1977-05-11')
-    print(s)
-    print(s.is_single_day())
-    s = TimeSpan('1977-05-10')
-    print(s)
-    print(s.is_single_day())
-
-    conference = Conference('AGILE 9th Science Workshop', 'Frascati (Rome)',
-                            '2012-04-16', '2012-04-17',
-                            'http://www.asdc.asi.it/9thagilemeeting/index.php')
-    print(conference)
-    print(conference.html())
-    print(conference.latex())
-
     talk = Contribution('My paper title', invited=True)
     print(talk)
