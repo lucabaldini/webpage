@@ -23,7 +23,8 @@ import datetime
 from typing import Optional
 
 
-class Timespan:
+
+class TimeSpan:
 
     """Small utility class representing a time span.
 
@@ -91,15 +92,15 @@ class Timespan:
             begin = self.date_to_str(self.begin_date, year=False)
         else:
             begin = self.date_to_str(self.begin_date, month=False, year=False)
-        return '%s%s%s' % (begin, separator, end)
+        return '{}{}{}'.format(begin, separator, end)
 
     def html(self) -> str:
-        """ HTML formatting.
+        """HTML formatting.
         """
         return self.__format('&ndash;')
 
     def latex(self) -> str:
-        """ LaTeX formatting.
+        """LaTeX formatting.
         """
         return self.__format('--')
 
@@ -107,18 +108,134 @@ class Timespan:
         """String formatting.
         """
         return self.__format('--')
+
+
+
+class Contribution:
+
+    """Class describing a conference contribution (i.e., a talk or a poster).
+    """
+
+    def __init__(self, title: str, invited: bool = False, poster: bool = False,
+                 notes: Optional[str] = None):
+        """
+        """
+        self.title = title
+        self.invited = invited
+        self.poster = poster
+        self.notes = notes
+
+    def html(self) -> str:
+        """HTML formatting.
+        """
+        text = '<em>"{}"</em>'.formt(self.title)
+        if self.notes:
+            text += ' (<b>{}</b>)'.format(self.Notes)
+        elif self.invited:
+            text += ' (<b>invited talk</b>)'
+        elif self.poster:
+            text += ' (poster)'
+        return text
+
+    def latex(self) -> str:
+        """LaTeX formatting.
+        """
+        text = '"\\emph{{{}}}"'.format(self.title)
+        if self.notes:
+            text += ' ({\\bfseries {}})' % self.notes
+        elif self.invited:
+            text += ' ({\\bfseries invited talk})'
+        elif self.poster:
+            text += ' (poster)'
+        return text
+
+    def __str__(self) -> str:
+        """String formatting.
+        """
+        text = '{}'.format(self.title)
+        if self.notes:
+            text += ' ({})'.format(self.notes)
+        elif self.invited:
+            text += ' (invited talk)'
+        elif self.poster:
+            text += ' (poster)'
+        return text
+
+
+
+class Conference:
+
+    """Class describing a conference.
+    """
+
+    def __init__(self, name: str, location: str, begin: str,
+                 end: Optional[str] = None, webpage: Optional[str] = None):
+        """Constructor.
+        """
+        self.name = name
+        self.location = location
+        self.time_span = TimeSpan(begin, end)
+        self.webpage = webpage
+        self.contributions = []
+
+    def add_contribution(self, contribution: Contribution):
+        """Add a contribution to the conference.
+        """
+        self.contributions.append(contribution)
+
+    def html(self) -> str:
+        """HTML formatting.
+        """
+        if self.webpage is not None:
+            text = '<a href="{}">{}</a>'.format(self.webpage, self.name)
+        else:
+            text = self.name
+        text += ', {}, {}'.format(self.location, self.time_span)
+        return text
+
+    def latex(self) -> str:
+        """LaTeX formatting.
+        """
+        if self.webpage is not None:
+            text = '\\href{{{}}}{{{}}}'.format(self.webpage, self.name)
+        else:
+            text = self.name
+        text += ', {}, {}'.format(self.location, self.time_span)
+        return text
+
+    def __str__(self) -> str:
+        """String formatting.
+        """
+        return '{}, {}, {}'.format(self.name, self.location, self.time_span)
+
+
+
+
+
+    
+        
         
 
 
 if __name__ == '__main__':
-    s = Timespan('1977-05-10', '2019-05-10')
+    s = TimeSpan('1977-05-10', '2019-05-10')
     print(s)
     print(s.html())
     print(s.latex())
     print(s.is_single_day())
-    s = Timespan('1977-05-10', '1977-05-11')
+    s = TimeSpan('1977-05-10', '1977-05-11')
     print(s)
     print(s.is_single_day())
-    s = Timespan('1977-05-10')
+    s = TimeSpan('1977-05-10')
     print(s)
     print(s.is_single_day())
+
+    conference = Conference('AGILE 9th Science Workshop', 'Frascati (Rome)',
+                            '2012-04-16', '2012-04-17',
+                            'http://www.asdc.asi.it/9thagilemeeting/index.php')
+    print(conference)
+    print(conference.html())
+    print(conference.latex())
+
+    talk = Contribution('My paper title', invited=True)
+    print(talk)
