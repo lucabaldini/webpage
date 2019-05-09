@@ -22,7 +22,7 @@ import unittest
 
 from typing import Optional
 
-from context import core
+from .context import core
 
 
 
