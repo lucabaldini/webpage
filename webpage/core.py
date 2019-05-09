@@ -20,7 +20,7 @@
 
 import datetime
 
-from typing import Optional
+from typing import Optional, List
 
 
 
@@ -39,7 +39,7 @@ class TimeSpan:
 
     INPUT_FMT = '%Y-%m-%d'
 
-    def __init__(self, begin: str, end: Optional[str] = None):
+    def __init__(self, begin: str, end: Optional[str] = None) -> None:
         """Constructor.
         """
         if end is None:
@@ -117,7 +117,7 @@ class Contribution:
     """
 
     def __init__(self, title: str, invited: bool = False, poster: bool = False,
-                 notes: Optional[str] = None):
+                 notes: Optional[str] = None) -> None:
         """
         """
         self.title = title
@@ -128,9 +128,9 @@ class Contribution:
     def html(self) -> str:
         """HTML formatting.
         """
-        text = '<em>"{}"</em>'.formt(self.title)
+        text = '<em>"{}"</em>'.format(self.title)
         if self.notes:
-            text += ' (<b>{}</b>)'.format(self.Notes)
+            text += ' (<b>{}</b>)'.format(self.notes)
         elif self.invited:
             text += ' (<b>invited talk</b>)'
         elif self.poster:
@@ -142,7 +142,7 @@ class Contribution:
         """
         text = '"\\emph{{{}}}"'.format(self.title)
         if self.notes:
-            text += ' ({\\bfseries {}})' % self.notes
+            text += ' ({\\bfseries {{}}})'.format(self.notes)
         elif self.invited:
             text += ' ({\\bfseries invited talk})'
         elif self.poster:
@@ -169,14 +169,15 @@ class Conference:
     """
 
     def __init__(self, name: str, location: str, begin: str,
-                 end: Optional[str] = None, webpage: Optional[str] = None):
+                 end: Optional[str] = None,
+                 webpage: Optional[str] = None) -> None:
         """Constructor.
         """
         self.name = name
         self.location = location
         self.time_span = TimeSpan(begin, end)
         self.webpage = webpage
-        self.contributions = []
+        self.contributions: List[Contribution] = []
 
     def add_contribution(self, contribution: Contribution):
         """Add a contribution to the conference.
