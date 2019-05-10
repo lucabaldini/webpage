@@ -1,6 +1,15 @@
 test:
 	pytest
 
+pylint:
+	pylint webpage
+
+pyflakes:
+	pyflakes webpage
+
+mypy:
+	mypy webpage
+
 doc:
 	cd docs; make html; cd -
 
