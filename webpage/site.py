@@ -361,7 +361,6 @@ def copy_images(file_formats=('png',)):
 def deploy(logging_level=logging.DEBUG):
     """Deploy the glorious website.
     """
-    logging.basicConfig(level=logging_level)
     create_local_tree()
     write_menu_pages()
     write_about_page()
@@ -371,4 +370,5 @@ def deploy(logging_level=logging.DEBUG):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging_level)
     deploy()
