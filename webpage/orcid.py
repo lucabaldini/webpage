@@ -95,7 +95,7 @@ class ORCID:
         # Admittedly we could do a cleaner job, here---but it's only done once.
         self.work_list: List[dict] = []
         for work in self.data['activities-summary']['works']['group']:
-            summary = work['work-summary'][0]
+            summary = self._work_summary(work)
             path = summary['path']
             put_code = summary['put-code']
             url = self._url(path)
