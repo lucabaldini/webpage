@@ -27,6 +27,158 @@ from typing import Optional, List
 import requests
 
 
+class Work(dict):
+
+    """Class describing a work in the ORCID sense.
+
+    The top-level keys from the json object that the request to the ORCID
+    server (with a /work/* path) retrns is:
+    - created-date
+    - last-modified-date
+    - source
+    - put-code
+    - path
+    - title
+    - journal-title
+    - short-description
+    - citation
+    - type
+    - publication-date
+    - external-ids
+    - url
+    - contributors
+    - language-code
+    - country
+    - visibility
+
+    Most of these keys actually map to nested dicts, so the parsing of the
+    object is non trivial.
+    """
+
+    def __init__(self, work_dict: dict) -> None:
+        """Constructor.
+        """
+        super().__init__(self)
+        self.update(work_dict)
+        self.external_ids = self.__external_ids()
+        print(self)
+
+    def _navigate(self, *keys, default: Optional[str] = None,
+                  interactive: bool = True):
+        """Helper function to access nested values in the top-level dictionary.
+
+        Given a list of keys, this method is navigating the dictionary down all
+        the necessary levels. At each level the dictionary access is wrapped
+        into a try/except block so that if something goes wrong we do have full
+        information about what has gone wrong.
+
+        If the interactive flag is set to True, the execution stops in case
+        of missing data.
+        """
+        item = self
+        for key in keys:
+            try:
+                item = item[key]
+            except Exception as exception:
+                # Note these two raw accesses are unguarded to avoid recursion.
+                path = self['path']
+                title = self['title']['title']['value']
+                # Print out the necessary diagnostics.
+                msg = 'Cannot navigate %s for path %s (%s). ' +\
+                      'Offending key is \'%s\', with underlying exception: %s.'
+                print(msg)
+                logging.warning(msg, keys, path, title, path, exception)
+                # If run in interactive mode, wait for intervention...
+                if interactive:
+                    input()
+                return default
+        return item
+
+    def __external_ids(self) -> dict:
+        """Return a dictionary will ath the external identifiers.
+
+        Note we implement this as a "private" class method that is called only
+        once in the constructor and cache the external ids so that we do not
+        recalculate them multiple times .
+        """
+        ids = {}
+        for item in self._navigate('external-ids', 'external-id'):
+            ids[item['external-id-type']] = item['external-id-value']
+        return ids
+
+    @classmethod
+    def _format_credit_name(cls, contributor: dict) -> str:
+        """Formatting facility for the author names.
+
+        At this point this is a no-op, but we might use some intelligence, here,
+        to format the names in a uniform fashion.
+        """
+        name = contributor['credit-name']['value']
+        return name
+
+    def author_list(self, max_num_authors: int = 8) -> str:
+        """Return a formatted author list.
+
+        The author list is truncated to the maximum number of authors, and, if
+        necessary, complemented with "et al." and the total number of authors
+        in parenthesis.
+        """
+        contributors = self._navigate('contributors', 'contributor')
+        num_authors = len(contributors)
+        contributors = contributors[:max_num_authors]
+        names = (self._format_credit_name(item) for item in contributors)
+        author_list = ', '.join(names)
+        if num_authors > max_num_authors:
+            author_list = '{} et al. ({} authors)'.format(author_list,
+                                                          num_authors)
+        return author_list
+
+    def title(self) -> str:
+        """Return the title of the work.
+        """
+        return self._navigate('title', 'title', 'value')
+
+    def journal(self) -> str:
+        """Return the journal name for the work.
+        """
+        return self._navigate('journal-title', 'value')
+
+    def year(self) -> Optional[int]:
+        """Return the year of the publication.
+        """
+        return self._navigate('publication-date', 'year', 'value')
+
+    def doi(self) -> str:
+        """Return the doi of the publication.
+        """
+        return self.external_ids.get('doi', None)
+
+    def doi_url(self) -> str:
+        """Return the DOI url corresponding to the publication.
+        """
+        doi = self.doi()
+        if doi is None:
+            return None
+        return 'https://doi.org/{}'.format(doi)
+
+    def html(self) -> str:
+        """HTML formatting.
+        """
+        pass
+
+    def latex(self) -> str:
+        """LaTeX formatting.
+        """
+        pass
+
+    def __str__(self) -> str:
+        """String representation.
+        """
+        return '{}, "{}", {} ({})'.format(self.author_list(), self.title(),
+                                          self.journal(), self.year())
+
+
+
 class ORCID:
 
     """Lightweight interface to the ORCID restful API.
@@ -103,7 +255,8 @@ class ORCID:
             file_path = self._file_path(file_name)
             # Mind we're never forcing re-fetching individual works from the
             # server, as they typically not changing.
-            self.work_list.append(self._load(url, file_path, force_fetch=False))
+            work = Work(self._load(url, file_path, force_fetch=False))
+            self.work_list.append(work)
 
     def _url(self, path: Optional[str] = None):
         """Simple utility to concatenate url elements to the base ORCID url.
@@ -190,11 +343,6 @@ class ORCID:
         """
         return work['work-summary'][0]
 
-    def publication_list(self):
-        """Do something.
-        """
-        return
-
     def __str__(self) -> str:
         """String representation.
         """
@@ -205,8 +353,6 @@ class ORCID:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     orcid = ORCID()
-    orcid.publication_list()
-    print(orcid.LOCAL_FOLDER)
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/work/25306957'
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/works'
     #resp = requests.get(url, headers={'Accept':'application/orcid+json'})
