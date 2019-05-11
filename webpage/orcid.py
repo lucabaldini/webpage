@@ -65,6 +65,7 @@ class Work(dict):
         self.update(work_dict)
         self.date = self.__date()
         self.external_ids = self.__external_ids()
+        self.author_list = self.__author_list()
 
     def _navigate(self, *keys, default: Optional[str] = None,
                   quiet: bool = False, interactive: bool = True):
@@ -140,7 +141,7 @@ class Work(dict):
         name = contributor['credit-name']['value']
         return name
 
-    def author_list(self, max_num_authors: int = 8) -> str:
+    def __author_list(self, max_num_authors: int = 8) -> str:
         """Return a formatted author list.
 
         The author list is truncated to the maximum number of authors, and, if
@@ -188,12 +189,22 @@ class Work(dict):
     def html(self) -> str:
         """HTML formatting.
         """
-        pass
+        title = HTML.hyperlink(HTML.emph(self.title()), self.doi_url())
+        return '{}, "{}", {} ({})'.format(self.author_list, title,
+                                          self.journal(), self.year())
 
     def latex(self) -> str:
         """LaTeX formatting.
         """
-        pass
+        title = LaTeX.hyperlink(LaTeX.emph(self.title()), self.doi_url())
+        return '{}, "{}", {} ({})'.format(self.author_list, title,
+                                          self.journal(), self.year())
+
+    def text(self) -> str:
+        """String representation.
+        """
+        return '{}, "{}", {} ({})'.format(self.author_list, self.title(),
+                                          self.journal(), self.year())
 
     def __lt__(self, other) -> bool:
         """Comparison operator so sort publication lists.
@@ -203,8 +214,7 @@ class Work(dict):
     def __str__(self) -> str:
         """String representation.
         """
-        return '{}, "{}", {} ({})'.format(self.author_list(), self.title(),
-                                          self.journal(), self.year())
+        return self.text()
 
 
 
@@ -385,6 +395,10 @@ class ORCID:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     orcid = ORCID()
+    for paper in orcid.work_list:
+        print(paper)
+        print(paper.html())
+        print(paper.latex())
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/work/25306957'
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/works'
     #resp = requests.get(url, headers={'Accept':'application/orcid+json'})
