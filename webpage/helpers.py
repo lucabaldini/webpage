@@ -61,6 +61,15 @@ class HTML:
     """Small container class for HTML formatting.
     """
 
+    INDENT_STRING = ' ' * 2
+
+    @classmethod
+    def indent(cls, text: str, level: int = 0) -> str:
+        """Indentation facility.
+        """
+        # TO be implemented.
+        return ''
+
     @classmethod
     def _tag(cls, text: str, tag: str, **attributes: dict) -> str:
         """Formatting facility for a generic tag.
