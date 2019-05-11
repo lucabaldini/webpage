@@ -21,6 +21,7 @@
 import logging
 import os
 import json
+import datetime
 
 from typing import Optional, List
 
@@ -60,10 +61,11 @@ class Work(dict):
         """
         super().__init__(self)
         self.update(work_dict)
+        self.date = self.__date()
         self.external_ids = self.__external_ids()
 
     def _navigate(self, *keys, default: Optional[str] = None,
-                  interactive: bool = True):
+                  quiet: bool = False, interactive: bool = True):
         """Helper function to access nested values in the top-level dictionary.
 
         Given a list of keys, this method is navigating the dictionary down all
@@ -79,22 +81,43 @@ class Work(dict):
             try:
                 item = item[key]
             except Exception as exception:
+                if quiet:
+                    return default
                 # Note these two raw accesses are unguarded to avoid recursion.
                 path = self['path']
                 title = self['title']['title']['value']
                 # Print out the necessary diagnostics.
                 msg = 'Cannot navigate %s for path %s (%s). ' +\
                       'Offending key is \'%s\', with underlying exception: %s.'
-                print(msg)
-                logging.warning(msg, keys, path, title, path, exception)
+                logging.warning(msg, keys, path, title, key, exception)
                 # If run in interactive mode, wait for intervention...
                 if interactive:
                     input()
                 return default
         return item
 
+    def __date(self) -> datetime.date:
+        """Return the publication date.
+
+        This is another one that we implement in the form of a private
+        frunction to avoid re-calculating things multiple times (and we need
+        the date to sort records anyway).
+
+        One major issue that we are having here is that month and day seem to
+        be almost never defined in the record, and therefore sortin within the
+        same year is essentially impossible. This is the reason why we are
+        calling the corresponding _navigate() bits in quiet mode, and with an
+        explicit default value.
+        """
+        year = self._navigate('publication-date', 'year', 'value')
+        month = self._navigate('publication-date', 'month', 'value',
+                               quiet=True, default=1)
+        day = self._navigate('publication-date', 'day', 'value',
+                              quiet=True, default=1)
+        return datetime.date(int(year), int(month), int(day))
+
     def __external_ids(self) -> dict:
-        """Return a dictionary will ath the external identifiers.
+        """Return a dictionary with all the external identifiers.
 
         Note we implement this as a "private" class method that is called only
         once in the constructor and cache the external ids so that we do not
@@ -145,7 +168,7 @@ class Work(dict):
     def year(self) -> Optional[int]:
         """Return the year of the publication.
         """
-        return self._navigate('publication-date', 'year', 'value')
+        return self.date.year
 
     def doi(self) -> str:
         """Return the doi of the publication.
@@ -169,6 +192,11 @@ class Work(dict):
         """LaTeX formatting.
         """
         pass
+
+    def __lt__(self, other) -> bool:
+        """Comparison operator so sort publication lists.
+        """
+        return self.date < other.date
 
     def __str__(self) -> str:
         """String representation.
@@ -245,6 +273,7 @@ class ORCID:
         # Loop over the works and fetch all the detailed work information.
         # Admittedly we could do a cleaner job, here---but it's only done once.
         self.work_list: List[dict] = []
+        logging.info('Populating work list...')
         for work in self.data['activities-summary']['works']['group']:
             summary = self._work_summary(work)
             path = summary['path']
@@ -256,6 +285,8 @@ class ORCID:
             # server, as they typically not changing.
             work = Work(self._load(url, file_path, force_fetch=False))
             self.work_list.append(work)
+        logging.info('Sorting work list...')
+        self.work_list.sort()
 
     def _url(self, path: Optional[str] = None):
         """Simple utility to concatenate url elements to the base ORCID url.
@@ -350,7 +381,7 @@ class ORCID:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     orcid = ORCID()
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/work/25306957'
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/works'
