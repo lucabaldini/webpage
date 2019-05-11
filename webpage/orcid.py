@@ -22,7 +22,7 @@ import logging
 import os
 import json
 
-from typing import Optional
+from typing import Optional, List
 
 import requests
 
@@ -89,19 +89,38 @@ class ORCID:
         json file or the ORCID server.
         """
         self.orcid_id = orcid_id
+        # Fetch the top-level ORCID data.
         self.data = self._load(self._url(), self._file_path(), force_fetch)
+        # Loop over the works and fetch all the detailed work information.
+        # Admittedly we could do a cleaner job, here---but it's only done once.
+        self.work_list: List[dict] = []
+        for work in self.data['activities-summary']['works']['group']:
+            summary = work['work-summary'][0]
+            path = summary['path']
+            put_code = summary['put-code']
+            url = self._url(path)
+            file_name = '{}-work-{}.json'.format(self.orcid_id, put_code)
+            file_path = self._file_path(file_name)
+            # Mind we're never forcing re-fetching individual works from the
+            # server, as they typically not changing.
+            self.work_list.append(self._load(url, file_path, force_fetch=False))
 
-    def _url(self, *args):
+    def _url(self, path: Optional[str] = None):
         """Simple utility to concatenate url elements to the base ORCID url.
+
+        Mind all the path elements in the json dictionaries refer to the base
+        url and have a leading /, so this method is consistent with that.
         """
-        return '/'.join([self.BASE_URL, self.orcid_id] + list(args))
+        if path is None:
+            path = '/{}'.format(self.orcid_id)
+        return '{}{}'.format(self.BASE_URL, path)
 
     def _file_path(self, file_name: Optional[str] = None) -> str:
         """Return the full absolute path to the file with a given name in the
         local folder (can be used in either read or write mode).
         """
         if file_name is None:
-            file_name = 'orcid-{}.json'.format(self.orcid_id)
+            file_name = '{}.json'.format(self.orcid_id)
         return os.path.join(self.LOCAL_FOLDER, file_name)
 
     @classmethod
@@ -123,7 +142,7 @@ class ORCID:
     def _read(cls, input_file_path: str) -> dict:
         """Read data from a local jsone file.
         """
-        logging.info('Reading data from %s...', input_file_path)
+        logging.debug('Reading data from %s...', input_file_path)
         with open(input_file_path) as input_file:
             data = json.load(input_file)
         return data
@@ -148,11 +167,6 @@ class ORCID:
         """
         return json.dumps(json_item, sort_keys=sort_keys, indent=2,
                           separators=(',', ': '))
-
-    def _works(self) -> list:
-        """Return the list of work element in the ORCID data.
-        """
-        return self.data['activities-summary']['works']['group']
 
     @classmethod
     def _work_summary(cls, work: dict) -> dict:
@@ -179,9 +193,7 @@ class ORCID:
     def publication_list(self):
         """Do something.
         """
-        for i, work in enumerate(self._works()):
-            summary = self._work_summary(work)
-            print(i, type(summary), summary['path'])
+        return
 
     def __str__(self) -> str:
         """String representation.
