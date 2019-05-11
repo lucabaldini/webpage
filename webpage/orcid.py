@@ -61,7 +61,6 @@ class Work(dict):
         super().__init__(self)
         self.update(work_dict)
         self.external_ids = self.__external_ids()
-        print(self)
 
     def _navigate(self, *keys, default: Optional[str] = None,
                   interactive: bool = True):
