@@ -27,6 +27,8 @@ from typing import Optional, List
 
 import requests
 
+from helpers import HTML, LaTeX
+
 
 class Work(dict):
 
@@ -113,7 +115,7 @@ class Work(dict):
         month = self._navigate('publication-date', 'month', 'value',
                                quiet=True, default=1)
         day = self._navigate('publication-date', 'day', 'value',
-                              quiet=True, default=1)
+                             quiet=True, default=1)
         return datetime.date(int(year), int(month), int(day))
 
     def __external_ids(self) -> dict:
