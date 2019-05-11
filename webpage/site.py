@@ -96,7 +96,7 @@ def html_output_file_path(file_path: str) -> str:
 PAGE_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
-  
+
   <head>
     <meta charset=utf-8">
     <title>%s :: %%s</title>
@@ -138,7 +138,7 @@ University of Pisa nor of INFN.<br>
 
 For what it's worth, this page validates as
 <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 strict</a>
-and 
+and
 <a href="http://jigsaw.w3.org/css-validator/check/referer">css level 3</a>.<br>
 
 Last update on %s.
@@ -358,7 +358,7 @@ def copy_images(file_formats=('png',)):
         _copy(src, dest)
 
 
-def deploy(logging_level=logging.DEBUG):
+def deploy():
     """Deploy the glorious website.
     """
     create_local_tree()
@@ -370,5 +370,5 @@ def deploy(logging_level=logging.DEBUG):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging_level)
+    logging.basicConfig(level=logging.DEBUG)
     deploy()

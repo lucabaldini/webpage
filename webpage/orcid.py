@@ -18,12 +18,13 @@
 """Simple ORCID interface.
 """
 
-import requests
-import json
 import logging
 import os
+import json
 
 from typing import Optional
+
+import requests
 
 
 class ORCID:
@@ -43,7 +44,7 @@ class ORCID:
     https://members.orcid.org/api/tutorial/read-orcid-records
 
     Endpoint              : Description
-    
+
     /record               : Summary view of the full ORCID record
     /person               : Biographical section of the ORCID record, including
                             through /researcher-urls below
@@ -52,7 +53,7 @@ class ORCID:
     /external-identifiers : Linked external identifiers in other systems
     /keywords             : Keywords related to the researcher and their work
     /other-names          : Other names by which the researcher is known
-    /personal-details     : Personal details: the researcher’s name, credit 
+    /personal-details     : Personal details: the researcher’s name, credit
                             (published) name, and biography
     /researcher-urls      : Links to the researcher’s personal or profile pages
     /activities           : Summary of the activities section of the ORCID
@@ -65,7 +66,7 @@ class ORCID:
 
     Now, all the endpoint can apparently be used next to the basic url, i.e.,
     one can send a request to  http://pub.orcid.org/0000-0002-9785-7726/works'
-    to dump all the works by the owner of the ORCID. 
+    to dump all the works by the owner of the ORCID.
 
     Internally all the paths refer to the basic url http://pub.orcid.org/
 
@@ -81,14 +82,14 @@ class ORCID:
                                                 '..', 'orcid'))
 
     def __init__(self, orcid_id: str = '0000-0002-9785-7726',
-                 force_fetch=False):
+                 force_fetch: bool = False) -> None:
         """Constructor.
 
         Here we are essentially fetching the ORCID data from either a local
         json file or the ORCID server.
         """
         self.orcid_id = orcid_id
-        self.data = self._load(self._url(), self._file_path())
+        self.data = self._load(self._url(), self._file_path(), force_fetch)
 
     def _url(self, *args):
         """Simple utility to concatenate url elements to the base ORCID url.
@@ -102,14 +103,15 @@ class ORCID:
         if file_name is None:
             file_name = 'orcid-{}.json'.format(self.orcid_id)
         return os.path.join(self.LOCAL_FOLDER, file_name)
-    
-    def _fetch(self, url: str, output_file_path: str) -> dict:
+
+    @classmethod
+    def _fetch(cls, url: str, output_file_path: str) -> dict:
         """Generic fetch function to send a request to the server and save
         the response to a json file.
 
         Return the data fetched from the server.
         """
-        logging.info('Fetching data from {}...'.format(url))
+        logging.info('Fetching data from %s...', url)
         resp = requests.get(url, headers={'Accept':'application/orcid+json'})
         with open(output_file_path, 'w') as output_file:
             logging.info('Writing data to %s...', output_file_path)
@@ -117,7 +119,8 @@ class ORCID:
             json.dump(data, output_file)
         return data
 
-    def _read(self, input_file_path: str) -> dict:
+    @classmethod
+    def _read(cls, input_file_path: str) -> dict:
         """Read data from a local jsone file.
         """
         logging.info('Reading data from %s...', input_file_path)
@@ -125,7 +128,9 @@ class ORCID:
             data = json.load(input_file)
         return data
 
-    def _load(self, url: str, file_path: str, force_fetch=False) -> dict:
+    @classmethod
+    def _load(cls, url: str, file_path: str,
+              force_fetch: bool = False) -> dict:
         """Load some ORCID data from either a local json file (if it exists
         and the force_fetch flag is set to False), or fetching directly from
         the server.
@@ -134,11 +139,11 @@ class ORCID:
         in the two cases.
         """
         if os.path.exists(file_path) and not force_fetch:
-            return self._read(file_path)
-        else:
-            return self._fetch(url, file_path)
+            return cls._read(file_path)
+        return cls._fetch(url, file_path)
 
-    def _dump(self, json_item: dict, sort_keys: bool = False) -> str:
+    @classmethod
+    def _dump(cls, json_item: dict, sort_keys: bool = False) -> str:
         """Formatting function for json elements.
         """
         return json.dumps(json_item, sort_keys=sort_keys, indent=2,
@@ -172,18 +177,17 @@ class ORCID:
         return work['work-summary'][0]
 
     def publication_list(self):
+        """Do something.
         """
-        """
-        return
         for i, work in enumerate(self._works()):
             summary = self._work_summary(work)
             print(i, type(summary), summary['path'])
-            
+
     def __str__(self) -> str:
         """String representation.
         """
         return self._dump(self.data)
-        
+
 
 
 if __name__ == '__main__':
