@@ -48,7 +48,9 @@ class LaTeX:
 
     @classmethod
     def hyperlink(cls, text: str, url: Optional[str] = None) -> str:
-        """Hyperlink
+        """Hyperlink formatting.
+
+        If the url is None, this falls back to plain text.
         """
         if url is None:
             return text
@@ -61,46 +63,63 @@ class HTML:
     """Small container class for HTML formatting.
     """
 
-    INDENT_STRING = ' ' * 2
+    INDENT_STRING = '  '
 
     @classmethod
     def indent(cls, text: str, level: int = 0) -> str:
-        """Indentation facility.
+        """Small utility function indent full paragraphs.
+
+        This is essentially replacing any newline character prepending to it the
+        proper number of spaces.
         """
-        # TO be implemented.
-        return ''
+        # Calculate the indentation.
+        indent = cls.INDENT_STRING * level
+        # Prepend the right number of spaces to each new line.
+        text = text.replace('\n', '\n{}'.format(indent))
+        # Prepend the right number of spaces to the paragraph itself.
+        text = '{}{}'.format(indent, text)
+        return text
 
     @classmethod
-    def _tag(cls, text: str, tag: str, **attributes: dict) -> str:
+    def tag(cls, text: str, tag: str, indent: int = 0,
+            **attributes: dict) -> str:
         """Formatting facility for a generic tag.
         """
         attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
         attr_text = ','.join(attr_list)
-        return '<{0}{1}>{2}</{0}>'.format(tag, attr_text, text)
+        text = '<{0}{1}>{2}</{0}>'.format(tag, attr_text, text)
+        return cls.indent(text, indent)
 
     @classmethod
-    def emph(cls, text: str) -> str:
+    def emph(cls, text: str, indent: int = 0) -> str:
         """Italic formatting.
         """
-        return cls._tag(text, 'em')
+        text = cls.tag(text, 'em')
+        return cls.indent(text, indent)
 
     @classmethod
-    def bold(cls, text: str) -> str:
+    def bold(cls, text: str, indent: int = 0) -> str:
         """Bold formatting.
         """
-        return cls._tag(text, 'b')
+        text = cls.tag(text, 'b')
+        return cls.indent(text, indent)
 
     @classmethod
-    def typeset(cls, text: str) -> str:
+    def typeset(cls, text: str, indent: int = 0) -> str:
         """Monospace formatting.
         """
-        return cls._tag(text, 'tt')
+        text = cls.tag(text, 'tt')
+        return cls.indent(text, indent)
 
     @classmethod
-    def hyperlink(cls, text: str, url: Optional[str] = None) -> str:
-        """Hyperlink
+    def hyperlink(cls, text: str, url: Optional[str] = None,
+                  indent: int = 0) -> str:
+        """Hyperlink formatting.
+
+        If the url is None, this falls back to plain text.
         """
         if url is None:
             return text
         attributes = dict(href=url)
-        return cls._tag(text, 'a', **attributes)
+        text = cls.tag(text, 'a', **attributes)
+        return cls.indent(text, indent)

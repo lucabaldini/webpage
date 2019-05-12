@@ -63,21 +63,28 @@ class Work(dict):
         """
         super().__init__(self)
         self.update(work_dict)
+        # We perform the following two raw (unguarded) accesses to the dict content
+        # as a minimal diagnostics tool in case something goes wrong. All the
+        # rest should be embedded into a _navigate() call.
+        self.path = self['path']
+        assert not self.path.isspace()
+        self.title = self['title']['title']['value']
+        assert not self.title.isspace()
+        # And the following is the minimum info refer to the paper to in case
+        # we want to print out some diagnostics.
+        self.info = 'path {} ({})'.format(self.path, self.title)
         self.date = self.__date()
         self.external_ids = self.__external_ids()
-        self.author_list = self.__author_list()
+        self.author_string = self.__author_string()
 
     def _navigate(self, *keys, default: Optional[str] = None,
-                  quiet: bool = False, interactive: bool = True):
+                  quiet: bool = False):
         """Helper function to access nested values in the top-level dictionary.
 
         Given a list of keys, this method is navigating the dictionary down all
         the necessary levels. At each level the dictionary access is wrapped
         into a try/except block so that if something goes wrong we do have full
         information about what has gone wrong.
-
-        If the interactive flag is set to True, the execution stops in case
-        of missing data.
         """
         item = self
         for key in keys:
@@ -86,16 +93,10 @@ class Work(dict):
             except Exception as exception:
                 if quiet:
                     return default
-                # Note these two raw accesses are unguarded to avoid recursion.
-                path = self['path']
-                title = self['title']['title']['value']
-                # Print out the necessary diagnostics.
-                msg = 'Cannot navigate %s for path %s (%s). ' +\
+                msg = 'Cannot navigate %s for %s. ' +\
                       'Offending key is \'%s\', with underlying exception: %s.'
-                logging.warning(msg, keys, path, title, key, exception)
-                # If run in interactive mode, wait for intervention...
-                if interactive:
-                    input()
+                logging.warning(msg, keys, self.info, key, exception)
+                #input()
                 return default
         return item
 
@@ -141,7 +142,7 @@ class Work(dict):
         name = contributor['credit-name']['value']
         return name
 
-    def __author_list(self, max_num_authors: int = 8) -> str:
+    def __author_string(self, max_num_authors: int = 8) -> str:
         """Return a formatted author list.
 
         The author list is truncated to the maximum number of authors, and, if
@@ -150,18 +151,22 @@ class Work(dict):
         """
         contributors = self._navigate('contributors', 'contributor')
         num_authors = len(contributors)
+        if num_authors == 0:
+            msg = 'Empty author list for %s'
+            logging.warning(msg, self.info)
+            return ''
         contributors = contributors[:max_num_authors]
         names = (self._format_credit_name(item) for item in contributors)
-        author_list = ', '.join(names)
+        author_string = ', '.join(names)
         if num_authors > max_num_authors:
-            author_list = '{} et al. ({} authors)'.format(author_list,
-                                                          num_authors)
-        return author_list
+            author_string = '{} et al. ({} authors)'.format(author_string,
+                                                            num_authors)
+        return author_string
 
-    def title(self) -> str:
-        """Return the title of the work.
+    def type_(self) -> str:
+        """Return the type of the work.
         """
-        return self._navigate('title', 'title', 'value')
+        return self._navigate('type')
 
     def journal(self) -> str:
         """Return the journal name for the work.
@@ -189,21 +194,21 @@ class Work(dict):
     def html(self) -> str:
         """HTML formatting.
         """
-        title = HTML.hyperlink(HTML.emph(self.title()), self.doi_url())
-        return '{}, "{}", {} ({})'.format(self.author_list, title,
+        title = HTML.hyperlink(HTML.emph(self.title, self.doi_url()))
+        return '{}, "{}", {} ({})'.format(self.author_string, title,
                                           self.journal(), self.year())
 
     def latex(self) -> str:
         """LaTeX formatting.
         """
-        title = LaTeX.hyperlink(LaTeX.emph(self.title()), self.doi_url())
-        return '{}, "{}", {} ({})'.format(self.author_list, title,
+        title = LaTeX.hyperlink(LaTeX.emph(self.title, self.doi_url()))
+        return '{}, "{}", {} ({})'.format(self.author_string, title,
                                           self.journal(), self.year())
 
     def text(self) -> str:
         """String representation.
         """
-        return '{}, "{}", {} ({})'.format(self.author_list, self.title(),
+        return '{}, "{}", {} ({})'.format(self.author_string, self.title,
                                           self.journal(), self.year())
 
     def __lt__(self, other) -> bool:
@@ -395,10 +400,12 @@ class ORCID:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     orcid = ORCID()
-    for paper in orcid.work_list:
-        print(paper)
-        print(paper.html())
-        print(paper.latex())
+    #for paper in orcid.work_list:
+    #    print(paper)
+    #paper = orcid.work_list[10]
+    #print(paper, '"{}"'.format(paper.author_string))
+    #    print(paper.html())
+    #    print(paper.latex())
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/work/25306957'
     #url = 'http://pub.orcid.org/0000-0002-9785-7726/works'
     #resp = requests.get(url, headers={'Accept':'application/orcid+json'})
