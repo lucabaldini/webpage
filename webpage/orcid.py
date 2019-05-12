@@ -67,9 +67,7 @@ class Work(dict):
         # as a minimal diagnostics tool in case something goes wrong. All the
         # rest should be embedded into a _navigate() call.
         self.path = self['path']
-        assert not self.path.isspace()
         self.title = self['title']['title']['value']
-        assert not self.title.isspace()
         # And the following is the minimum info refer to the paper to in case
         # we want to print out some diagnostics.
         self.info = 'path {} ({})'.format(self.path, self.title)
