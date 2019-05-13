@@ -112,6 +112,13 @@ class HTML:
         return cls.indent(text, indent)
 
     @classmethod
+    def list_item(cls, text: str, indent: int = 0) -> str:
+        """Monospace formatting.
+        """
+        text = cls.tag(text, 'li')
+        return cls.indent(text, indent)
+
+    @classmethod
     def hyperlink(cls, text: str, url: Optional[str] = None,
                   indent: int = 0) -> str:
         """Hyperlink formatting.

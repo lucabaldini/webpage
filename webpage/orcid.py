@@ -301,7 +301,7 @@ class ORCID:
             work = Work(self._load(url, file_path, force_fetch=False))
             self.work_list.append(work)
         logging.info('Sorting work list...')
-        self.work_list.sort()
+        self.work_list.sort(reverse=True)
 
     def _url(self, path: Optional[str] = None):
         """Simple utility to concatenate url elements to the base ORCID url.
@@ -392,9 +392,17 @@ class ORCID:
         """Return a HTML rendering of the publication list.
         """
         lines = ['<ul>\n']
+        current_year = None
         for i, work in enumerate(self.work_list):
-            lines.append('{}<li>[{}] {}</li>\n'.format(HTML.INDENT_STRING, i,
-                                                       work.html()))
+            year = work.year()
+            if year != current_year:
+                # Drop a special entry for the year in case of change.
+                year_label = HTML.list_item(HTML.tag(year, 'h3'), indent=1)
+                lines.append('\n{}\n\n'.format(year_label))
+                current_year = year
+            # And this is the actual element for the publication.
+            line = '[{}] {}'.format(i, work.html())
+            lines.append('{}\n'.format(HTML.list_item(line, indent=1)))
         lines.append('</ul>')
         text = ''.join(lines)
         return text
