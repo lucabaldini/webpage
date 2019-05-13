@@ -192,7 +192,7 @@ class Work(dict):
     def html(self) -> str:
         """HTML formatting.
         """
-        title = HTML.hyperlink(HTML.emph(self.title, self.doi_url()))
+        title = HTML.emph(HTML.hyperlink(self.title, self.doi_url()))
         return '{}, "{}", {} ({})'.format(self.author_string, title,
                                           self.journal(), self.year())
 
@@ -388,6 +388,17 @@ class ORCID:
         """
         return work['work-summary'][0]
 
+    def publication_list_html(self):
+        """Return a HTML rendering of the publication list.
+        """
+        lines = ['<ul>\n']
+        for i, work in enumerate(self.work_list):
+            lines.append('{}<li>[{}] {}</li>\n'.format(HTML.INDENT_STRING, i,
+                                                       work.html()))
+        lines.append('</ul>')
+        text = ''.join(lines)
+        return text
+
     def __str__(self) -> str:
         """String representation.
         """
@@ -398,6 +409,7 @@ class ORCID:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     orcid = ORCID()
+    print(orcid.publication_list_html())
     #for paper in orcid.work_list:
     #    print(paper)
     #paper = orcid.work_list[10]
