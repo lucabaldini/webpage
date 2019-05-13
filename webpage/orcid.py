@@ -23,7 +23,7 @@ import os
 import json
 import datetime
 
-from typing import Optional, List
+from typing import Optional, List, Any
 
 import requests
 
@@ -75,8 +75,7 @@ class Work(dict):
         self.external_ids = self.__external_ids()
         self.author_string = self.__author_string()
 
-    def _navigate(self, *keys, default: Optional[str] = None,
-                  quiet: bool = False):
+    def _navigate(self, *keys, default: Any = None, quiet: bool = False):
         """Helper function to access nested values in the top-level dictionary.
 
         Given a list of keys, this method is navigating the dictionary down all

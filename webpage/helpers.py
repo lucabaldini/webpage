@@ -81,8 +81,7 @@ class HTML:
         return text
 
     @classmethod
-    def tag(cls, text: str, tag: str, indent: int = 0,
-            **attributes: dict) -> str:
+    def tag(cls, text: str, tag: str, indent: int = 0, **attributes) -> str:
         """Formatting facility for a generic tag.
         """
         attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
@@ -94,29 +93,25 @@ class HTML:
     def emph(cls, text: str, indent: int = 0) -> str:
         """Italic formatting.
         """
-        text = cls.tag(text, 'em')
-        return cls.indent(text, indent)
+        return cls.tag(text, 'em', indent)
 
     @classmethod
     def bold(cls, text: str, indent: int = 0) -> str:
         """Bold formatting.
         """
-        text = cls.tag(text, 'b')
-        return cls.indent(text, indent)
+        return cls.tag(text, 'b', indent)
 
     @classmethod
     def typeset(cls, text: str, indent: int = 0) -> str:
         """Monospace formatting.
         """
-        text = cls.tag(text, 'tt')
-        return cls.indent(text, indent)
+        return cls.tag(text, 'tt', indent)
 
     @classmethod
     def list_item(cls, text: str, indent: int = 0) -> str:
         """Monospace formatting.
         """
-        text = cls.tag(text, 'li')
-        return cls.indent(text, indent)
+        return cls.tag(text, 'li', indent)
 
     @classmethod
     def hyperlink(cls, text: str, url: Optional[str] = None,
@@ -127,6 +122,4 @@ class HTML:
         """
         if url is None:
             return text
-        attributes = dict(href=url)
-        text = cls.tag(text, 'a', **attributes)
-        return cls.indent(text, indent)
+        return cls.tag(text, 'a', indent, href=url)
