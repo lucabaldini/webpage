@@ -390,21 +390,16 @@ class ORCID:
     def publication_list_html(self):
         """Return a HTML rendering of the publication list.
         """
-        lines = ['<ul>\n']
+        lines = []
         current_year = None
         for i, work in enumerate(self.work_list):
-            year = work.year()
-            if year != current_year:
+            if work.year() != current_year:
                 # Drop a special entry for the year in case of change.
-                year_label = HTML.list_item(HTML.tag(year, 'h3'), indent=1)
-                lines.append('\n{}\n\n'.format(year_label))
-                current_year = year
+                lines.append('{}'.format(HTML.tag(work.year(), 'h3')))
+                current_year = work.year()
             # And this is the actual element for the publication.
-            line = '[{}] {}'.format(i, work.html())
-            lines.append('{}\n'.format(HTML.list_item(line, indent=1)))
-        lines.append('</ul>')
-        text = ''.join(lines)
-        return text
+            lines.append('[{}] {}'.format(i, work.html()))
+        return HTML.list(lines)
 
     def __str__(self) -> str:
         """String representation.

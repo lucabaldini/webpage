@@ -19,7 +19,7 @@
 """
 
 
-from typing import Optional
+from typing import Optional, List
 
 
 
@@ -109,9 +109,19 @@ class HTML:
 
     @classmethod
     def list_item(cls, text: str, indent: int = 0) -> str:
-        """Monospace formatting.
+        """List item formatting.
         """
         return cls.tag(text, 'li', indent)
+
+    @classmethod
+    def list(cls, items: List) -> str:
+        """List formatting.
+        """
+        lines = ['<ul>\n']
+        for item in items:
+            lines.append('{}\n'.format(cls.list_item(item, indent=1)))
+        lines.append('</ul>')
+        return ''.join(lines)
 
     @classmethod
     def hyperlink(cls, text: str, url: Optional[str] = None,
