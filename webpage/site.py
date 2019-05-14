@@ -26,7 +26,7 @@ import logging
 
 from typing import Optional
 
-from webpage.core import PageMenu
+from webpage.core import PageMenu, HTML
 
 
 # Basic configuration.
@@ -162,25 +162,6 @@ MENU.add_entry('Didattica', 'teaching.html')
 MENU.add_entry('Private area', 'private')
 
 
-def _indent(text: str, indent_level: int = 0) -> str:
-    """Small utility function indent full paragraphs.
-
-    This is essentially replacing any newline character prepending to it the
-    proper number of spaces.
-
-    Warning
-    -------
-    This is obsolete and should be removed, use helpers.HTML instead.
-    """
-    # Calculate the indentation.
-    indent = INDENT_STRING * indent_level
-    # Prepend the right number of spaces to each new line.
-    text = text.replace('\n', '\n%s' % indent)
-    # Prepend the right number of spaces to the paragraph itself.
-    text = '%s%s' % (indent, text)
-    return text
-
-
 def footer_html() -> str:
     """Return the full html for the page footer.
 
@@ -218,8 +199,8 @@ def page_html(title: str, menu_entry: Optional[str] = None,
     content.
     """
     # Indent all the elements properly.
-    footer = _indent(footer_html(), 3)
-    menu = _indent(MENU.to_html(menu_entry), 4)
+    footer = HTML.indent(footer_html(), 3)
+    menu = HTML.indent(MENU.to_html(menu_entry), 4)
     content = _read_page_content(file_path)
     # Horrible hack to add the publications. This should be handled properly
     # in a more general fashion (the menu should probably be aware of it.)
@@ -228,7 +209,7 @@ def page_html(title: str, menu_entry: Optional[str] = None,
         orcid = ORCID()
         content = '{}{}'.format(content, orcid.publication_list_html())
     # End of hack.
-    content = _indent(content, 5)
+    content = HTML.indent(content, 5)
     # Fill in the template.
     return (PAGE_TEMPLATE % (title, menu, title, content, footer)).strip('\n')
 
