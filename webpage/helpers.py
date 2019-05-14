@@ -72,6 +72,9 @@ class HTML:
         This is essentially replacing any newline character prepending to it the
         proper number of spaces.
         """
+        # If no indentation is required, do nothing.
+        if level == 0:
+            return text
         # Calculate the indentation.
         indent = cls.INDENT_STRING * level
         # Prepend the right number of spaces to each new line.
@@ -114,13 +117,13 @@ class HTML:
         return cls.tag(text, 'li', indent)
 
     @classmethod
-    def list(cls, items: List) -> str:
+    def list(cls, items: List, indent: int = 0) -> str:
         """List formatting.
         """
-        lines = ['<ul>\n']
+        lines = [cls.indent('<ul>\n', indent)]
         for item in items:
-            lines.append('{}\n'.format(cls.list_item(item, indent=1)))
-        lines.append('</ul>')
+            lines.append('{}\n'.format(cls.list_item(item, indent + 1)))
+        lines.append(cls.indent('</ul>', indent))
         return ''.join(lines)
 
     @classmethod
