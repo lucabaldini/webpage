@@ -93,38 +93,38 @@ class HTML:
         return cls.indent(text, indent)
 
     @classmethod
-    def emph(cls, text: str, indent: int = 0) -> str:
+    def emph(cls, text: str, indent: int = 0, **attributes) -> str:
         """Italic formatting.
         """
-        return cls.tag(text, 'em', indent)
+        return cls.tag(text, 'em', indent, **attributes)
 
     @classmethod
-    def bold(cls, text: str, indent: int = 0) -> str:
+    def bold(cls, text: str, indent: int = 0, **attributes) -> str:
         """Bold formatting.
         """
-        return cls.tag(text, 'b', indent)
+        return cls.tag(text, 'b', indent, **attributes)
 
     @classmethod
-    def typeset(cls, text: str, indent: int = 0) -> str:
+    def typeset(cls, text: str, indent: int = 0, **attributes) -> str:
         """Monospace formatting.
         """
-        return cls.tag(text, 'tt', indent)
+        return cls.tag(text, 'tt', indent, **attributes)
 
     @classmethod
-    def list_item(cls, text: str, indent: int = 0) -> str:
+    def list_item(cls, text: str, indent: int = 0, **attributes) -> str:
         """List item formatting.
         """
-        return cls.tag(text, 'li', indent)
+        return cls.tag(text, 'li', indent, **attributes)
 
     @classmethod
     def list(cls, items: List, indent: int = 0) -> str:
         """List formatting.
         """
-        lines = [cls.indent('<ul>\n', indent)]
+        lines = [cls.indent('<ul>', indent)]
         for item in items:
-            lines.append('{}\n'.format(cls.list_item(item, indent + 1)))
+            lines.append('{}'.format(cls.list_item(item, indent + 1)))
         lines.append(cls.indent('</ul>', indent))
-        return ''.join(lines)
+        return '\n'.join(lines)
 
     @classmethod
     def hyperlink(cls, text: str, url: Optional[str] = None,

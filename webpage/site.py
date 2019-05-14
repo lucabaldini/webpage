@@ -26,6 +26,8 @@ import logging
 
 from typing import Optional
 
+from webpage.core import PageMenu
+
 
 # Basic configuration.
 #
@@ -145,87 +147,9 @@ Last update on %s.
 """ % (COPYRIGHT_START_YEAR, COPYRIGHT_END_YEAR, LAST_UPDATE_STRING)
 
 
-class Menu(dict):
-
-    """Class representing the logical structure of the page menu.
-
-    A menu is a essentially a series of entries, each of which includes a
-    title and a target. The title is the title of the web page, while the
-    target can either be a html file or a folder, and is always intented to
-    be in the (remote, or relative) html space.
-
-    Note that the class is inheriting from dict and the fact that the entries
-    are expected to appear in order in the output html relies on the fact that
-    dictionaries are now guaranteed to preserve the insertion order in
-    Python.
-    """
-
-    def add_entry(self, title: str, target: str) -> None:
-        """Add an entry to the menu.
-        """
-        self[title] = target
-
-    def target(self, title: str) -> str:
-        """Return the target corresponding to a given title.
-        """
-        return self.get(title)
-
-    @classmethod
-    def target_is_file(cls, target: str) -> bool:
-        """Return True if the given target represents a html file name
-        (i.e., not a folder).
-        """
-        return target.endswith('.html')
-
-    def target_points_to_file(self, title: str) -> bool:
-        """Return True if the target corresponding to the given title represents
-        a html file name (i.e., not a folder).
-        """
-        return self.target_is_file(self.target(title))
-
-    def _target_file_path(self, title: str, folder: str) -> Optional[str]:
-        """Convert the raw target into a file path, prepending the folder
-        passed as an argument.
-
-        Return None is the target is not a file.
-        """
-        target = self.target(title)
-        if not self.target_is_file(target):
-            return None
-        return os.path.join(folder, target)
-
-    def content_file_path(self, title: str) -> Optional[str]:
-        """Return the path to the local html file containing the body of the
-        web page corresponding to a given title.
-
-        Return None is the target is not a file.
-        """
-        return self._target_file_path(title, CONTENTS_FOLDER)
-
-    def to_html(self, current_page_title: Optional[str] = None) -> str:
-        """Return the html representation of the menu.
-        """
-        text = '<ul>\n'
-        for title, target in self.items():
-            if title == current_page_title:
-                text += '%s<li class=current>%s</li>\n' %\
-                    (INDENT_STRING, title)
-            else:
-                text += '%s<li><a href=%s>%s</a></li>\n' %\
-                    (INDENT_STRING, target, title)
-        text = '%s</ul>' % text
-        return text
-
-    def __str__(self) -> str:
-        """Text representation.
-        """
-        text = 'Page menu:\n'
-        for title, target in self.items():
-            text += '- %s -> %s\n' % (title, target)
-        return text
 
 
-MENU = Menu()
+MENU = PageMenu()
 MENU.add_entry('Home', 'index.html')
 MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
 MENU.add_entry('Publications', 'publications.html')
@@ -325,7 +249,7 @@ def write_menu_pages():
     """
     for title in MENU:
         if MENU.target_points_to_file(title):
-            file_path = MENU.content_file_path(title)
+            file_path = MENU.target_file_path(title, CONTENTS_FOLDER)
             write_page(title, title, file_path)
 
 
