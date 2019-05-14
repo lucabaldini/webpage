@@ -27,6 +27,7 @@ import logging
 from typing import Optional
 
 from webpage.core import PageMenu, HTML
+from webpage.helpers import mktree, copy
 
 
 # Basic configuration.
@@ -73,13 +74,11 @@ CSS_OUTPUT_FOLDER = os.path.join(HTML_OUTPUT_FOLDER, REMOTE_CSS_FOLDER)
 IMG_OUTPUT_FOLDER = os.path.join(HTML_OUTPUT_FOLDER, REMOTE_IMG_FOLDER)
 
 
-def create_local_tree():
+def create_local_tree() -> None:
     """Create the necessary local tree for the html output, if necessary.
     """
     for folder in [HTML_OUTPUT_FOLDER, CSS_OUTPUT_FOLDER, IMG_OUTPUT_FOLDER]:
-        if not os.path.exists(folder):
-            logging.info('Creating output folder %s...', folder)
-            os.mkdir(folder)
+        mktree(folder)
 
 
 def content_file_path(file_name: str) -> str:
@@ -246,13 +245,6 @@ def write_about_page():
     write_page(title, None, target)
 
 
-def _copy(src: str, dest: str):
-    """Small utility functions to copy files.
-    """
-    logging.info('Copying %s -> %s...', src, dest)
-    shutil.copyfile(src, dest)
-
-
 def copy_style_sheets():
     """Copy the relevant style sheets from the local source folder to the
     output html folder to be copied on the remote server.
@@ -261,7 +253,7 @@ def copy_style_sheets():
     for css in STYLE_SHEETS:
         src = os.path.join(CSS_FOLDER, css)
         dest = os.path.join(CSS_OUTPUT_FOLDER, css)
-        _copy(src, dest)
+        copy(src, dest)
 
 
 def copy_images(file_formats=('png',)):
@@ -273,7 +265,7 @@ def copy_images(file_formats=('png',)):
         file_list = glob.glob(os.path.join(IMG_FOLDER, '*.%s' % fmt))
     for src in file_list:
         dest = os.path.join(IMG_OUTPUT_FOLDER, os.path.basename(src))
-        _copy(src, dest)
+        copy(src, dest)
 
 
 def deploy():

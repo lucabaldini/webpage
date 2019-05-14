@@ -27,7 +27,7 @@ from typing import Optional, List, Any
 
 import requests
 
-from webpage.helpers import HTML, LaTeX
+from webpage.core import HTML, LaTeX
 
 
 class Work(dict):

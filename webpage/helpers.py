@@ -18,121 +18,21 @@
 """Utility functions.
 """
 
+import logging
+import os
+import shutil
 
-from typing import Optional, List
 
-
-
-class LaTeX:
-
-    """Small container class for LaTeX formatting.
+def mktree(folder_path: str) -> None:
+    """Create a directory tree, if it does not exist already.
     """
-
-    @classmethod
-    def emph(cls, text: str) -> str:
-        """Italic formatting.
-        """
-        return '\\emph{{{}}}'.format(text)
-
-    @classmethod
-    def bold(cls, text: str) -> str:
-        """Bold formatting.
-        """
-        return '\\texttt{{{}}}'.format(text)
-
-    @classmethod
-    def typeset(cls, text: str) -> str:
-        """Monospace formatting.
-        """
-        return '\\textbf{{{}}}'.format(text)
-
-    @classmethod
-    def hyperlink(cls, text: str, url: Optional[str] = None) -> str:
-        """Hyperlink formatting.
-
-        If the url is None, this falls back to plain text.
-        """
-        if url is None:
-            return text
-        return '\\href{{{}}}{{{}}}'.format(url, text)
+    if not os.path.exists(folder_path):
+        logging.info('Creating folder %s...', folder_path)
+        os.mkdir(folder_path)
 
 
-
-class HTML:
-
-    """Small container class for HTML formatting.
+def copy(src: str, dest: str) -> None:
+    """Small utility functions to copy files.
     """
-
-    INDENT_STRING = '  '
-
-    @classmethod
-    def indent(cls, text: str, level: int = 0) -> str:
-        """Small utility function indent full paragraphs.
-
-        This is essentially replacing any newline character prepending to it the
-        proper number of spaces.
-        """
-        # If no indentation is required, do nothing.
-        if level == 0:
-            return text
-        # Calculate the indentation.
-        indent = cls.INDENT_STRING * level
-        # Prepend the right number of spaces to each new line.
-        text = text.replace('\n', '\n{}'.format(indent))
-        # Prepend the right number of spaces to the paragraph itself.
-        text = '{}{}'.format(indent, text)
-        return text
-
-    @classmethod
-    def tag(cls, text: str, tag: str, indent: int = 0, **attributes) -> str:
-        """Formatting facility for a generic tag.
-        """
-        attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
-        attr_text = ','.join(attr_list)
-        text = '<{0}{1}>{2}</{0}>'.format(tag, attr_text, text)
-        return cls.indent(text, indent)
-
-    @classmethod
-    def emph(cls, text: str, indent: int = 0, **attributes) -> str:
-        """Italic formatting.
-        """
-        return cls.tag(text, 'em', indent, **attributes)
-
-    @classmethod
-    def bold(cls, text: str, indent: int = 0, **attributes) -> str:
-        """Bold formatting.
-        """
-        return cls.tag(text, 'b', indent, **attributes)
-
-    @classmethod
-    def typeset(cls, text: str, indent: int = 0, **attributes) -> str:
-        """Monospace formatting.
-        """
-        return cls.tag(text, 'tt', indent, **attributes)
-
-    @classmethod
-    def list_item(cls, text: str, indent: int = 0, **attributes) -> str:
-        """List item formatting.
-        """
-        return cls.tag(text, 'li', indent, **attributes)
-
-    @classmethod
-    def list(cls, items: List, indent: int = 0) -> str:
-        """List formatting.
-        """
-        lines = [cls.indent('<ul>', indent)]
-        for item in items:
-            lines.append('{}'.format(cls.list_item(item, indent + 1)))
-        lines.append(cls.indent('</ul>', indent))
-        return '\n'.join(lines)
-
-    @classmethod
-    def hyperlink(cls, text: str, url: Optional[str] = None,
-                  indent: int = 0) -> str:
-        """Hyperlink formatting.
-
-        If the url is None, this falls back to plain text.
-        """
-        if url is None:
-            return text
-        return cls.tag(text, 'a', indent, href=url)
+    logging.info('Copying %s -> %s...', src, dest)
+    shutil.copyfile(src, dest)
