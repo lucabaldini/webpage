@@ -18,7 +18,6 @@
 
 import logging
 
-from webpage.orcid import ORCID
 from webpage.site import deploy
 
 

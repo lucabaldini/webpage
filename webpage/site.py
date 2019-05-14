@@ -95,45 +95,8 @@ def html_output_file_path(file_path: str) -> str:
     return os.path.join(HTML_OUTPUT_FOLDER, file_name)
 
 
-PAGE_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset=utf-8">
-    <title>%s :: %%s</title>
-    <meta name="keywords" content="%s">
-    <meta name="description" content="%s">
-    <meta name="author" content="%s">
-    <link rel="stylesheet" href="%s" type="text/css" media="all">
-  </head>
-
-  <body>
-    <div id="header">
-      <h1>%s</h1>
-    </div>
-
-    <div id="container">
-      <div id="menu">
-%%s
-      </div>
-      <div id="contents">
-        <h2>%%s</h2>
-%%s
-      </div>
-    </div>
-
-    <div id="footer">
-%%s
-    </div>
-  </body>
-</html>
-""" % (PAGE_BASE_TITLE, PAGE_KEYWORDS_STRING, PAGE_DESCRIPTION, PAGE_AUTHOR,
-       DEFAULT_CSS_HREF, PAGE_HEADER_TEXT)
-
-
 FOOTER_TEMPLATE = """
-Copyright &copy; %d&ndash;%d Luca Baldini
+Copyright &copy; {copyright_start}&ndash;{copyright_end} Luca Baldini
 (<a href=about.html>about this website</a>).
 The views expressed here are my personal views, not those of the
 University of Pisa nor of INFN.<br>
@@ -143,9 +106,47 @@ For what it's worth, this page validates as
 and
 <a href="http://jigsaw.w3.org/css-validator/check/referer">css level 3</a>.<br>
 
-Last update on %s.
-""" % (COPYRIGHT_START_YEAR, COPYRIGHT_END_YEAR, LAST_UPDATE_STRING)
+Last update on {last_update}.
+""".format(copyright_start=COPYRIGHT_START_YEAR,
+           copyright_end=COPYRIGHT_END_YEAR, last_update=LAST_UPDATE_STRING)
 
+
+PAGE_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset=utf-8">
+    <title>{title} :: %s</title>
+    <meta name="keywords" content="{keywords}">
+    <meta name="description" content="{description}">
+    <meta name="author" content="{author}">
+    <link rel="stylesheet" href="{css_href}" type="text/css" media="all">
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>{header}</h1>
+    </div>
+
+    <div id="container">
+      <div id="menu">
+%s
+      </div>
+      <div id="contents">
+        <h2>%s</h2>
+%s
+      </div>
+    </div>
+
+    <div id="footer">
+%s
+    </div>
+  </body>
+</html>
+""".format(title=PAGE_BASE_TITLE, keywords=PAGE_KEYWORDS_STRING,
+           description=PAGE_DESCRIPTION, author=PAGE_AUTHOR,
+           css_href=DEFAULT_CSS_HREF, header=PAGE_HEADER_TEXT)
 
 
 
