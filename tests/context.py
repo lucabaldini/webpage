@@ -24,4 +24,4 @@ from os.path import join, dirname, abspath
 
 sys.path.insert(0, abspath(join(dirname(__file__), '..', 'webpage')))
 
-import core
+import core, helpers
