@@ -405,21 +405,3 @@ class ORCID:
         """String representation.
         """
         return self._dump(self.data)
-
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    orcid = ORCID()
-    print(orcid.publication_list_html())
-    #for paper in orcid.work_list:
-    #    print(paper)
-    #paper = orcid.work_list[10]
-    #print(paper, '"{}"'.format(paper.author_string))
-    #    print(paper.html())
-    #    print(paper.latex())
-    #url = 'http://pub.orcid.org/0000-0002-9785-7726/work/25306957'
-    #url = 'http://pub.orcid.org/0000-0002-9785-7726/works'
-    #resp = requests.get(url, headers={'Accept':'application/orcid+json'})
-    #data = resp.json()
-    #print(json.dumps(data))
