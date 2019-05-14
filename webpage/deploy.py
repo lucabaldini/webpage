@@ -18,15 +18,8 @@
 
 import logging
 
-from orcid import ORCID
-
-
-def deploy() -> None:
-    """Deploy my webpage in its full glory.
-    """
-    orcid = ORCID()
-    print(orcid.publication_list_html())
-
+from webpage.orcid import ORCID
+from webpage.site import deploy
 
 
 if __name__ == '__main__':

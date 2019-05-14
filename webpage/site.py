@@ -160,12 +160,12 @@ class Menu(dict):
     Python.
     """
 
-    def add_entry(self, title: str, target: str):
+    def add_entry(self, title: str, target: str) -> None:
         """Add an entry to the menu.
         """
         self[title] = target
 
-    def target(self, title: str):
+    def target(self, title: str) -> str:
         """Return the target corresponding to a given title.
         """
         return self.get(title)
@@ -242,6 +242,10 @@ def _indent(text: str, indent_level: int = 0) -> str:
 
     This is essentially replacing any newline character prepending to it the
     proper number of spaces.
+
+    Warning
+    -------
+    This is obsolete and should be removed, use helpers.HTML instead.
     """
     # Calculate the indentation.
     indent = INDENT_STRING * indent_level
@@ -291,7 +295,15 @@ def page_html(title: str, menu_entry: Optional[str] = None,
     # Indent all the elements properly.
     footer = _indent(footer_html(), 3)
     menu = _indent(MENU.to_html(menu_entry), 4)
-    content = _indent(_read_page_content(file_path), 5)
+    content = _read_page_content(file_path)
+    # Horrible hack to add the publications. This should be handled properly
+    # in a more general fashion (the menu should probably be aware of it.)
+    if title == 'Publications':
+        from webpage.orcid import ORCID
+        orcid = ORCID()
+        content = '{}{}'.format(content, orcid.publication_list_html())
+    # End of hack.
+    content = _indent(content, 5)
     # Fill in the template.
     return (PAGE_TEMPLATE % (title, menu, title, content, footer)).strip('\n')
 
@@ -366,9 +378,3 @@ def deploy():
     write_about_page()
     copy_style_sheets()
     copy_images()
-
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    deploy()

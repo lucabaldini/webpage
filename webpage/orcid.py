@@ -27,7 +27,7 @@ from typing import Optional, List, Any
 
 import requests
 
-from helpers import HTML, LaTeX
+from webpage.helpers import HTML, LaTeX
 
 
 class Work(dict):
@@ -398,7 +398,7 @@ class ORCID:
                 lines.append('{}'.format(HTML.tag(work.year(), 'h3')))
                 current_year = work.year()
             # And this is the actual element for the publication.
-            lines.append('[{}] {}'.format(i, work.html()))
+            lines.append('[{}] {}'.format(i + 1, work.html()))
         return HTML.list(lines)
 
     def __str__(self) -> str:
