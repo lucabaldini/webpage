@@ -20,27 +20,6 @@
 
 import unittest
 
-from .context import helpers
-
-
-class TestHTML(unittest.TestCase):
-
-    """Unit tests for the TimeSpan class.
-    """
-
-    def test_base(self, text:str = 'Hello world!'):
-        """Basic tests of the HTML tags.
-        """
-        source = helpers.HTML.emph(text)
-        target = '<em>{}</em>'.format(text)
-        self.assertEqual(source, target)
-        source = helpers.HTML.bold(text)
-        target = '<b>{}</b>'.format(text)
-        self.assertEqual(source, target)
-        source = helpers.HTML.typeset(text)
-        target = '<tt>{}</tt>'.format(text)
-        self.assertEqual(source, target)
-
 
 
 

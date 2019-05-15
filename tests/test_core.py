@@ -22,7 +22,26 @@ import unittest
 
 from typing import Optional
 
-from .context import core
+from webpage.core import HTML, TimeSpan, Conference, Contribution
+
+
+class TestHTML(unittest.TestCase):
+
+    """Unit tests for the TimeSpan class.
+    """
+
+    def test_base(self, text:str = 'Hello world!'):
+        """Basic tests of the HTML tags.
+        """
+        source = HTML.emph(text)
+        target = '<em>{}</em>'.format(text)
+        self.assertEqual(source, target)
+        source = HTML.bold(text)
+        target = '<b>{}</b>'.format(text)
+        self.assertEqual(source, target)
+        source = HTML.typeset(text)
+        target = '<tt>{}</tt>'.format(text)
+        self.assertEqual(source, target)
 
 
 
@@ -35,7 +54,7 @@ class TestTimeSpan(unittest.TestCase):
               single_day: bool = False):
         """Basic test worker.
         """
-        span = core.TimeSpan(begin, end)
+        span = TimeSpan(begin, end)
         print(span)
         print(span.html())
         print(span.latex())
@@ -67,7 +86,7 @@ class TestContribution(unittest.TestCase):
               notes: Optional[str] = None):
         """Basic test worker.
         """
-        contribution = core.Contribution(title, invited, poster, notes)
+        contribution = Contribution(title, invited, poster, notes)
         print(contribution)
         print(contribution.html())
         print(contribution.latex())
@@ -102,9 +121,8 @@ class TestConference(unittest.TestCase):
     def test_basic(self):
         """Test the plain constructor.
         """
-        conference = core.Conference('A conference', 'San Diego',
-                                     '2012-04-16', '2012-04-17',
-                                     'www.conference.us')
+        conference = Conference('A conference', 'San Diego', '2012-04-16',
+                                '2012-04-17', 'www.conference.us')
         print(conference)
         print(conference.html())
         print(conference.latex())
