@@ -142,124 +142,148 @@ CONFERENCE_LIST.add_conference(
 ).add_contribution(
     'The Fermi Large Area Telescope: status and prospects', invited=True
 )
+CONFERENCE_LIST.add_conference(
+    'Mini-workshop sulla fisica astroparticellare al TeV e oltre',
+    'Pisa (Italy)',
+    'https://agenda.infn.it/conferenceDisplay.py?confId=7856',
+    '2014-05-08', '2014-05-09'
+).add_contribution(
+    'High-energy cosmic-ray and gamma-ray detectors: experimental overview'
+)
+CONFERENCE_LIST.add_conference(
+    'XCIX Congresso Nazionale della Società Italiana di Fisica',
+    'Trieste (Italia)',
+    'http://www.sif.it/attivita/congresso/xcix',
+    '2013-09-23', '2013-09-27'
+).add_contribution(
+    'plasduino: an inexpensive, general purpose data acquisition framework for didactic experiments'
+).add_contribution(
+    'The Fermi Large Area Telescope', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Vertex 2013',
+    'Lake Starnberg (Germany)',
+    'http://vertex2013.depfet.org/',
+    '2013-09-16', '2013-09-20'
+).add_contribution(
+    'The Silicon Strip Tracker of the Fermi Large Area Telescope: the first 5 years',
+    invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'INFN-IHEP Meeting on Cosmic Ray Physics',
+    'Laboratori Nazionali del Gran Sasso (Italy)',
+    'http://agenda.infn.it/conferenceDisplay.py?confId=6741',
+    '2013-09-16', '2013-09-17'
+).add_contribution(
+    'The Fermi Large Area Telescope', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Fisica 2010&ndash;2020: Congresso di Dipartimento',
+    'Pisa (Italy)',
+    'http://www.df.unipi.it/content/generic/%5Byy%5D%5Bmm%5D%5Bdd%5D/congressino-2013',
+    '2013-04-17'
+).add_contribution(
+    'Il Cielo dei Raggi Gamma'
+)
+CONFERENCE_LIST.add_conference(
+    'Spacepart 2012',
+    'CERN (Geneve, Switzerland)',
+    'http://indico.cern.ch/conferenceDisplay.py?confId=197799',
+    '2012-11-05', '2012-11-07'
+).add_contribution(
+    'The Fermi Large Area Telescope at Launch+4', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Fermi Symposium 2012',
+    'Monterey (California, USA)',
+    'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2012/',
+    '2012-10-28', '2012-11-02'
+).add_contribution(
+    'The Fermi Large Area Telescope On Orbit: Validation and Calibration of the Instrument Response'
+).add_contribution(
+    'Pass 8: toward the full realization of the Fermi LAT scientific potential',
+    poster=True
+)
+CONFERENCE_LIST.add_conference(
+    'First International HERD Workshop',
+    'Beijing (China)',
+    'http://indico.ihep.ac.cn/conferenceDisplay.py?confId=2838',
+    '2012-10-17', '2012-10-18'
+).add_contribution(
+    'The Fermi Large Area Telescope at L+4', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Fermi summer school 2012',
+    'Lewes (Delaware, USA)',
+    'http://fermi.gsfc.nasa.gov/science/mtgs/summerschool/2012/',
+    '2012-05-29', '2012-06-08'
+).add_contribution(
+    'Fermi LAT overview and performance', notes = 'series of invited lectures'
+)
+CONFERENCE_LIST.add_conference(
+    'AGILE 9th Science Workshop',
+    'Frascati (Roma, Italy)',
+    'http://www.asdc.asi.it/9thagilemeeting/index.php',
+    '2012-04-16', '2012-04-17'
+).add_contribution(
+    'The prolonged Fermi mission', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    '8th Hiroshima Symposium',
+    'Taipei (Taiwan)',
+    'http://www-hep.phys.sinica.edu.tw/~hstd8/',
+    '2011-12-05', '2011-12-08'
+).add_contribution(
+    'The silicon strip tracker of the Fermi LAT: performance after three years of operation in space'
+)
+CONFERENCE_LIST.add_conference(
+    '13th ICATPP Conference',
+    'Villa Olmo (Como, Italy)',
+    'http://villaolmo.mib.infn.it/home',
+    '2011-10-03', '2011-10-07'
+).add_contribution(
+    'Fermi Gamma-ray Space Telescope science highlights', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'RD11 Conference',
+    'Firenze (Italy)',
+    'http://rd11.fi.infn.it/RD11_Home.html',
+    '2011-07-06', '2011-07-08'
+).add_contribution(
+    'The silicon strip tracker of the Fermi Large Area Telescope'
+)
+CONFERENCE_LIST.add_conference(
+    '23rd Rencontres de Blois',
+    'Ch&acirc;teau Royal de Blois (France)',
+    'http://confs.obspm.fr/Blois2011/',
+    '2011-05-29', '2011-06-03'
+).add_contribution(
+    'Recent highlights from the Fermi Large Area Telescope', invited=True
+).add_contribution(
+    'Dark Matter indirect searches and tests of Lorentz-invariance violation with the Fermi LAT',
+    invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Fermi Symposium 2011',
+    'Roma (Italy)',
+    'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2011/',
+    '2011-05-09', '2011-05-12'
+).add_contribution(
+    'Pass 8. A comprehensive revision of the Fermi LAT event-level analysis',
+    poster=True
+).add_contribution(
+    'The Fermi LAT Calorimeter as a gamma-ray telescope', poster=True
+)
 
 """
-add('High-energy cosmic-ray and gamma-ray detectors: experimental overview',
-    'Mini-workshop sulla fisica astroparticellare al TeV e oltre',
-    'Pisa (Italy)', '08/05/2014', '09/05/2014',
-    'https://agenda.infn.it/conferenceDisplay.py?confId=7856')
-
-
-cset = addSet('XCIX Congresso Nazionale della Societ&agrave; Italiana di Fisica',
-              'Trieste (Italia)', '23/09/2013', '27/09/2013',
-              'http://www.sif.it/attivita/congresso/xcix')
-c1 = gContribution('plasduino: an inexpensive, general purpose data acquisition framework for didactic experiments', cset.Conference)
-c2 =  gContribution('The Fermi Large Area Telescope',
-                    cset.Conference, invited = True)
-cset.add(c1)
-cset.add(c2)
-
-
-add('The Silicon Strip Tracker of the Fermi Large Area Telescope: the first 5 years',
-    'Vertex 2013', 'Lake Starnberg (Germany)', '16/09/2013', '20/09/2013',
-    'http://vertex2013.depfet.org/', invited = True)
-
-
-add('The Fermi Large Area Telescope',
-    'INFN-IHEP Meeting on Cosmic Ray Physics',
-    'LNGS', '16/09/2013', '17/09/2013',
-    'http://agenda.infn.it/conferenceDisplay.py?confId=6741',
-    invited = True)
-
-
-add('Il Cielo dei Raggi Gamma',
-    'Fisica 2010&ndash;2020: Congresso di Dipartimento',
-    'Pisa', '17/04/2013', '17/04/2013',
-    'http://www.df.unipi.it/content/generic/%5Byy%5D%5Bmm%5D%5Bdd%5D/congressino-2013')
-
-
-add('The Fermi Large Area Telescope at Launch+4',
-    'Spacepart 2012',
-    'CERN (Geneve, Switzerland)', '05/11/2012', '07/11/2012',
-    'http://indico.cern.ch/conferenceDisplay.py?confId=197799',
-    invited = True)
-
-
-cset = addSet('Fermi Symposium 2012', 'Monterey (California, USA)',
-              '28/10/2012', '02/11/2012',
-              'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2012/')
-c1 = gContribution('The Fermi Large Area Telescope On Orbit: Validation and '
-                   'Calibration of the Instrument Response', cset.Conference)
-c2 =  gContribution('Pass 8: toward the full realization of the Fermi LAT '
-                    'scientific potential', cset.Conference, poster = True)
-cset.add(c1)
-cset.add(c2)
-
-
-add('The Fermi Large Area Telescope at L+4',
-    'First International HERD Workshop',
-    'Beijing (China)', '17/10/2012', '18/10/2012',
-    'http://indico.ihep.ac.cn/conferenceDisplay.py?confId=2838',
-    invited = True)
-
-
-add('Fermi LAT overview and performance',
-    'Fermi summer school 2012',
-    'Lewes (Delaware, USA)', '29/05/2012', '08/06/2012',
-    'http://fermi.gsfc.nasa.gov/science/mtgs/summerschool/2012/',
-    notes = 'series of invited lectures')
-
-
-add('The prolonged Fermi mission',
-    'AGILE 9th Science Workshop',
-    'Frascati (Roma, Italy)', '16/04/2012', '17/04/2012',
-    'http://www.asdc.asi.it/9thagilemeeting/index.php',
-    invited = True)
-
-
-add('The silicon strip tracker of the Fermi LAT: performance '
-    'after three years of operation in space',
-    '8th Hiroshima Symposium',
-    'Taipei (Taiwan)', '05/12/2011', '08/12/2011',
-    'http://www-hep.phys.sinica.edu.tw/~hstd8/')
-
-
-add('Fermi Gamma-ray Space Telescope science highlights',
-    '13th ICATPP Conference',
-    'Villa Olmo (Como, Italy)', '03/10/2011', '07/10/2011',
-    'http://villaolmo.mib.infn.it/home',
-    invited = True)
-
-
-add('The silicon strip tracker of the Fermi Large Area Telescope',
-    'RD11 Conference',
-    'Firenze', '06/07/2011', '08/07/2011',
-    'http://rd11.fi.infn.it/RD11_Home.html')
-
-
-cset = addSet('23rd Rencontres de Blois', 'Ch&acirc;teau Royal de Blois',
-              '29/05/2011', '03/06/2011',
-              'http://confs.obspm.fr/Blois2011/')
-c1 = gContribution('Recent highlights from the Fermi Large Area Telescope',
-                   cset.Conference, invited = True)
-c2 = gContribution('Dark Matter indirect searches and tests of Lorentz '
-                   'invariance violation with the Fermi LAT', cset.Conference,
-                   invited = True)
-cset.add(c1)
-cset.add(c2)
-
-
-cset = addSet('Fermi Symposium 2011', 'Roma (Italy)',
-              '09/05/2011', '12/05/2011',
-              'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2011/')
-c1 = gContribution('Pass 8. A comprehensive revision of the Fermi LAT '
-                   'event-level analysis', cset.Conference, poster = True)
-c2 = gContribution('The Fermi LAT Calorimeter as a gamma-ray telescope',
-                   cset.Conference, poster = True)
-cset.add(c1)
-cset.add(c2)
-
-
+CONFERENCE_LIST.add_conference(
+    '',
+    '',
+    '',
+    '', ''
+).add_contribution(
+    ''
+)
 add('Cosmic rays and mark matter searches with Fermi',
     'Les Rencontres de Physique de la Vall&eacute;e d\'Aoste',
     'La Thuile (Italy)', '27/02/2011', '05/03/2011',
