@@ -387,7 +387,7 @@ class ORCID:
         """
         return work['work-summary'][0]
 
-    def publication_list_html(self):
+    def work_list_html(self):
         """Return a HTML rendering of the publication list.
         """
         lines = []

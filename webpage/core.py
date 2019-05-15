@@ -198,7 +198,7 @@ class PageMenu(dict):
         """Return the html representation of the menu.
         """
         lines = ['<ul>']
-        for title, target in self.items():
+        for title, (target, hook) in self.items():
             if title == current_page_title:
                 # Funny: we can't pass this as a keyword argument, as class
                 # is a reserved word :-)

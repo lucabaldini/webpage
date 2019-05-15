@@ -79,7 +79,7 @@ def page_template() -> str:
 MENU = PageMenu()
 MENU.add_entry('Home', 'index.html')
 MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
-MENU.add_entry('Publications', 'publications.html')
+MENU.add_entry('Publications', 'publications.html', ORCID().work_list_html)
 MENU.add_entry('Presentations', 'talks.html')
 MENU.add_entry('About me', 'aboutme.html')
 MENU.add_entry('Links', 'links.html')
@@ -88,7 +88,7 @@ MENU.add_entry('Didattica', 'teaching.html')
 MENU.add_entry('Private area', 'private')
 
 
-def _write_page(title: str, target: str) -> None:
+def _write_page(title: str, target: str, hook=None) -> None:
     """Write a single html page to file.
 
     This is the main workhorse function to wirte static html web pages.
@@ -97,6 +97,8 @@ def _write_page(title: str, target: str) -> None:
     template = page_template()
     menu = HTML.indent(MENU.html(title), 4)
     content = HTML.indent(webpage.read_content(target), 4)
+    if hook is not None:
+        content = '{}\n\n{}'.format(content, hook())
     text = template.format(title, menu, title, content)
     output_file_path = webpage.output_file_path(target)
     logging.info('Writing output file to %s...', output_file_path)
@@ -111,7 +113,7 @@ def write_static_pages():
     # Write the static pages driven by the menu.
     for title, (target, hook) in MENU.items():
         if MENU.target_points_to_file(title):
-            _write_page(title, target)
+            _write_page(title, target, hook)
     # And write everything else is necessary.
     _write_page('About this website', 'about.html')
 
