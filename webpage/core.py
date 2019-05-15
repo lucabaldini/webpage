@@ -94,6 +94,18 @@ class HTML:
         return cls.indent(text, indent)
 
     @classmethod
+    def h3(cls, text: str, indent: int = 0, **attributes) -> str:
+        """H3 tag.
+        """
+        return cls.tag(text, 'h3', indent, **attributes)
+
+    @classmethod
+    def br(cls, text: str, indent: int = 0, **attributes) -> str:
+        """Linea break.
+        """
+        return cls.tag(text, 'br', indent, **attributes)
+
+    @classmethod
     def emph(cls, text: str, indent: int = 0, **attributes) -> str:
         """Italic formatting.
         """
@@ -360,25 +372,31 @@ class Conference:
     """Class describing a conference.
     """
 
-    def __init__(self, name: str, location: str, begin: str,
-                 end: Optional[str] = None,
-                 webpage: Optional[str] = None) -> None:
+    def __init__(self, name: str, location: str, webpage: str,
+                 begin: str, end: Optional[str] = None) -> None:
         """Constructor.
         """
         self.name = name
         self.location = location
-        self.time_span = TimeSpan(begin, end)
         self.webpage = webpage
+        self.time_span = TimeSpan(begin, end)
         self.contributions: List[Contribution] = []
 
-    def add_contribution(self, contribution: Contribution):
+    def add_contribution(self, title: str, invited: bool = False,
+                         poster: bool = False, notes: Optional[str] = None):
         """Add a contribution to the conference.
 
         Mind this is returning the conference object itself so that multiple
         additions can be chained.
         """
+        contribution = Contribution(title, invited, poster, notes)
         self.contributions.append(contribution)
         return self
+
+    def year(self) -> int:
+        """Return thr year of the conference.
+        """
+        return self.time_span.begin_date.year
 
     def html(self) -> str:
         """HTML formatting.
@@ -388,10 +406,16 @@ class Conference:
         else:
             text = self.name
         text += ', {}, {}'.format(self.location, self.time_span)
+        for contribution in self.contributions:
+            text = '{}\n{}'.format(text, HTML.br(HTML.emph(contribution)))
         return text
 
     def latex(self) -> str:
         """LaTeX formatting.
+
+        Warning
+        -------
+        Need to add the loop over the contributions.
         """
         if self.webpage is not None:
             text = '\\href{{{}}}{{{}}}'.format(self.webpage, self.name)
@@ -403,4 +427,36 @@ class Conference:
     def __str__(self) -> str:
         """String formatting.
         """
-        return '{}, {}, {}'.format(self.name, self.location, self.time_span)
+        text = '{}, {}, {}'.format(self.name, self.location, self.time_span)
+        for contribution in self.contributions:
+            text = '{}\n- {}'.format(text, contribution)
+        return text
+
+
+
+class ConferenceList(list):
+
+    """Class describing a list of conferences.
+    """
+
+    def add_conference(self, name: str, location: str, webpage,
+                       begin: str, end: Optional[str] = None) -> Conference:
+        """Add a conference to the conference list.
+        """
+        conference = Conference(name, location, webpage, begin, end)
+        self.append(conference)
+        return conference
+
+    def html(self, indent: int = 4) -> str:
+        """HTML formatting.
+        """
+        lines = []
+        current_year = None
+        for i, conference in enumerate(self):
+            if conference.year() != current_year:
+                # Drop a special entry for the year in case of change.
+                lines.append('{}'.format(HTML.h3(conference.year())))
+                current_year = conference.year()
+            # And this is the actual element for the publication.
+            lines.append('[{}] {}'.format(i + 1, conference.html()))
+        return HTML.list(lines, indent)

@@ -24,7 +24,7 @@ import glob
 import logging
 
 import webpage
-from webpage.core import PageMenu, HTML
+from webpage.core import PageMenu, HTML, ConferenceList
 from webpage.helpers import copy
 from webpage.orcid import ORCID
 
@@ -54,6 +54,41 @@ STYLE_SHEETS = ['default.css']
 DEFAULT_STYLE_SHEET = STYLE_SHEETS[0]
 DEFAULT_CSS_HREF = '%s/%s' % (webpage.CSS_FOLDER_NAME, DEFAULT_STYLE_SHEET)
 
+# Conferences.
+#
+CONFERENCE_LIST = ConferenceList()
+"""
+CONFERENCE_LIST.add_conference(
+    '',
+    '', '',
+    ''
+).add_contribution(
+    ''
+)
+"""
+CONFERENCE_LIST.add_conference(
+    'INFN in space: review of existing and forthcoming projects',
+    'Laboratori Nazionali del Gran Sasso (Italy)',
+    'https://agenda.infn.it/conferenceDisplay.py?confId=11788',
+    '2016-07-20'
+).add_contribution(
+    'Prospettive per XIPE', invited=True
+)
+
+
+# Definition of the page menu.
+#
+MENU = PageMenu()
+MENU.add_entry('Home', 'index.html')
+MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
+MENU.add_entry('Publications', 'publications.html', ORCID().work_list_html)
+MENU.add_entry('Presentations', 'talks.html', CONFERENCE_LIST.html)
+MENU.add_entry('About me', 'aboutme.html')
+MENU.add_entry('Links', 'links.html')
+MENU.add_entry('Miscellanea', 'misc.html')
+MENU.add_entry('Didattica', 'teaching.html')
+MENU.add_entry('Private area', 'private')
+
 
 def page_template() -> str:
     """Create the basic template for all the HTML pages in the website.
@@ -76,17 +111,6 @@ def page_template() -> str:
     return text
 
 
-MENU = PageMenu()
-MENU.add_entry('Home', 'index.html')
-MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
-MENU.add_entry('Publications', 'publications.html', ORCID().work_list_html)
-MENU.add_entry('Presentations', 'talks.html')
-MENU.add_entry('About me', 'aboutme.html')
-MENU.add_entry('Links', 'links.html')
-MENU.add_entry('Miscellanea', 'misc.html')
-MENU.add_entry('Didattica', 'teaching.html')
-MENU.add_entry('Private area', 'private')
-
 
 def _write_page(title: str, target: str, hook=None) -> None:
     """Write a single html page to file.
@@ -98,7 +122,7 @@ def _write_page(title: str, target: str, hook=None) -> None:
     menu = HTML.indent(MENU.html(title), 4)
     content = HTML.indent(webpage.read_content(target), 4)
     if hook is not None:
-        content = '{}\n\n{}'.format(content, hook())
+        content = '{}\n{}'.format(content, hook())
     text = template.format(title, menu, title, content)
     output_file_path = webpage.output_file_path(target)
     logging.info('Writing output file to %s...', output_file_path)
