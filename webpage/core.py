@@ -100,10 +100,13 @@ class HTML:
         return cls.tag(text, 'h3', indent, **attributes)
 
     @classmethod
-    def br(cls, text: str, indent: int = 0, **attributes) -> str:
-        """Linea break.
+    def br(cls, text: str, indent: int = 0) -> str:
+        """Line break.
+
+        Mind this is fundamentally different from most of the other entities,
+        as there is no tag closure.
         """
-        return cls.tag(text, 'br', indent, **attributes)
+        return cls.indent('<br>{}'.format(text), indent)
 
     @classmethod
     def emph(cls, text: str, indent: int = 0, **attributes) -> str:
