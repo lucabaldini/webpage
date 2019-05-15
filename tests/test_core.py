@@ -121,8 +121,8 @@ class TestConference(unittest.TestCase):
     def test_basic(self):
         """Test the plain constructor.
         """
-        conference = Conference('A conference', 'San Diego', '2012-04-16',
-                                '2012-04-17', 'www.conference.us')
+        conference = Conference('A conference', 'San Diego', 'www.conference.us',
+                                '2012-04-16', '2012-04-17', )
         print(conference)
         print(conference.html())
         print(conference.latex())
