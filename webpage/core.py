@@ -189,7 +189,7 @@ class PageMenu(dict):
             return None
         return os.path.join(folder, target)
 
-    def to_html(self, current_page_title: Optional[str] = None) -> str:
+    def html(self, current_page_title: Optional[str] = None) -> str:
         """Return the html representation of the menu.
         """
         lines = ['<ul>']
