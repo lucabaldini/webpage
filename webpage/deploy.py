@@ -16,11 +16,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import logging
 
 from webpage.site import deploy
 
 
 if __name__ == '__main__':
+    import logging
     logging.basicConfig(level=logging.INFO)
     deploy()

@@ -26,6 +26,7 @@ import logging
 import webpage
 from webpage.core import PageMenu, HTML
 from webpage.helpers import copy
+from webpage.orcid import ORCID
 
 
 # Basic configuration.
@@ -108,7 +109,7 @@ def write_static_pages():
     """Write all the html pages in the menu to file.
     """
     # Write the static pages driven by the menu.
-    for title, target in MENU.items():
+    for title, (target, hook) in MENU.items():
         if MENU.target_points_to_file(title):
             _write_page(title, target)
     # And write everything else is necessary.

@@ -155,15 +155,20 @@ class PageMenu(dict):
     Python.
     """
 
-    def add_entry(self, title: str, target: str) -> None:
+    def add_entry(self, title: str, target: str, hook=None) -> None:
         """Add an entry to the menu.
         """
-        self[title] = target
+        self[title] = (target, hook)
 
     def target(self, title: str) -> str:
         """Return the target corresponding to a given title.
         """
-        return self.get(title)
+        return self.get(title)[0]
+
+    def hook(self, title: str):
+        """Return the handle corresponding to a given title.
+        """
+        return self.get(title)[1]
 
     @classmethod
     def target_is_file(cls, target: str) -> bool:
