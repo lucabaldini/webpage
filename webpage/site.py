@@ -20,16 +20,12 @@
 
 import datetime
 import os
-import shutil
 import glob
 import logging
 
-from typing import Optional
-
 import webpage
-
 from webpage.core import PageMenu, HTML
-from webpage.helpers import mktree, copy
+from webpage.helpers import copy
 
 
 # Basic configuration.
@@ -96,13 +92,13 @@ def _write_page(title: str, target: str) -> None:
 
     This is the main workhorse function to wirte static html web pages.
     """
-    logging.info('Processing page ""{}""...'.format(title))
+    logging.info('Processing page "%s"...', title)
     template = page_template()
     menu = HTML.indent(MENU.html(title), 4)
     content = HTML.indent(webpage.read_content(target), 4)
     text = template.format(title, menu, title, content)
     output_file_path = webpage.output_file_path(target)
-    logging.info('Writing output file to {}...'.format(output_file_path))
+    logging.info('Writing output file to %s...', output_file_path)
     with open(output_file_path, 'w') as output_file:
         output_file.write(text)
     logging.info('Done.')

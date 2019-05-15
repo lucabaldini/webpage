@@ -198,7 +198,7 @@ class Work(dict):
     def latex(self) -> str:
         """LaTeX formatting.
         """
-        title = LaTeX.hyperlink(LaTeX.emph(self.title, self.doi_url()))
+        title = LaTeX.hyperlink(LaTeX.emph(self.title), self.doi_url())
         return '{}, "{}", {} ({})'.format(self.author_string, title,
                                           self.journal(), self.year())
 

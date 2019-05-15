@@ -60,9 +60,9 @@ def read_content(file_name: str) -> str:
     content = ''
     file_path = content_file_path(file_name)
     if not os.path.exists(file_path):
-        logging.warning('Could not find {}.'.format(file_path))
+        logging.warning('Could not find %s.', file_path)
         return content
-    logging.info('Reading page content from {}...'.format(file_path))
+    logging.info('Reading page content from %s...', file_path)
     with open(file_path, 'r') as input_file:
         content = input_file.read()
     return content
