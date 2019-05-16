@@ -20,7 +20,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-from webpage.site import deploy
+from webpage.website import deploy
 
 
 if __name__ == '__main__':
