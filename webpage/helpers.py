@@ -46,8 +46,8 @@ def memoize(func):
     See https://stackoverflow.com/questions/5630409
     for the use of nonlocal in the body of the wrapper function.
     """
-    @functools.wraps(func)
     cache = None
+    @functools.wraps(func)
     def wrapper():
         nonlocal cache
         if cache is None:
