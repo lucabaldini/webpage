@@ -209,6 +209,14 @@ class PageMenu(dict):
             return None
         return os.path.join(folder, target)
 
+    def ascii(self) -> str:
+        """ASCII representation.
+        """
+        text = 'Page menu:\n'
+        for title, target in self.items():
+            text += '- %s -> %s\n' % (title, target)
+        return text
+
     def html(self, current_page_title: Optional[str] = None) -> str:
         """Return the html representation of the menu.
         """
@@ -227,10 +235,7 @@ class PageMenu(dict):
     def __str__(self) -> str:
         """Text representation.
         """
-        text = 'Page menu:\n'
-        for title, target in self.items():
-            text += '- %s -> %s\n' % (title, target)
-        return text
+        return self.ascii()
 
 
 
@@ -301,6 +306,11 @@ class TimeSpan:
             begin = self.date_to_str(self.begin_date, month=False, year=False)
         return '{}{}{}'.format(begin, separator, end)
 
+    def ascii(self) -> str:
+        """ASCII formatting.
+        """
+        return self.__format('--')
+
     def html(self) -> str:
         """HTML formatting.
         """
@@ -314,7 +324,7 @@ class TimeSpan:
     def __str__(self) -> str:
         """String formatting.
         """
-        return self.__format('--')
+        return self.ascii()
 
 
 
@@ -331,6 +341,18 @@ class Contribution:
         self.invited = invited
         self.poster = poster
         self.notes = notes
+
+    def ascii(self) -> str:
+        """ASCII formatting.
+        """
+        text = '{}'.format(self.title)
+        if self.notes:
+            text += ' ({})'.format(self.notes)
+        elif self.invited:
+            text += ' (invited talk)'
+        elif self.poster:
+            text += ' (poster)'
+        return text
 
     def html(self) -> str:
         """HTML formatting.
@@ -359,14 +381,7 @@ class Contribution:
     def __str__(self) -> str:
         """String formatting.
         """
-        text = '{}'.format(self.title)
-        if self.notes:
-            text += ' ({})'.format(self.notes)
-        elif self.invited:
-            text += ' (invited talk)'
-        elif self.poster:
-            text += ' (poster)'
-        return text
+        return self.ascii()
 
 
 
@@ -401,6 +416,14 @@ class Conference:
         """
         return self.time_span.begin_date.year
 
+    def ascii(self) -> str:
+        """ASCII formatting.
+        """
+        text = '{}, {}, {}'.format(self.name, self.location, self.time_span)
+        for contribution in self.contributions:
+            text = '{}\n- {}'.format(text, contribution)
+        return text
+
     def html(self) -> str:
         """HTML formatting.
         """
@@ -430,10 +453,7 @@ class Conference:
     def __str__(self) -> str:
         """String formatting.
         """
-        text = '{}, {}, {}'.format(self.name, self.location, self.time_span)
-        for contribution in self.contributions:
-            text = '{}\n- {}'.format(text, contribution)
-        return text
+        return self.ascii()
 
 
 
