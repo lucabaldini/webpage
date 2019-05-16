@@ -157,9 +157,11 @@ class PageMenu(dict):
     """Class representing the logical structure of the page menu.
 
     A menu is a essentially a series of entries, each of which includes a
-    title and a target. The title is the title of the web page, while the
-    target can either be a html file or a folder, and is always intented to
-    be in the (remote, or relative) html space.
+    title and a (target, hook) tuple. The title is the title of the web page.
+    The target can either be a html file or a folder, and is always intented to
+    be in the (remote, or relative) html space. The (optional) hook is a
+    generic function returing a string, that can be used to append additional,
+    dymanically generated text, to the static html read from the input file.
 
     Note that the class is inheriting from dict and the fact that the entries
     are expected to appear in order in the output html relies on the fact that
