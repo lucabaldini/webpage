@@ -433,7 +433,7 @@ class Conference:
             text = self.name
         text += ', {}, {}'.format(self.location, self.time_span.html())
         for contribution in self.contributions:
-            text = '{}\n{}'.format(text, HTML.br(HTML.emph(contribution)))
+            text = '{}\n{}'.format(text, HTML.br(HTML.emph(contribution.html())))
         return text
 
     def latex(self) -> str:
