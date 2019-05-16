@@ -129,8 +129,8 @@ class Work(dict):
             ids[item['external-id-type']] = item['external-id-value']
         return ids
 
-    @classmethod
-    def _format_credit_name(cls, contributor: dict) -> str:
+    @staticmethod
+    def _format_credit_name(contributor: dict) -> str:
         """Formatting facility for the author names.
 
         At this point this is a no-op, but we might use some intelligence, here,
@@ -320,8 +320,8 @@ class ORCID:
             file_name = '{}.json'.format(self.orcid_id)
         return os.path.join(self.LOCAL_FOLDER, file_name)
 
-    @classmethod
-    def _fetch(cls, url: str, output_file_path: str) -> dict:
+    @staticmethod
+    def _fetch(url: str, output_file_path: str) -> dict:
         """Generic fetch function to send a request to the server and save
         the response to a json file.
 
@@ -335,8 +335,8 @@ class ORCID:
             json.dump(data, output_file)
         return data
 
-    @classmethod
-    def _read(cls, input_file_path: str) -> dict:
+    @staticmethod
+    def _read(input_file_path: str) -> dict:
         """Read data from a local jsone file.
         """
         logging.debug('Reading data from %s...', input_file_path)
@@ -358,15 +358,15 @@ class ORCID:
             return cls._read(file_path)
         return cls._fetch(url, file_path)
 
-    @classmethod
-    def _dump(cls, json_item: dict, sort_keys: bool = False) -> str:
+    @staticmethod
+    def _dump(json_item: dict, sort_keys: bool = False) -> str:
         """Formatting function for json elements.
         """
         return json.dumps(json_item, sort_keys=sort_keys, indent=2,
                           separators=(',', ': '))
 
-    @classmethod
-    def _work_summary(cls, work: dict) -> dict:
+    @staticmethod
+    def _work_summary(work: dict) -> dict:
         """Return the summary for a work element.
 
         The work summary is a dictionary with the following keys:

@@ -29,26 +29,26 @@ class LaTeX:
     """Small container class for LaTeX formatting.
     """
 
-    @classmethod
-    def emph(cls, text: str) -> str:
+    @staticmethod
+    def emph(text: str) -> str:
         """Italic formatting.
         """
         return '\\emph{{{}}}'.format(text)
 
-    @classmethod
-    def bold(cls, text: str) -> str:
+    @staticmethod
+    def bold(text: str) -> str:
         """Bold formatting.
         """
         return '\\texttt{{{}}}'.format(text)
 
-    @classmethod
-    def typeset(cls, text: str) -> str:
+    @staticmethod
+    def typeset(text: str) -> str:
         """Monospace formatting.
         """
         return '\\textbf{{{}}}'.format(text)
 
-    @classmethod
-    def hyperlink(cls, text: str, url: Optional[str] = None) -> str:
+    @staticmethod
+    def hyperlink(text: str, url: Optional[str] = None) -> str:
         """Hyperlink formatting.
 
         If the url is None, this falls back to plain text.
@@ -270,8 +270,8 @@ class TimeSpan:
         """
         return datetime.datetime.strptime(string, cls.INPUT_FMT).date()
 
-    @classmethod
-    def date_to_str(cls, date: datetime.date, month: bool = True,
+    @staticmethod
+    def date_to_str(date: datetime.date, month: bool = True,
                     year: bool = True) -> str:
         """Format a datetime.date object to an output string.
 
