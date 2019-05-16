@@ -408,7 +408,7 @@ class Conference:
             text = '<a href="{}">{}</a>'.format(self.webpage, self.name)
         else:
             text = self.name
-        text += ', {}, {}'.format(self.location, self.time_span)
+        text += ', {}, {}'.format(self.location, self.time_span.html())
         for contribution in self.contributions:
             text = '{}\n{}'.format(text, HTML.br(HTML.emph(contribution)))
         return text
@@ -424,7 +424,7 @@ class Conference:
             text = '\\href{{{}}}{{{}}}'.format(self.webpage, self.name)
         else:
             text = self.name
-        text += ', {}, {}'.format(self.location, self.time_span)
+        text += ', {}, {}'.format(self.location, self.time_span.latex())
         return text
 
     def __str__(self) -> str:
