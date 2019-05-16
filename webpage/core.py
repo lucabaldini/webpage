@@ -99,14 +99,11 @@ class HTML:
         """
         return cls.tag(text, 'h3', indent, **attributes)
 
-    @classmethod
-    def br(cls, text: str, indent: int = 0) -> str:
+    @staticmethod
+    def break_() -> str:
         """Line break.
-
-        Mind this is fundamentally different from most of the other entities,
-        as there is no tag closure.
         """
-        return cls.indent('<br>{}'.format(text), indent)
+        return '<br>'
 
     @classmethod
     def emph(cls, text: str, indent: int = 0, **attributes) -> str:
@@ -431,9 +428,9 @@ class Conference:
             text = '<a href="{}">{}</a>'.format(self.webpage, self.name)
         else:
             text = self.name
-        text += ', {}, {}'.format(self.location, self.time_span.html())
+        text = '{}, {}, {}'.format(text, self.location, self.time_span.html())
         for contribution in self.contributions:
-            text = '{}\n{}'.format(text, HTML.br(HTML.emph(contribution.html())))
+            text = '{}{}\n{}'.format(text, HTML.break_(), contribution.html())
         return text
 
     def latex(self) -> str:
