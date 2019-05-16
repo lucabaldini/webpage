@@ -132,7 +132,7 @@ CONFERENCE_LIST.add_conference(
     '2014-07-21', '2014-07-30'
 ).add_contribution(
     'Review of cosmic-ray and gamma-ray space-based detectors',
-    notes = 'series of invited lectures'
+    notes='series of invited lectures'
 )
 CONFERENCE_LIST.add_conference(
     'Astroparticle Physics 2014',
@@ -218,7 +218,7 @@ CONFERENCE_LIST.add_conference(
     'http://fermi.gsfc.nasa.gov/science/mtgs/summerschool/2012/',
     '2012-05-29', '2012-06-08'
 ).add_contribution(
-    'Fermi LAT overview and performance', notes = 'series of invited lectures'
+    'Fermi LAT overview and performance', notes='series of invited lectures'
 )
 CONFERENCE_LIST.add_conference(
     'AGILE 9th Science Workshop',

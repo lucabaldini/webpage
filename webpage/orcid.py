@@ -395,7 +395,7 @@ class ORCID:
         for i, work in enumerate(self.work_list):
             if work.year() != current_year:
                 # Drop a special entry for the year in case of change.
-                lines.append('{}'.format(HTML.h3(work.year())))
+                lines.append('{}'.format(HTML.heading3(work.year())))
                 current_year = work.year()
             # And this is the actual element for the publication.
             lines.append('[{}] {}'.format(i + 1, work.html()))

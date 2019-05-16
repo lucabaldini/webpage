@@ -94,7 +94,7 @@ class HTML:
         return cls.indent(text, indent)
 
     @classmethod
-    def h3(cls, text: str, indent: int = 0, **attributes) -> str:
+    def heading3(cls, text: str, indent: int = 0, **attributes) -> str:
         """H3 tag.
         """
         return cls.tag(text, 'h3', indent, **attributes)
@@ -477,7 +477,7 @@ class ConferenceList(list):
         for i, conference in enumerate(self):
             if conference.year() != current_year:
                 # Drop a special entry for the year in case of change.
-                lines.append('{}'.format(HTML.h3(conference.year())))
+                lines.append('{}'.format(HTML.heading3(conference.year())))
                 current_year = conference.year()
             # And this is the actual element for the publication.
             lines.append('[{}] {}'.format(i + 1, conference.html()))
