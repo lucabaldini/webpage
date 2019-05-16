@@ -504,7 +504,6 @@ def page_template() -> str:
     return text
 
 
-
 def _write_page(title: str, target: str, hook=None) -> None:
     """Write a single html page to file.
 
