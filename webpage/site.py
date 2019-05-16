@@ -25,7 +25,7 @@ import logging
 
 import webpage
 from webpage.core import PageMenu, HTML, ConferenceList
-from webpage.helpers import copy
+from webpage.helpers import copy, memoize
 from webpage.orcid import ORCID
 
 
@@ -482,6 +482,7 @@ MENU.add_entry('Didattica', 'teaching.html')
 MENU.add_entry('Private area', 'private')
 
 
+@memoize
 def page_template() -> str:
     """Create the basic template for all the HTML pages in the website.
 

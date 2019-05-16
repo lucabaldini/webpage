@@ -21,6 +21,7 @@
 import logging
 import os
 import shutil
+import functools
 
 
 def mktree(folder_path: str) -> None:
@@ -36,3 +37,20 @@ def copy(src: str, dest: str) -> None:
     """
     logging.info('Copying %s -> %s...', src, dest)
     shutil.copyfile(src, dest)
+
+
+def memoize(func):
+    """Simple decorator to memoize the return value of a function with no
+    argument.
+
+    See https://stackoverflow.com/questions/5630409
+    for the use of nonlocal in the body of the wrapper function.
+    """
+    @functools.wraps(func)
+    cache = None
+    def wrapper():
+        nonlocal cache
+        if cache is None:
+            cache = func()
+        return cache
+    return wrapper
