@@ -22,6 +22,7 @@ import datetime
 import os
 import glob
 import logging
+import subprocess
 
 import webpage
 from webpage.core import PageMenu, HTML, ConferenceList
@@ -53,6 +54,9 @@ COPYRIGHT_END_YEAR = LAST_UPDATE.year
 STYLE_SHEETS = ['default.css']
 DEFAULT_STYLE_SHEET = STYLE_SHEETS[0]
 DEFAULT_CSS_HREF = '%s/%s' % (webpage.CSS_FOLDER_NAME, DEFAULT_STYLE_SHEET)
+REMOTE_URLS = ['lbaldini@galilinux.pi.infn.it:public_html',
+               'a012425@osirisop.df.unipi.it:public_html']
+
 
 # Conferences.
 #
@@ -527,7 +531,7 @@ def _write_page(title: str, target: str, hook=None) -> None:
     logging.info('Done.')
 
 
-def write_static_pages():
+def write_static_pages() -> None:
     """Write all the html pages in the menu to file.
     """
     # Write the static pages driven by the menu.
@@ -538,7 +542,7 @@ def write_static_pages():
     _write_page('About this website', 'about.html')
 
 
-def copy_style_sheets():
+def copy_style_sheets() -> None:
     """Copy the relevant style sheets from the local source folder to the
     output html folder to be copied on the remote server.
     """
@@ -549,7 +553,7 @@ def copy_style_sheets():
         copy(src, dest)
 
 
-def copy_images(file_formats=('png',)):
+def copy_images(file_formats=('png',)) -> None:
     """Copy all the relevant images into the output folder.
     """
     logging.info('Copying images...')
@@ -561,10 +565,23 @@ def copy_images(file_formats=('png',)):
         copy(src, dest)
 
 
-def deploy():
+def upload_files() -> None:
+    """Upload the static html files and all the necessary complements to the
+    main remote server and its mirror.
+    """
+    for url in REMOTE_URLS:
+        cmd = 'scp -r {}/* {}'.format(webpage.OUTPUT_FOLDER, url)
+        logging.info('About to execute "%s"...', cmd)
+        subprocess.run(cmd, shell=True)
+        logging.info('Done.')
+
+
+def deploy(upload: bool = False):
     """Deploy the glorious website.
     """
     webpage.create_local_tree()
     write_static_pages()
     copy_style_sheets()
     copy_images()
+    if upload:
+        upload_files()

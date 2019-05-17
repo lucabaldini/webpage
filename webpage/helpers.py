@@ -22,6 +22,7 @@ import logging
 import os
 import shutil
 import functools
+import argparse
 
 
 def mktree(folder_path: str) -> None:
@@ -56,3 +57,34 @@ def memoize(func):
             cache = func()
         return cache
     return wrapper
+
+
+
+class ArgumentFormatter(argparse.RawDescriptionHelpFormatter,
+                        argparse.ArgumentDefaultsHelpFormatter):
+
+    """Do nothing class combining our favorite formatting for the
+    command-line options, i.e., the newlines in the descriptions are
+    preserved and, at the same time, the argument defaults are printed
+    out when the --help options is passed.
+
+    The inspiration for this is coming from one of the comments in
+    https://stackoverflow.com/questions/3853722
+    """
+    pass
+
+
+
+class ArgumentParser(argparse.ArgumentParser):
+
+    """Thin wrapper over argparse.ArgumentParser(), meant to standardize the
+    command-line options for the gpdsw Python scripts.
+    """
+
+    def __init__(self, description=None, epilog=None):
+        """Constructor.
+        """
+        formatter = ArgumentFormatter
+        argparse.ArgumentParser.__init__(self, description=description,
+                                         epilog=epilog,
+                                         formatter_class=formatter)
