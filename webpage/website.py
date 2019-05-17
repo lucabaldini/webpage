@@ -57,16 +57,6 @@ DEFAULT_CSS_HREF = '%s/%s' % (webpage.CSS_FOLDER_NAME, DEFAULT_STYLE_SHEET)
 # Conferences.
 #
 CONFERENCE_LIST = ConferenceList()
-"""
-CONFERENCE_LIST.add_conference(
-    '',
-    '',
-    '',
-    '', ''
-).add_contribution(
-    ''
-)
-"""
 CONFERENCE_LIST.add_conference(
     'CIV Congresso Nazionale della Società Italiana di Fisica',
     'Arcavacata di Rende (Italy)',

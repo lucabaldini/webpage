@@ -27,6 +27,7 @@ from typing import Optional, List, Any
 
 import requests
 
+from webpage import ORCID_FOLDER
 from webpage.core import HTML, LaTeX
 
 
@@ -324,8 +325,7 @@ class ORCID:
     """
 
     BASE_URL = 'http://pub.orcid.org'
-    LOCAL_FOLDER = os.path.abspath(os.path.join(os.path.basename(__file__),
-                                                '..', 'orcid'))
+    LOCAL_FOLDER = ORCID_FOLDER
 
     def __init__(self, orcid_id: str = '0000-0002-9785-7726',
                  force_fetch: bool = False) -> None:

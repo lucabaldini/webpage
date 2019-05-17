@@ -190,6 +190,7 @@ class PageMenuEntry:
     hook : function, optional
         An optional hook to dynamically add page content.
 
+
     A menu entry is the combination of a title and a target (to be intended in
     the remote server sense). Additionally, an optional function returning a
     string can be passed to the costructor to add dynamically generated text.
@@ -225,13 +226,12 @@ class PageMenuEntry:
 
     def html(self, link_active: bool, indent: int) -> str:
         """HTML formatting.
-
-        Note class is a resrved word in Python and we have to play a trick
-        to write the class attribute in the output HTML tags.
         """
         if link_active:
             anchor = HTML.hyperlink(self.title, self.target)
             return HTML.list_item(anchor, indent)
+        # Note class is a reserved word in Python and we have to play a trick
+        # to write the class attribute in the output HTML tags.
         return HTML.list_item(self.title, indent, **{'class': 'current'})
 
     def __str__(self) -> str:
