@@ -21,13 +21,14 @@
 
 
 import logging
-logging.basicConfig(level=logging.INFO)
+
+from webpage.website import deploy
+
 
 
 def _deploy(upload: bool = False) -> None:
     """
     """
-    from webpage.website import deploy
     deploy(upload)
 
 
@@ -37,4 +38,5 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--upload', action='store_true')
     args = parser.parse_args()
+    logging.basicConfig(level=logging.INFO)
     _deploy(args.upload)

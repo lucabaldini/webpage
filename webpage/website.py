@@ -476,13 +476,31 @@ CONFERENCE_LIST.add_conference(
 )
 
 
+# Hooks for the main menu.
+#
+def pubs_hook() -> str:
+    """Hook for the "Publication" menu entry.
+
+    Note if this was not wrapped in a function we would instantiate an
+    ORCID() object when importing the module, which in turn implies we
+    would be loading all the data before we actually use them (and log
+    all the related messages.)
+    """
+    return ORCID().work_list.html()
+
+def talks_hook() -> str:
+    """Hook for the "Presentation" menu entry.
+    """
+    return CONFERENCE_LIST.html()
+
+
 # Definition of the page menu.
 #
 MENU = PageMenu()
 MENU.add_entry('Home', 'index.html')
 MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
-MENU.add_entry('Publications', 'publications.html', ORCID().work_list.html)
-MENU.add_entry('Presentations', 'talks.html', CONFERENCE_LIST.html)
+MENU.add_entry('Publications', 'publications.html', pubs_hook)
+MENU.add_entry('Presentations', 'talks.html', talks_hook)
 MENU.add_entry('About me', 'aboutme.html')
 MENU.add_entry('Links', 'links.html')
 MENU.add_entry('Miscellanea', 'misc.html')
