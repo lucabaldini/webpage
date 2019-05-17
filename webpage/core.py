@@ -429,6 +429,7 @@ class Conference:
     """Class describing a conference.
     """
 
+    # pylint: disable=too-many-arguments
     def __init__(self, name: str, location: str, webpage: str,
                  begin: str, end: Optional[str] = None) -> None:
         """Constructor.
@@ -501,6 +502,7 @@ class ConferenceList(list):
     """Class describing a list of conferences.
     """
 
+    # pylint: disable=too-many-arguments
     def add_conference(self, name: str, location: str, webpage,
                        begin: str, end: Optional[str] = None) -> Conference:
         """Add a conference to the conference list.

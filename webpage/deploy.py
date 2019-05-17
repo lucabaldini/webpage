@@ -23,20 +23,23 @@
 import logging
 
 from webpage.website import deploy
+from webpage.helpers import ArgumentParser
 
 
+def main() -> None:
+    """Deploy the webpage.
 
-def _deploy(upload: bool = False) -> None:
+    Warning
+    -------
+    Consider moving this into the website module (and rename that as deploy).
     """
-    """
-    deploy(upload)
-
-
-
-if __name__ == '__main__':
-    from webpage.helpers import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('--upload', action='store_true')
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)
-    _deploy(args.upload)
+    deploy(args.upload)
+
+
+
+if __name__ == '__main__':
+    main()
