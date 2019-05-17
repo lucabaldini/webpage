@@ -1,3 +1,6 @@
+all:
+	python webpage/deploy.py
+
 test:
 	pytest
 

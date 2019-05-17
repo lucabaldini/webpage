@@ -64,7 +64,7 @@
   Generating public/private rsa key pair.<br>
   Enter file in which to save the key (/home/lbaldini/.ssh/id_rsa):<br>
   Created directory '/home/lbaldini/.ssh'.<br>
-  Enter passphrase (empty for no passphrase):<br> 
+  Enter passphrase (empty for no passphrase):<br>
   Enter same passphrase again:<br>
   Your identification has been saved in /home/lbaldini/.ssh/id_rsa.<br>
   Your public key has been saved in /home/lbaldini/.ssh/id_rsa.pub.<br>
@@ -93,27 +93,6 @@
   For more information about ssh at SLAC, see
   <a href="http://glast-ground.slac.stanford.edu/workbook/pages/getting_connected/pr_ssh_forunix.htm">here</a>
 </p>
-
-
-<h3>Checkout a paper from svn at SLAC</h3>
-
-<p class="code">
-  svn co svn+ssh://centaurusa.slac.stanford.edu:/nfs/slac/g/glast/workingGroups/DMNP/LowEnergyLines
-</p>
-
-
-<h3>Create a new cvs package</h3>
-
-<p>
-  (I know, I know: cvs is archeology, these days...)
-</p>
-
-<p class="code">
-  mkdir packageName<br>
-  cd packageName<br>
-  cvs import -m "Comment" cvspath vendor tag<br>
-</p>
-
 
 <h3>Mount remote disks with autofs</h3>
 
