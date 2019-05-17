@@ -487,7 +487,7 @@ CONFERENCE_LIST.add_conference(
 MENU = PageMenu()
 MENU.add_entry('Home', 'index.html')
 MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
-MENU.add_entry('Publications', 'publications.html', ORCID().work_list_html)
+MENU.add_entry('Publications', 'publications.html', ORCID().work_list.html)
 MENU.add_entry('Presentations', 'talks.html', CONFERENCE_LIST.html)
 MENU.add_entry('About me', 'aboutme.html')
 MENU.add_entry('Links', 'links.html')

@@ -188,6 +188,12 @@ class Work(dict):
             return None
         return 'https://doi.org/{}'.format(doi)
 
+    def ascii(self) -> str:
+        """ASCII representation.
+        """
+        return '{}, "{}", {} ({})'.format(self.author_string, self.title,
+                                          self.journal(), self.year())
+
     def html(self) -> str:
         """HTML formatting.
         """
@@ -202,12 +208,6 @@ class Work(dict):
         return '{}, "{}", {} ({})'.format(self.author_string, title,
                                           self.journal(), self.year())
 
-    def text(self) -> str:
-        """String representation.
-        """
-        return '{}, "{}", {} ({})'.format(self.author_string, self.title,
-                                          self.journal(), self.year())
-
     def __lt__(self, other) -> bool:
         """Comparison operator so sort publication lists.
         """
@@ -217,6 +217,57 @@ class Work(dict):
         """String representation.
         """
         return self.text()
+
+
+
+class WorkList(List[Work]):
+
+    """Class representing a list of ORCID works.
+
+    And, in human language, this is really a publication list.
+    """
+
+    def _format(self, year_formatter, work_formatter):
+        """
+        """
+        lines = []
+        current_year = None
+        for i, work in enumerate(self):
+            if work.year() != current_year:
+                # Drop a special entry for the year in case of change.
+                lines.append('{}'.format(year_formatter(work.year())))
+                current_year = work.year()
+            # And this is the actual element for the publication.
+            lines.append('[{}] {}'.format(i + 1, work_formatter(work)))
+        return lines
+
+    def ascii(self) -> str:
+        """ASCII representation.
+        """
+        lines = self._format(str, Work.ascii)
+        return '\n'.join(lines)
+
+    def html(self) -> str:
+        """HTML representation.
+        """
+        lines = self._format(HTML.heading3, Work.html)
+        return HTML.list(lines)
+
+    def latex(self) -> str:
+        """LaTeX representation.
+
+        Warning
+        -------
+        This is untested.
+        """
+        lines = self._format(str, Work.latex)
+        return '\n'.join(lines)
+
+    def __str__(self) -> str:
+        """Text representation.
+        """
+        return self.ascii()
+
 
 
 
@@ -288,7 +339,7 @@ class ORCID:
         self.data = self._load(self._url(), self._file_path(), force_fetch)
         # Loop over the works and fetch all the detailed work information.
         # Admittedly we could do a cleaner job, here---but it's only done once.
-        self.work_list: List[dict] = []
+        self.work_list = WorkList()
         logging.info('Populating work list...')
         for work in self.data['activities-summary']['works']['group']:
             summary = self._work_summary(work)
@@ -361,7 +412,7 @@ class ORCID:
         return cls._fetch(url, file_path)
 
     @staticmethod
-    def _dump(json_item: dict, sort_keys: bool = False) -> str:
+    def dump(json_item: dict, sort_keys: bool = False) -> str:
         """Formatting function for json elements.
         """
         return json.dumps(json_item, sort_keys=sort_keys, indent=2,
@@ -389,21 +440,7 @@ class ORCID:
         """
         return work['work-summary'][0]
 
-    def work_list_html(self):
-        """Return a HTML rendering of the publication list.
-        """
-        lines = []
-        current_year = None
-        for i, work in enumerate(self.work_list):
-            if work.year() != current_year:
-                # Drop a special entry for the year in case of change.
-                lines.append('{}'.format(HTML.heading3(work.year())))
-                current_year = work.year()
-            # And this is the actual element for the publication.
-            lines.append('[{}] {}'.format(i + 1, work.html()))
-        return HTML.list(lines)
-
     def __str__(self) -> str:
         """String representation.
         """
-        return self._dump(self.data)
+        return self.dump(self.data)
