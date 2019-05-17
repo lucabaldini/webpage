@@ -216,7 +216,7 @@ class Work(dict):
     def __str__(self) -> str:
         """String representation.
         """
-        return self.text()
+        return self.ascii()
 
 
 
