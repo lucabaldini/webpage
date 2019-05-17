@@ -342,7 +342,7 @@ class ORCID:
         self.work_list = WorkList()
         logging.info('Populating work list...')
         for work in self.data['activities-summary']['works']['group']:
-            summary = self._work_summary(work)
+            summary = self.work_summary(work)
             path = summary['path']
             put_code = summary['put-code']
             url = self._url(path)
@@ -419,7 +419,7 @@ class ORCID:
                           separators=(',', ': '))
 
     @staticmethod
-    def _work_summary(work: dict) -> dict:
+    def work_summary(work: dict) -> dict:
         """Return the summary for a work element.
 
         The work summary is a dictionary with the following keys:
