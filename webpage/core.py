@@ -85,6 +85,8 @@ class LaTeX:
 class HTML:
 
     """Small container class for HTML formatting.
+
+    This is implemented in the very same fashion as the LaTeX class.
     """
 
     INDENT_STRING = '  '
