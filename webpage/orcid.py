@@ -88,7 +88,7 @@ class Work(dict):
         for key in keys:
             try:
                 item = item[key]
-            except Exception as exception:
+            except TypeError as exception:
                 if quiet:
                     return default
                 msg = 'Cannot navigate %s for %s. ' +\

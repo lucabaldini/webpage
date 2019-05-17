@@ -24,6 +24,8 @@ import glob
 import logging
 import subprocess
 
+from typing import List
+
 import webpage
 from webpage.core import PageMenu, HTML, ConferenceList
 from webpage.helpers import copy, memoize
@@ -575,7 +577,7 @@ def copy_images(file_formats=('png',)) -> None:
     """Copy all the relevant images into the output folder.
     """
     logging.info('Copying images...')
-    file_list = []
+    file_list: List[str] = []
     for fmt in file_formats:
         file_list = glob.glob(os.path.join(webpage.IMG_FOLDER, '*.%s' % fmt))
     for src in file_list:
