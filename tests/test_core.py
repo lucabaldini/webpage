@@ -22,12 +22,34 @@ import unittest
 
 from typing import Optional
 
-from webpage.core import HTML, TimeSpan, Conference, Contribution
+from webpage.core import HTML, LaTeX, TimeSpan, Conference, Contribution
+
+
+class TestLaTeX(unittest.TestCase):
+
+    """Unit tests for the LaTeX class.
+    """
+
+    def test_base(self, text:str = 'Hello world!'):
+        """Basic tests of the LateX commands.
+        """
+        source = LaTeX.emph(text)
+        target = '\\emph{{{}}}'.format(text)
+        self.assertEqual(source, target)
+        source = LaTeX.bold(text)
+        target = '\\textbf{{{}}}'.format(text)
+        self.assertEqual(source, target)
+        source = LaTeX.typeset(text)
+        target = '\\texttt{{{}}}'.format(text)
+        self.assertEqual(source, target)
+        source = LaTeX.hyperlink(text, 'www.helloworld.com')
+        print(source)
+
 
 
 class TestHTML(unittest.TestCase):
 
-    """Unit tests for the TimeSpan class.
+    """Unit tests for the HTML class.
     """
 
     def test_base(self, text:str = 'Hello world!'):

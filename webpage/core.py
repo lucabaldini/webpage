@@ -27,35 +27,58 @@ from typing import Optional, List
 class LaTeX:
 
     """Small container class for LaTeX formatting.
+
+    This is implemented as an "empty" class with a bunch of staticmethods and/or
+    classemthods where appropriate.
     """
 
     @staticmethod
-    def emph(text: str) -> str:
+    def command(name: str, *args: str) -> str:
+        """Basic function producing the text for LaTeX commands.
+
+        Parameters
+        ----------
+        name : str
+            The name of the command without the leading backslash
+            (e.g., "emph").
+        args : str
+            The command arguments.
+
+        Returns
+        -------
+        text : str
+            The text of the LaTeX command.
+        """
+        text = '\\{}{}'.format(name, '{{{}}}' * len(args))
+        return text.format(*args)
+
+    @classmethod
+    def emph(cls, text: str) -> str:
         """Italic formatting.
         """
-        return '\\emph{{{}}}'.format(text)
+        return cls.command('emph', text)
 
-    @staticmethod
-    def bold(text: str) -> str:
+    @classmethod
+    def bold(cls, text: str) -> str:
         """Bold formatting.
         """
-        return '\\texttt{{{}}}'.format(text)
+        return cls.command('textbf', text)
 
-    @staticmethod
-    def typeset(text: str) -> str:
-        """Monospace formatting.
+    @classmethod
+    def typeset(cls, text: str) -> str:
+        """Typewriter formatting.
         """
-        return '\\textbf{{{}}}'.format(text)
+        return cls.command('texttt', text)
 
-    @staticmethod
-    def hyperlink(text: str, url: Optional[str] = None) -> str:
+    @classmethod
+    def hyperlink(cls, text: str, url: Optional[str] = None) -> str:
         """Hyperlink formatting.
 
         If the url is None, this falls back to plain text.
         """
         if url is None:
             return text
-        return '\\href{{{}}}{{{}}}'.format(url, text)
+        return cls.command('href', url, text)
 
 
 
