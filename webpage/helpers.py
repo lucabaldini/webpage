@@ -49,6 +49,8 @@ def memoize(func):
     cache = None
     @functools.wraps(func)
     def wrapper():
+        """Simple wrapper for the function call.
+        """
         nonlocal cache
         if cache is None:
             cache = func()

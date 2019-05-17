@@ -16,9 +16,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import logging
-logging.basicConfig(level=logging.INFO)
+"""Deploy script for the webpage.
+"""
 
+
+import logging
+# Why the hell if I move this after the next import, the configuration is
+# not applied?
+logging.basicConfig(level=logging.INFO)
 
 from webpage.website import deploy
 

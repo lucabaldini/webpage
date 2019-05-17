@@ -114,7 +114,8 @@ CONFERENCE_LIST.add_conference(
     'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2015/',
     '2015-11-09', '2015-11-13'
 ).add_contribution(
-    'Pass 8 vs. Pass 7: How Statistically (In)Dependent Are They? (And Why Should You Care?)',
+    'Pass 8 vs. Pass 7: How Statistically (In)Dependent Are They? '
+    '(And Why Should You Care?)',
     poster=True
 )
 CONFERENCE_LIST.add_conference(
@@ -126,7 +127,8 @@ CONFERENCE_LIST.add_conference(
     'Fermi Large Area Telescope science highlights', invited=True
 )
 CONFERENCE_LIST.add_conference(
-    'ISAPP School 2014: Multi-wavelength and multi-messenger investigation of the visible and dark Universe',
+    'ISAPP School 2014: Multi-wavelength and multi-messenger investigation of '
+    'the visible and dark Universe',
     'Belgirate (Italy)',
     'http://isapp.school.2014.to.infn.it',
     '2014-07-21', '2014-07-30'
@@ -156,7 +158,8 @@ CONFERENCE_LIST.add_conference(
     'http://www.sif.it/attivita/congresso/xcix',
     '2013-09-23', '2013-09-27'
 ).add_contribution(
-    'plasduino: an inexpensive, general purpose data acquisition framework for didactic experiments'
+    'plasduino: an inexpensive, general purpose data acquisition framework for '
+    'didactic experiments'
 ).add_contribution(
     'The Fermi Large Area Telescope', invited=True
 )
@@ -166,7 +169,8 @@ CONFERENCE_LIST.add_conference(
     'http://vertex2013.depfet.org/',
     '2013-09-16', '2013-09-20'
 ).add_contribution(
-    'The Silicon Strip Tracker of the Fermi Large Area Telescope: the first 5 years',
+    'The Silicon Strip Tracker of the Fermi Large Area Telescope: '
+    'the first 5 years',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -199,7 +203,8 @@ CONFERENCE_LIST.add_conference(
     'http://fermi.gsfc.nasa.gov/science/mtgs/symposia/2012/',
     '2012-10-28', '2012-11-02'
 ).add_contribution(
-    'The Fermi Large Area Telescope On Orbit: Validation and Calibration of the Instrument Response'
+    'The Fermi Large Area Telescope On Orbit: Validation and Calibration '
+    'of the Instrument Response'
 ).add_contribution(
     'Pass 8: toward the full realization of the Fermi LAT scientific potential',
     poster=True
@@ -234,7 +239,8 @@ CONFERENCE_LIST.add_conference(
     'http://www-hep.phys.sinica.edu.tw/~hstd8/',
     '2011-12-05', '2011-12-08'
 ).add_contribution(
-    'The silicon strip tracker of the Fermi LAT: performance after three years of operation in space'
+    'The silicon strip tracker of the Fermi LAT: performance after three years '
+    'of operation in space'
 )
 CONFERENCE_LIST.add_conference(
     '13th ICATPP Conference',
@@ -260,7 +266,8 @@ CONFERENCE_LIST.add_conference(
 ).add_contribution(
     'Recent highlights from the Fermi Large Area Telescope', invited=True
 ).add_contribution(
-    'Dark Matter indirect searches and tests of Lorentz-invariance violation with the Fermi LAT',
+    'Dark Matter indirect searches and tests of Lorentz-invariance violation '
+    'with the Fermi LAT',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -288,7 +295,8 @@ CONFERENCE_LIST.add_conference(
     'http://mail.df.unipi.it/~elze/DICE2010.html',
     '2010-09-13', '2010-09-17'
 ).add_contribution(
-    'The Fermi Large Area Telescope: highlights from the first two years in orbit',
+    'The Fermi Large Area Telescope: highlights from the first '
+    'two years in orbit',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -314,7 +322,8 @@ CONFERENCE_LIST.add_conference(
     'http://www-conf.slac.stanford.edu/tevpa09/',
     '2009-07-13', '2009-07-17'
 ).add_contribution(
-    'Experimental review of high-energy electron/positron and proton/antiproton spectra',
+    'Experimental review of high-energy electron/positron and '
+    'proton/antiproton spectra',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -323,15 +332,18 @@ CONFERENCE_LIST.add_conference(
     'http://web.phys.ntnu.no/~mika/socor.html',
     '2009-06-15', '2009-06-18'
 ).add_contribution(
-    'The Fermi LAT: highlights after one year in orbit and measurement of the cosmic-ray electron spectrum'
+    'The Fermi LAT: highlights after one year in orbit and measurement of the '
+    'cosmic-ray electron spectrum'
 )
 CONFERENCE_LIST.add_conference(
     'New Lights on Dark Matter',
     'Perimeter Institute (Waterloo, Canada)',
-    'http://www.perimeterinstitute.ca/en/Events/New_Lights_on_Dark_Matter/New_Lights_on_Dark_Matter/',
+    'http://www.perimeterinstitute.ca/en/Events/New_Lights_on_Dark_Matter/'
+    'New_Lights_on_Dark_Matter/',
     '2009-06-11', '2009-06-13'
 ).add_contribution(
-    'Observation of the high-energy cosmic-ray electron spectrum with Fermi and implications for dark matter scenarios',
+    'Observation of the high-energy cosmic-ray electron spectrum with Fermi '
+    'and implications for dark matter scenarios',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -349,7 +361,8 @@ CONFERENCE_LIST.add_conference(
     'http://indico.cern.ch/conferenceDisplay.py?confId=54525',
     '2009-03-20'
 ).add_contribution(
-    'The Fermi gamma-ray space telescope: design, construction, launch and early science results',
+    'The Fermi gamma-ray space telescope: design, construction, launch and '
+    'early science results',
     invited=True
 )
 CONFERENCE_LIST.add_conference(
@@ -371,7 +384,7 @@ CONFERENCE_LIST.add_conference(
 CONFERENCE_LIST.add_conference(
     'Astrofisica Gamma dallo Spazio in Italia: AGILE e GLAST',
     'Frascati (Roma, Italy)',
-    'http://old.inaf.it/news_cartella/Astrofisica-gamma-dallo-Spazio-in-Italia/?noredirect=1',
+    'http://old.inaf.it/news_cartella/Astrofisica-gamma-dallo-Spazio-in-Italia',
     '2007-07-02', '2007-07-03'
 ).add_contribution(
     'LAT ground calibration: the test campaign'
@@ -399,7 +412,8 @@ CONFERENCE_LIST.add_conference(
     'http://www.nss-mic.org/2005/',
     '2005-10-23', '2005-10-27'
 ).add_contribution(
-    'The Gamma-ray Large Area Space Telescope: an astro-particle mission to explore the high-energy sky'
+    'The Gamma-ray Large Area Space Telescope: an astro-particle mission '
+    'to explore the high-energy sky'
 )
 CONFERENCE_LIST.add_conference(
     'GLAST LAT Tracker Construction Workshop',

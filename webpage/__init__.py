@@ -16,6 +16,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+"""Definition of the underlying environment for the package and related
+utility functions.
+"""
+
 import os
 import logging
 
@@ -81,7 +85,10 @@ def create_local_tree() -> None:
         mktree(folder)
 
 
-def output_file_path(*args) -> str:
-    """
+def output_file_path(*args: str) -> str:
+    """Build paths to output files.
+
+    This is essentially concatenanting the args to the output foder, in the
+    os.path.join sense.
     """
     return os.path.join(OUTPUT_FOLDER, *args)
