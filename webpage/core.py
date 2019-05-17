@@ -177,82 +177,97 @@ class HTML:
 
 
 
-class PageMenu(dict):
+class PageMenuEntry:
 
-    """Class representing the logical structure of the page menu.
+    """Class describing a page menu entry.
 
-    A menu is a essentially a series of entries, each of which includes a
-    title and a (target, hook) tuple. The title is the title of the web page.
-    The target can either be a html file or a folder, and is always intented to
-    be in the (remote, or relative) html space. The (optional) hook is a
-    generic function returing a string, that can be used to append additional,
-    dymanically generated text, to the static html read from the input file.
+    Parameters
+    ----------
+    title : str
+        The title for the menu entry (i.e., the text appearing in the menu)
+    target : str
+        The remote menu target (i.e., the page or folder the entry is pointing)
+    hook : function, optional
+        An optional hook to dynamically add page content.
 
-    Note that the class is inheriting from dict and the fact that the entries
-    are expected to appear in order in the output html relies on the fact that
-    dictionaries are now guaranteed to preserve the insertion order in
-    Python.
+    A menu entry is the combination of a title and a target (to be intended in
+    the remote server sense). Additionally, an optional function returning a
+    string can be passed to the costructor to add dynamically generated text.
+    (The output of the function is added verbatim to the corresponding page.)
     """
 
-    def add_entry(self, title: str, target: str, hook=None) -> None:
-        """Add an entry to the menu.
+    def __init__(self, title: str, target: str, hook=None) -> None:
+        """Constructor.
         """
-        self[title] = (target, hook)
+        self.title = title
+        self.target = target
+        self.hook = hook
 
-    def target(self, title: str) -> str:
-        """Return the target corresponding to a given title.
+    def points_to_file(self) -> bool:
+        """Return True if the target is a html file name (i.e., not a folder).
         """
-        return self.get(title)[0]
+        return self.target.endswith('.html')
 
-    def hook(self, title: str):
-        """Return the handle corresponding to a given title.
-        """
-        return self.get(title)[1]
-
-    @classmethod
-    def target_is_file(cls, target: str) -> bool:
-        """Return True if the given target represents a html file name
-        (i.e., not a folder).
-        """
-        return target.endswith('.html')
-
-    def target_points_to_file(self, title: str) -> bool:
-        """Return True if the target corresponding to the given title represents
-        a html file name (i.e., not a folder).
-        """
-        return self.target_is_file(self.target(title))
-
-    def target_file_path(self, title: str, folder: str) -> Optional[str]:
+    def target_file_path(self, folder: str) -> Optional[str]:
         """Convert the raw target into a file path, prepending the folder
         passed as an argument.
 
         Return None is the target is not a file.
         """
-        target = self.target(title)
-        if not self.target_is_file(target):
+        if not self.points_to_file():
             return None
-        return os.path.join(folder, target)
+        return os.path.join(folder, self.target)
+
+    def ascii(self) -> str:
+        """ASCII formatting.
+        """
+        return '{} -> {}'.format(self.title, self.target)
+
+    def html(self, link_active: bool, indent: int) -> str:
+        """HTML formatting.
+
+        Note class is a resrved word in Python and we have to play a trick
+        to write the class attribute in the output HTML tags.
+        """
+        if link_active:
+            anchor = HTML.hyperlink(self.title, self.target)
+            return HTML.list_item(anchor, indent)
+        return HTML.list_item(self.title, indent, **{'class': 'current'})
+
+    def __str__(self) -> str:
+        """String formatting.
+        """
+        return self.ascii()
+
+
+
+class PageMenu(List[PageMenuEntry]):
+
+    """Class representing the logical structure of the page menu.
+
+    A menu is essentially a list of PageMenuEntry instances.
+    """
+
+    def add_entry(self, title: str, target: str, hook=None) -> None:
+        """Add an entry to the menu.
+        """
+        self.append(PageMenuEntry(title, target, hook))
 
     def ascii(self) -> str:
         """ASCII representation.
         """
-        text = 'Page menu:\n'
-        for title, target in self.items():
-            text += '- %s -> %s\n' % (title, target)
-        return text
+        lines = ['Page menu:']
+        for entry in self:
+            lines.append(entry.ascii())
+        return '\n'.join(lines)
 
-    def html(self, current_page_title: Optional[str] = None) -> str:
+    def html(self, current_title: Optional[str] = None) -> str:
         """Return the html representation of the menu.
         """
         lines = ['<ul>']
-        for title, (target, hook) in self.items():
-            if title == current_page_title:
-                # Funny: we can't pass this as a keyword argument, as class
-                # is a reserved word :-)
-                attr = {'class': 'current'}
-                lines.append(HTML.list_item(title, 1, **attr))
-            else:
-                lines.append(HTML.list_item(HTML.hyperlink(title, target), 1))
+        for entry in self:
+            link_active = (entry.title != current_title)
+            lines.append(entry.html(link_active, 1))
         lines.append('</ul>')
         return '\n'.join(lines)
 

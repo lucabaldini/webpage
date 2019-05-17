@@ -541,9 +541,9 @@ def write_static_pages():
     """Write all the html pages in the menu to file.
     """
     # Write the static pages driven by the menu.
-    for title, (target, hook) in MENU.items():
-        if MENU.target_points_to_file(title):
-            _write_page(title, target, hook)
+    for entry in MENU:
+        if entry.points_to_file():
+            _write_page(entry.title, entry.target, entry.hook)
     # And write everything else is necessary.
     _write_page('About this website', 'about.html')
 
