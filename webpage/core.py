@@ -110,19 +110,28 @@ class HTML:
         return text
 
     @classmethod
-    def tag(cls, text: str, tag: str, indent: int = 0, **attributes) -> str:
+    def tag(cls, text: str, tag: str, indent: int = 0, class_: str = None,
+            **attributes) -> str:
         """Formatting facility for a generic tag.
+
+        Note that we factor the class attribute out of the keyword arguments
+        because, while often needed in css, class is a reserved word in Python
+        and cannot be passed directly as a key (we would have to build a
+        dictionary manually every time).
         """
+        if class_ is not None:
+            attributes.update({'class': class_})
         attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
         attr_text = ','.join(attr_list)
         text = '<{0}{1}>{2}</{0}>'.format(tag, attr_text, text)
         return cls.indent(text, indent)
 
     @classmethod
-    def heading3(cls, text: str, indent: int = 0, **attributes) -> str:
+    def heading3(cls, text: str, indent: int = 0, class_: str = None,
+                 **attributes) -> str:
         """H3 tag.
         """
-        return cls.tag(text, 'h3', indent, **attributes)
+        return cls.tag(text, 'h3', indent, class_, **attributes)
 
     @staticmethod
     def break_() -> str:
@@ -131,28 +140,42 @@ class HTML:
         return '<br>'
 
     @classmethod
-    def emph(cls, text: str, indent: int = 0, **attributes) -> str:
+    def emph(cls, text: str, indent: int = 0, class_: str = None,
+             **attributes) -> str:
         """Italic formatting.
         """
-        return cls.tag(text, 'em', indent, **attributes)
+        return cls.tag(text, 'em', indent, class_, **attributes)
 
     @classmethod
-    def bold(cls, text: str, indent: int = 0, **attributes) -> str:
+    def bold(cls, text: str, indent: int = 0, class_: str = None,
+             **attributes) -> str:
         """Bold formatting.
         """
-        return cls.tag(text, 'b', indent, **attributes)
+        return cls.tag(text, 'b', indent, class_, **attributes)
 
     @classmethod
-    def typeset(cls, text: str, indent: int = 0, **attributes) -> str:
+    def italic(cls, text: str = '', indent: int = 0, class_: str = None,
+               **attributes) -> str:
+        """Italic formatting.
+
+        Mind in HTML 5 this is customarily used for other inline elements, such
+        as icons.
+        """
+        return cls.tag(text, 'i', indent, class_, **attributes)
+
+    @classmethod
+    def typeset(cls, text: str, indent: int = 0, class_: str = None,
+                **attributes) -> str:
         """Monospace formatting.
         """
-        return cls.tag(text, 'tt', indent, **attributes)
+        return cls.tag(text, 'tt', indent, class_, **attributes)
 
     @classmethod
-    def list_item(cls, text: str, indent: int = 0, **attributes) -> str:
+    def list_item(cls, text: str, indent: int = 0, class_: str = None,
+                  **attributes) -> str:
         """List item formatting.
         """
-        return cls.tag(text, 'li', indent, **attributes)
+        return cls.tag(text, 'li', indent, class_, **attributes)
 
     @classmethod
     def list(cls, items: List, indent: int = 0) -> str:
@@ -187,6 +210,8 @@ class PageMenuEntry:
         The title for the menu entry (i.e., the text appearing in the menu)
     target : str
         The remote menu target (i.e., the page or folder the entry is pointing)
+    icon : str
+        The name of the (optional) icon associated to the menu entry.
     hook : function, optional
         An optional hook to dynamically add page content.
 
@@ -197,11 +222,13 @@ class PageMenuEntry:
     (The output of the function is added verbatim to the corresponding page.)
     """
 
-    def __init__(self, title: str, target: str, hook=None) -> None:
+    def __init__(self, title: str, target: str, icon: Optional[str] = None,
+                 hook=None) -> None:
         """Constructor.
         """
         self.title = title
         self.target = target
+        self.icon = icon
         self.hook = hook
 
     def points_to_file(self) -> bool:
@@ -228,11 +255,14 @@ class PageMenuEntry:
         """HTML formatting.
         """
         if link_active:
-            anchor = HTML.hyperlink(self.title, self.target)
-            return HTML.list_item(anchor, indent)
-        # Note class is a reserved word in Python and we have to play a trick
-        # to write the class attribute in the output HTML tags.
-        return HTML.list_item(self.title, indent, **{'class': 'current'})
+            text = HTML.hyperlink(self.title, self.target)
+            class_ = 'active'
+        else:
+            text = self.title
+            class_ = 'inactive'
+        if self.icon is not None:
+            text = '{}{}'.format(HTML.italic(class_=self.icon), text)
+        return HTML.list_item(text, indent, class_=class_)
 
     def __str__(self) -> str:
         """String formatting.
@@ -248,10 +278,11 @@ class PageMenu(List[PageMenuEntry]):
     A menu is essentially a list of PageMenuEntry instances.
     """
 
-    def add_entry(self, title: str, target: str, hook=None) -> None:
+    def add_entry(self, title: str, target: str, icon: Optional[str] = None,
+                  hook=None) -> None:
         """Add an entry to the menu.
         """
-        self.append(PageMenuEntry(title, target, hook))
+        self.append(PageMenuEntry(title, target, icon, hook))
 
     def ascii(self) -> str:
         """ASCII representation.

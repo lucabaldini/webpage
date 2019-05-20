@@ -499,15 +499,17 @@ def talks_hook() -> str:
 # Definition of the page menu.
 #
 MENU = PageMenu()
-MENU.add_entry('Home', 'index.html')
-MENU.add_entry('Curriculum vit&aelig;', 'cv.html')
-MENU.add_entry('Publications', 'publications.html', pubs_hook)
-MENU.add_entry('Presentations', 'talks.html', talks_hook)
-MENU.add_entry('About me', 'aboutme.html')
-MENU.add_entry('Links', 'links.html')
-MENU.add_entry('Miscellanea', 'misc.html')
-MENU.add_entry('Didattica', 'teaching.html')
-MENU.add_entry('Private area', 'private')
+MENU.add_entry('Home', 'index.html', 'fas fa-home')
+MENU.add_entry('Curriculum vit&aelig;', 'cv.html', 'far fa-id-card')
+MENU.add_entry('Publications', 'publications.html', 'fas fa-graduation-cap',
+               hook=pubs_hook)
+MENU.add_entry('Presentations', 'talks.html', 'far fa-comment-dots',
+               hook=talks_hook)
+MENU.add_entry('About me', 'aboutme.html', 'far fa-user')
+MENU.add_entry('Links', 'links.html', 'fab fa-hubspot')
+MENU.add_entry('Miscellanea', 'misc.html', 'fas fa-random')
+MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher')
+MENU.add_entry('Private area', 'private', 'fas fa-lock')
 
 
 @memoize

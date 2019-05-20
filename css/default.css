@@ -160,15 +160,9 @@ nav ul li
     list-style-type: none;
 }
 
-nav ul li.current
+nav ul li.inactive
 {
     color: #aaa;
-}
-
-nav ul li:before
-{
-    color: #ff9900;
-    content: "> ";
 }
 
 article img.floatright
@@ -231,6 +225,7 @@ footer a:hover   { text-decoration: underline; }
 i
 {
     font-size: 16px;
+    width: 30px;
 }
 
 
