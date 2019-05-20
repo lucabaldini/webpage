@@ -222,11 +222,19 @@ article ul li:before
 footer a:link    { text-decoration: none; }
 footer a:hover   { text-decoration: underline; }
 
-i
+nav i
 {
     font-size: 18px;
     width: 30px;
 }
+
+footer i
+{
+    font-size: 18px;
+    width: 30px;
+    color: gray;
+}
+
 
 
 /* Responsive layout - makes the menu and the content (inside the section) sit
