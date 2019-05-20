@@ -57,7 +57,7 @@ STYLE_SHEETS = ['default.css']
 DEFAULT_STYLE_SHEET = STYLE_SHEETS[0]
 DEFAULT_CSS_HREF = '%s/%s' % (webpage.CSS_FOLDER_NAME, DEFAULT_STYLE_SHEET)
 REMOTE_URLS = ['lbaldini@galilinux.pi.infn.it:public_html',
-               'a012425@osirisop.df.unipi.it:public_html']
+               'a012425@osiris.df.unipi.it:public_html']
 
 
 # Conferences.
