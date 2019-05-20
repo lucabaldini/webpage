@@ -125,6 +125,7 @@ article {
   flex: 3;
   background-color: #fff;
   padding: 10px;
+  text-align: justify;
 }
 
 /* Style the footer */
@@ -133,6 +134,7 @@ footer {
   padding: 10px;
   text-align: center;
   color: grey;
+  font-size: 85%;
 }
 
 nav a
