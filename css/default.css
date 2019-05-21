@@ -99,7 +99,7 @@ header
 }
 
 /* Container for flexboxes */
-div.mainpage {
+section {
   display: -webkit-flex;
   display: flex;
   margin-left: auto;
