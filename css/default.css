@@ -266,14 +266,15 @@ footer i
   margin-left: -8px;
 }
 
-.event {
+.event, .event-nomarker, .event-alert
+{
   padding-bottom: 5px;
   padding-top: 5px;
   padding-left: 32%;
   position: relative;
 }
 
-.event::before
+.event::before, .event-nomarker::before, .event-alert::before
 {
   display: block;
   position: absolute;
@@ -283,6 +284,11 @@ footer i
   left: -30px;
 }
 
+.event-alert::before
+{
+  color: #ff9900;
+  font-size: 125%;
+}
 
 /* The circles on the timeline */
 .event::after {
