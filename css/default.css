@@ -245,6 +245,59 @@ footer i
     color: gray;
 }
 
+.timeline
+{
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 12px;
+  padding-bottom: 2px;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  background-color: #ccc;
+  top: 0;
+  bottom: 0;
+  left: 30%;
+  margin-left: -8px;
+}
+
+.event {
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 32%;
+  position: relative;
+}
+
+.event::before
+{
+  display: block;
+  position: absolute;
+  content: attr(date);
+  text-align: right;
+  width: 30%;
+  left: -30px;
+}
+
+
+/* The circles on the timeline */
+.event::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  right: 70%;
+  background-color: #ccc;
+  border: 2px solid #FF9F55;
+  top: 8px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
 
 
 /* Responsive layout - makes the menu and the content (inside the section) sit
