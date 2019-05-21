@@ -245,7 +245,7 @@ footer i
     color: gray;
 }
 
-.timeline, .publication-list
+.timeline, .publication-list, .conference-list
 {
   position: relative;
   max-width: 1000px;
@@ -255,7 +255,7 @@ footer i
 }
 
 /* The actual timeline (the vertical ruler) */
-.timeline::after, .publication-list::after
+.timeline::after, .publication-list::after, .conference-list::after
 {
   content: '';
   position: absolute;
@@ -269,26 +269,26 @@ footer i
 {
   left: 30%;
 }
-.publication-list::after
+.publication-list::after, .conference-list::after
 {
   left: 80px;
 }
 
-.event, .publication-year, .publication-item
+.event, .publication-year, .publication-item, .conference-year, .conference-item
 {
-  padding-bottom: 5px;
-  padding-top: 5px;
   position: relative;
 }
 .event
 {
+  padding-bottom: 5px;
+  padding-top: 5px;
   padding-left: 32%;
 }
-.publication-year, .publication-item
+.publication-year, .publication-item, .conference-year, .conference-item
 {
   padding-left: 100px;
 }
-.publication-year
+.publication-year, .conference-year
 {
   color: #ff9900;
   font-size: 120%;
@@ -308,7 +308,7 @@ footer i
 }
 
 /* The circles on the timeline */
-.event::after, .publication-year::after
+.event::after, .publication-year::after, .conference-year::after
 {
   content: '';
   position: absolute;
@@ -324,7 +324,7 @@ footer i
   right: 70%;
   top: 8px;
 }
-.publication-year::after
+.publication-year::after, .conference-year::after
 {
   right: 30px;
   top: 10px;

@@ -566,13 +566,14 @@ class ConferenceList(list):
     def html(self, indent: int = 4) -> str:
         """HTML formatting.
         """
-        lines = []
+        lines = [HTML.tag_open('ul', indent, class_='conference-list')]
         current_year = None
         for i, conference in enumerate(self):
             if conference.year() != current_year:
-                # Drop a special entry for the year in case of change.
-                lines.append('{}'.format(HTML.heading3(conference.year())))
+                class_ = 'conference-year'
+                lines.append(HTML.list_item(conference.year(), indent + 1, class_))
                 current_year = conference.year()
-            # And this is the actual element for the publication.
-            lines.append('[{}] {}'.format(i + 1, conference.html()))
-        return HTML.list(lines, indent)
+            class_ = 'conference-item'
+            text = '[{}] {}'.format(i + 1, conference.html())
+            lines.append(HTML.list_item(text, indent + 1, class_))
+        return '\n'.join(lines)
