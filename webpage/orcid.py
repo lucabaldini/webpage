@@ -271,7 +271,7 @@ class WorkList(List[Work]):
         for i, work in enumerate(self):
             if work.year() != current_year:
                 class_ = 'publication-year'
-                lines.append(HTML.list_item(work.year(), indent + 1, class_))
+                lines.append(HTML.list_item(str(work.year()), indent + 1, class_))
                 current_year = work.year()
             class_ = 'publication-item'
             text = '[{}] {}'.format(i + 1, work.html())
