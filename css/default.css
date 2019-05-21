@@ -245,7 +245,7 @@ footer i
     color: gray;
 }
 
-.timeline
+.timeline, .publication-list
 {
   position: relative;
   max-width: 1000px;
@@ -255,26 +255,49 @@ footer i
 }
 
 /* The actual timeline (the vertical ruler) */
-.timeline::after {
+.timeline::after, .publication-list::after
+{
   content: '';
   position: absolute;
   width: 3px;
   background-color: #ccc;
   top: 0;
   bottom: 0;
-  left: 30%;
   margin-left: -8px;
 }
+.timeline::after
+{
+  left: 30%;
+}
+.publication-list::after
+{
+  left: 80px;
+}
 
-.event, .event-nomarker, .event-alert
+.event, .publication-year, .publication-item
 {
   padding-bottom: 5px;
   padding-top: 5px;
-  padding-left: 32%;
   position: relative;
 }
+.event
+{
+  padding-left: 32%;
+}
+.publication-year, .publication-item
+{
+  padding-left: 100px;
+}
+.publication-year
+{
+  color: #ff9900;
+  font-size: 125%;
+  text-align: left;
+  width: 100px;
+  left: -90px;
+}
 
-.event::before, .event-nomarker::before, .event-alert::before
+.event::before
 {
   display: block;
   position: absolute;
@@ -284,26 +307,28 @@ footer i
   left: -30px;
 }
 
-.event-alert::before
-{
-  color: #ff9900;
-  font-size: 125%;
-}
-
 /* The circles on the timeline */
-.event::after {
+.event::after, .publication-year::after
+{
   content: '';
   position: absolute;
   width: 8px;
   height: 8px;
-  right: 70%;
   background-color: #ccc;
   border: 2px solid #FF9F55;
-  top: 8px;
   border-radius: 50%;
   z-index: 1;
 }
-
+.event::after
+{
+  right: 70%;
+  top: 8px;
+}
+.publication-year::after
+{
+  right: 30px;
+  top: 10px;
+}
 
 
 /* Responsive layout - makes the menu and the content (inside the section) sit

@@ -110,6 +110,25 @@ class HTML:
         return text
 
     @classmethod
+    def tag_open(cls, tag: str, indent: int = 0, class_: Optional[str] = None,
+                 **attributes) -> str:
+        """Open tag formatting.
+        """
+        if class_ is not None:
+            attributes.update({'class': class_})
+        attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
+        attr_text = ','.join(attr_list)
+        text = '<{}{}>'.format(tag, attr_text)
+        return cls.indent(text, indent)
+
+    @classmethod
+    def tag_close(cls, tag: str, indent: int = 0) -> str:
+        """Close tag formatting.
+        """
+        text = '</{}>'.format(tag)
+        return cls.indent(text, indent)
+
+    @classmethod
     def tag(cls, text: str, tag: str, indent: int = 0, class_: str = None,
             **attributes) -> str:
         """Formatting facility for a generic tag.
@@ -119,12 +138,8 @@ class HTML:
         and cannot be passed directly as a key (we would have to build a
         dictionary manually every time).
         """
-        if class_ is not None:
-            attributes.update({'class': class_})
-        attr_list = [' {}="{}"'.format(*item) for item in attributes.items()]
-        attr_text = ','.join(attr_list)
-        text = '<{0}{1}>{2}</{0}>'.format(tag, attr_text, text)
-        return cls.indent(text, indent)
+        return '{}{}{}'.format(cls.tag_open(tag, indent, class_, **attributes),
+                               text, cls.tag_close(tag, indent))
 
     @classmethod
     def heading3(cls, text: str, indent: int = 0, class_: str = None,
@@ -178,13 +193,19 @@ class HTML:
         return cls.tag(text, 'li', indent, class_, **attributes)
 
     @classmethod
-    def list(cls, items: List, indent: int = 0) -> str:
+    def list(cls, items: List, indent: int = 0, ul_class: Optional[str] = None,
+             li_class: Optional[str] = None) -> str:
         """List formatting.
+
+        Note that this function provides a minimal support for list
+        customization through the ul_class and li_class arguments, but fancier
+        formatting (e.g., where different list items have different attributes)
+        are not supported.
         """
-        lines = [cls.indent('<ul>', indent)]
+        lines = [cls.tag_open('ul', indent, ul_class)]
         for item in items:
-            lines.append('{}'.format(cls.list_item(item, indent + 1)))
-        lines.append(cls.indent('</ul>', indent))
+            lines.append('{}'.format(cls.list_item(item, indent + 1, li_class)))
+        lines.append(cls.tag_close('ul', indent))
         return '\n'.join(lines)
 
     @classmethod

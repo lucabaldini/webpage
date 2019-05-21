@@ -248,11 +248,35 @@ class WorkList(List[Work]):
         lines = self._format(str, Work.ascii)
         return '\n'.join(lines)
 
-    def html(self) -> str:
+    def html_simple(self, indent: int = 4) -> str:
         """HTML representation.
+
+        Legacy function returning the simplest possible HTML representation
+        (i.e., a simple unordered list with no class specifications).
         """
         lines = self._format(HTML.heading3, Work.html)
-        return HTML.list(lines)
+        return HTML.list(lines, indent)
+
+    def  html(self, indent: int = 4) -> str:
+        """HTML representation.
+
+        We initially though we could do this reusing the logic in the _format()
+        class method, but that made unnecessarily convolute specifying
+        different li HTML attributes for lines representing years and those
+        representing actual publications, so we're resorting to an explicit
+        loop, here.
+        """
+        lines = [HTML.tag_open('ul', indent, class_='publication-list')]
+        current_year = None
+        for i, work in enumerate(self):
+            if work.year() != current_year:
+                class_ = 'publication-year'
+                lines.append(HTML.list_item(work.year(), indent + 1, class_))
+                current_year = work.year()
+            class_ = 'publication-item'
+            text = '[{}] {}'.format(i + 1, work.html())
+            lines.append(HTML.list_item(text, indent + 1, class_))
+        return '\n'.join(lines)
 
     def latex(self) -> str:
         """LaTeX representation.
