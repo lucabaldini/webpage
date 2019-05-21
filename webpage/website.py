@@ -530,7 +530,8 @@ def page_template() -> str:
                        css_target=DEFAULT_CSS_HREF, header=PAGE_HEADER_TEXT,
                        copyright_start=COPYRIGHT_START_YEAR,
                        copyright_end=COPYRIGHT_END_YEAR,
-                       last_update=LAST_UPDATE_STRING)
+                       last_update=LAST_UPDATE_STRING,
+                       version=webpage.__version__)
     return text
 
 
