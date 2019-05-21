@@ -139,7 +139,7 @@ class HTML:
         dictionary manually every time).
         """
         return '{}{}{}'.format(cls.tag_open(tag, indent, class_, **attributes),
-                               text, cls.tag_close(tag, indent))
+                               text, cls.tag_close(tag))
 
     @classmethod
     def heading3(cls, text: str, indent: int = 0, class_: str = None,
