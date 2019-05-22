@@ -25,6 +25,8 @@ import logging
 
 from webpage.helpers import mktree
 
+from .version import version as __version__
+
 
 # Basic local environment.
 #

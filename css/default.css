@@ -1,105 +1,105 @@
 html
 {
-    /*This is needed in order to force the scroll bar to appear on the right
-      even when the page content would vertically fit in the page---otherwise
-      the centering would depend on whether the page has a scrollbar or not.*/
-    height: 101%;
+  /*This is needed in order to force the scroll bar to appear on the right
+  even when the page content would vertically fit in the page---otherwise
+  the centering would depend on whether the page has a scrollbar or not.*/
+  height: 101%;
 }
 
 body
 {
-    margin: 0;
-    padding: 0;
-    font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
-    color: #666;
+  margin: 0;
+  padding: 0;
+  font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
+  color: #666;
 }
 
 p.code
 {
-    font-family: monospace;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  font-family: monospace;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .column1 {
-    text-align: left;
-    width: 31%;
-    float: left;
+  text-align: left;
+  width: 31%;
+  float: left;
 }
 
 .column2 {
-    text-align: left;
-    width: 32%;
-    float: left;
-    padding-left: 3%;
-    padding-right: 3%;
+  text-align: left;
+  width: 32%;
+  float: left;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
 .column3 {
-    text-align: left;
-    width: 31%;
-    float: left;
+  text-align: left;
+  width: 31%;
+  float: left;
 }
 
 h1
 {
-    font: 175% sans-serif;
-    color: #ff9900;
+  font: 175% sans-serif;
+  color: #ff9900;
 }
 
 h2
 {
-    font: 125% sans-serif;
-    font-variant: small-caps;
-    /*font-weight: bold;*/
-    color: #ff9900;
+  font: 125% sans-serif;
+  font-variant: small-caps;
+  /*font-weight: bold;*/
+  color: #ff9900;
 }
 
 h3
 {
-    font: 110% sans-serif;
-    font-variant: small-caps;
-    /*font-weight: bold;*/
-    color: #ff9900;
+  font: 110% sans-serif;
+  font-variant: small-caps;
+  /*font-weight: bold;*/
+  color: #ff9900;
 }
 
 h4
 {
-    font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
-    font-variant: small-caps;
-    /*font-weight: bold;*/
-    color: #666;
-    margin-bottom: 0px;
-    padding-bottom: 0;
-    margin-top: 0px;
-    padding-top: 0;
+  font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
+  font-variant: small-caps;
+  /*font-weight: bold;*/
+  color: #666;
+  margin-bottom: 0px;
+  padding-bottom: 0;
+  margin-top: 0px;
+  padding-top: 0;
 }
 
 a
 {
-    color: #00f;
-    text-decoration: none;
+  color: #00f;
+  text-decoration: none;
 }
 
 a:hover
 {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Style the page header */
 header
 {
-    height: 67px;
-    width: 100%;
-    position: relative;
-    background: url(../images/header.png) repeat 0 0;
-    border-bottom: 1px solid #aaa;
-    padding-top: 15px;
-    text-align: center;
+  height: 67px;
+  width: 100%;
+  position: relative;
+  background: url(../images/header.png) repeat 0 0;
+  border-bottom: 1px solid #aaa;
+  padding-top: 15px;
+  text-align: center;
 }
 
 /* Container for flexboxes */
-div.mainpage {
+section {
   display: -webkit-flex;
   display: flex;
   margin-left: auto;
@@ -149,109 +149,193 @@ div.badge
 
 nav a
 {
-    color: #666; text-decoration: none;
+  color: #666; text-decoration: none;
 }
 
 nav a:hover
 {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 nav ul
 {
-    margin: 1em 0;
-    padding: 0;
+  margin: 1em 0;
+  padding: 0;
 }
 
 nav ul li
 {
-    margin: 0 0 1em;
-    padding: 0;
-    list-style-type: none;
+  margin: 0 0 1em;
+  padding: 0;
+  list-style-type: none;
 }
 
 nav ul li.inactive
 {
-    color: #aaa;
+  color: #aaa;
 }
 
 article img.floatright
 {
-    float: right;
-    margin: 0px 0px 10px 30px;
+  float: right;
+  margin: 0px 0px 10px 30px;
 }
 
 article img.floatleft
 {
-    float: left;
-    margin: 0px 30px 10px 0px;
+  float: left;
+  margin: 0px 30px 10px 0px;
 }
 
 article span.date
 {
-    font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
-    font-variant: small-caps;
-    color: #666;
+  font: 90% Lucida Grande,Lucida Sans,Arial,sans-serif;
+  font-variant: small-caps;
+  color: #666;
 }
 
 article span.date:before
 {
-    color: #666;
-    content: "[";
+  color: #666;
+  content: "[";
 }
 
 article span.date:after
 {
-    color: #666;
-    content: "]";
+  color: #666;
+  content: "]";
 }
 
 article font.emph
 {
-    color: #ff8800;
+  color: #ff8800;
 }
 
 article ul
 {
-    margin: 1em 0;
-    padding: 0;
+  margin: 1em 0;
+  padding: 0;
 }
 
 article ul li
 {
-    margin: 0 0 0.75em;
-    padding: 0;
-    list-style-type: none;
+  margin: 0 0 0.75em;
+  padding: 0;
+  list-style-type: none;
 }
 
 article ul li:before
 {
-    content: "";
+  content: "";
 }
 
-footer a:link    { text-decoration: none; }
+footer a:link  { text-decoration: none; }
 footer a:hover   { text-decoration: underline; }
 
 nav i
 {
-    font-size: 17px;
-    width: 30px;
+  font-size: 17px;
+  width: 30px;
 }
 
 footer i
 {
-    font-size: 18px;
-    width: 30px;
-    color: gray;
+  font-size: 18px;
+  width: 30px;
+  color: gray;
 }
 
+.timeline, .publication-list, .conference-list
+{
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 12px;
+  padding-bottom: 2px;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after, .publication-list::after, .conference-list::after
+{
+  content: '';
+  position: absolute;
+  width: 3px;
+  background-color: #ccc;
+  top: 0;
+  bottom: 0;
+  margin-left: -8px;
+}
+.timeline::after
+{
+  left: 30%;
+}
+.publication-list::after, .conference-list::after
+{
+  left: 80px;
+}
+
+.event, .publication-year, .publication-item, .conference-year, .conference-item
+{
+  position: relative;
+}
+.event
+{
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 32%;
+}
+.publication-year, .publication-item, .conference-year, .conference-item
+{
+  padding-left: 100px;
+}
+.publication-year, .conference-year
+{
+  color: #ff9900;
+  font-size: 120%;
+  text-align: left;
+  width: 100px;
+  left: -90px;
+}
+
+.event::before
+{
+  display: block;
+  position: absolute;
+  content: attr(date);
+  text-align: right;
+  width: 30%;
+  left: -30px;
+}
+
+/* The circles on the timeline */
+.event::after, .publication-year::after, .conference-year::after
+{
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #ccc;
+  border: 2px solid #FF9F55;
+  border-radius: 50%;
+  z-index: 1;
+}
+.event::after
+{
+  right: 70%;
+  top: 8px;
+}
+.publication-year::after, .conference-year::after
+{
+  right: 30px;
+  top: 10px;
+}
 
 
 /* Responsive layout - makes the menu and the content (inside the section) sit
  on top of each other instead of next to each other */
 @media (max-width: 600px) {
   section {
-    -webkit-flex-direction: column;
-    flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
   }
 }
