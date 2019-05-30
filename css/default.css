@@ -339,3 +339,12 @@ footer i
   flex-direction: column;
   }
 }
+
+@media print {
+  nav, footer {
+    display: none;
+  }
+  section {
+    display: block;
+  }
+}
