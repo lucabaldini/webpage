@@ -23,6 +23,29 @@ import os
 import shutil
 import functools
 import argparse
+import subprocess
+
+
+def cmd(*args: str) -> int:
+    """Execute a command (small wrapper around subprocess.run()).
+    """
+    logging.info('About to execute command {}'.format(' '.join(args)))
+    proc = subprocess.run(args)
+    status = proc.returncode
+    logging.info('Command completed with return code {}'.format(status))
+    return status
+
+
+def cmdoutput(*args: str, strip_endline: bool = True) -> str:
+    """Small snipped to capture the command output.
+
+    See https://stackoverflow.com/questions/4760215/ and
+    https://stackoverflow.com/questions/606191
+    """
+    output = subprocess.run(args, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    if strip_endline:
+        output = output.strip('\n')
+    return output
 
 
 def mktree(folder_path: str) -> None:
