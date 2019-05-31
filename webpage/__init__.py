@@ -33,7 +33,7 @@ from .version import version as __version__
 BASE_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
 
-def _webpage_folder(*args) -> str:
+def _join(*args) -> str:
     """Path concatenation relatove to the bas package folder.
     (Avoids some typing.)
     """
@@ -41,13 +41,14 @@ def _webpage_folder(*args) -> str:
 
 
 # Input folders.
-CONTENTS_FOLDER = _webpage_folder('contents')
+CONTENTS_FOLDER = _join('contents')
 CSS_FOLDER_NAME = 'css'
-CSS_FOLDER = _webpage_folder(BASE_FOLDER, CSS_FOLDER_NAME)
-DOCS_FOLDER = _webpage_folder(BASE_FOLDER, 'docs')
+CSS_FOLDER = _join(BASE_FOLDER, CSS_FOLDER_NAME)
+DOCS_FOLDER = _join(BASE_FOLDER, 'docs')
 IMG_FOLDER_NAME = 'images'
-IMG_FOLDER = _webpage_folder(BASE_FOLDER, IMG_FOLDER_NAME)
-ORCID_FOLDER = _webpage_folder(BASE_FOLDER, 'orcid')
+IMG_FOLDER = _join(BASE_FOLDER, IMG_FOLDER_NAME)
+ORCID_FOLDER = _join(BASE_FOLDER, 'orcid')
+WEBPAGE_FOLDER = _join(BASE_FOLDER, 'webpage')
 
 
 def content_file_path(file_name: str) -> str:
@@ -75,9 +76,9 @@ def read_content(file_name: str) -> str:
 
 
 # Output folders
-OUTPUT_FOLDER = _webpage_folder(BASE_FOLDER, 'html')
-OUTPUT_CSS_FOLDER = _webpage_folder(OUTPUT_FOLDER, CSS_FOLDER_NAME)
-OUTPUT_IMG_FOLDER = _webpage_folder(OUTPUT_FOLDER, IMG_FOLDER_NAME)
+OUTPUT_FOLDER = _join(BASE_FOLDER, 'html')
+OUTPUT_CSS_FOLDER = _join(OUTPUT_FOLDER, CSS_FOLDER_NAME)
+OUTPUT_IMG_FOLDER = _join(OUTPUT_FOLDER, IMG_FOLDER_NAME)
 
 
 def create_local_tree() -> None:
