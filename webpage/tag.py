@@ -61,7 +61,7 @@ def tag(version: str) -> None:
     cmd('git', 'commit', '-a', '-m "{}"'.format(msg))
     cmd('git', 'push')
     msg = 'Tagging version {}'.format(version)
-    cmd('git', 'tag', '-a {}'.format(version), '-m "{}"'.format(msg))
+    cmd('git', 'tag', '-a', '{}'.format(version), '-m "{}"'.format(msg))
     cmd('git', 'push', '--tags')
     git_revision = cmdoutput('git', 'rev-parse', 'HEAD')
     return git_revision
