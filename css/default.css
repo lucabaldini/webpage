@@ -332,10 +332,24 @@ footer i
 
 
 /* Responsive layout - makes the menu and the content (inside the section) sit
- on top of each other instead of next to each other */
+on top of each other instead of next to each other */
 @media (max-width: 600px) {
   section {
   -webkit-flex-direction: column;
   flex-direction: column;
+  }
+}
+
+/* Do the necessary tweaks for printing.
+*/
+@media print {
+  /* Remove menu and footers, */
+  nav, footer {
+    display: none;
+  }
+  /* Disable the flexbox rendering, that does not play out nicely with
+  printing.*/
+  section {
+    display: block;
   }
 }
