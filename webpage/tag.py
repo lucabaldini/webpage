@@ -16,6 +16,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+"""Rudimentary release manager.
+"""
+
 import os
 import sys
 import logging
@@ -32,12 +35,12 @@ TAG_MODES = ['major', 'minor', 'patch']
 def bump_version(mode: str) -> str:
     """Bump the version (either the major, minor or patch bit).
     """
-    logging.info('Bumping version {} ({})...'.format(current_version, mode))
+    logging.info('Bumping version %s (%s)...', current_version, mode)
     assert mode in TAG_MODES
     major, minor, patch = (int(item) for item in current_version.split('.'))
     if mode == 'major':
         major += 1
-        release = 0
+        minor = 0
         patch = 0
     elif mode == 'minor':
         minor += 1
@@ -45,7 +48,7 @@ def bump_version(mode: str) -> str:
     elif mode == 'patch':
         patch += 1
     new_version = '{}.{}.{}'.format(major, minor, patch)
-    logging.info('New version is {}'.format(new_version))
+    logging.info('New version is %s', new_version)
     return new_version
 
 
@@ -53,10 +56,11 @@ def update_version_file(version: str, git_revision: str) -> None:
     """Update the version file.
     """
     file_path = os.path.join(WEBPAGE_FOLDER, 'version.py')
-    logging.info('Writing version file "{}"...'.format(file_path))
+    logging.info('Writing version file "%s"...', file_path)
     with open(file_path, 'w') as input_file:
         input_file.write('# Automatically created by {}.\n'.format(__file__))
-        input_file.write('# Do not edit by hand.\n\n')
+        input_file.write('# Do not edit by hand.\n')
+        input_file.write('# pylint: skip-file\n\n')
         input_file.write('version = "{}"\n'.format(version))
         input_file.write('release_date = "{}"\n'.format(datetime.datetime.now()))
         input_file.write('git_revision = "{}"\n'.format(git_revision))
@@ -81,17 +85,17 @@ def tag(version: str) -> None:
     cmd('git', 'push', '--tags')
 
 
-def release(mode: str) -> None:
+def release() -> None:
     """Release a new version of the webpage.
     """
-    version = bump_version(mode)
+    parser = ArgumentParser()
+    parser.add_argument('--tagmode', required=True, choices=TAG_MODES)
+    args = parser.parse_args()
+    version = bump_version(args.tagmode)
     tag(version)
 
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    parser = ArgumentParser()
-    parser.add_argument('--tagmode', required=True, choices=TAG_MODES)
-    args = parser.parse_args()
-    release(args.tagmode)
+    release()

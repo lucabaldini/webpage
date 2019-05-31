@@ -1,5 +1,6 @@
 # Automatically created by webpage/tag.py.
 # Do not edit by hand.
+# pylint: skip-file
 
 version = "0.1.0"
 release_date = "2019-05-31 21:31:29.818186"

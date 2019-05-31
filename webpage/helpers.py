@@ -29,10 +29,10 @@ import subprocess
 def cmd(*args: str) -> int:
     """Execute a command (small wrapper around subprocess.run()).
     """
-    logging.info('About to execute command "{}"'.format(' '.join(args)))
+    logging.info('About to execute command "%s"', (' '.join(args)))
     proc = subprocess.run(args)
     status = proc.returncode
-    logging.info('Command completed with return code {}'.format(status))
+    logging.info('Command completed with return code %s.', status)
     return status
 
 
