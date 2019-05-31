@@ -49,24 +49,6 @@ def bump_version(mode: str) -> str:
     return new_version
 
 
-def tag(version: str) -> None:
-    """Tag a new version of the package.
-    """
-    git_branch = cmdoutput('git', 'rev-parse', '--abbrev-ref', 'HEAD')
-    if git_branch != 'master':
-        sys.exit('Trying to tag a branch different from the master... Abort.')
-    cmd('git', 'pull')
-    cmd('git', 'status')
-    msg = 'Prepare for tag %s.' % version
-    cmd('git', 'commit', '-a', '-m "{}"'.format(msg))
-    cmd('git', 'push')
-    msg = 'Tagging version {}'.format(version)
-    cmd('git', 'tag', '-a', '{}'.format(version), '-m "{}"'.format(msg))
-    cmd('git', 'push', '--tags')
-    git_revision = cmdoutput('git', 'rev-parse', 'HEAD')
-    return git_revision
-
-
 def update_version_file(version: str, git_revision: str) -> None:
     """Update the version file.
     """
@@ -81,12 +63,29 @@ def update_version_file(version: str, git_revision: str) -> None:
     logging.info('Done.')
 
 
+def tag(version: str) -> None:
+    """Tag a new version of the package.
+    """
+    git_branch = cmdoutput('git', 'rev-parse', '--abbrev-ref', 'HEAD')
+    if git_branch != 'master':
+        sys.exit('Trying to tag a branch different from the master... Abort.')
+    cmd('git', 'pull')
+    cmd('git', 'status')
+    git_revision = cmdoutput('git', 'rev-parse', 'HEAD')
+    update_version_file(version, git_revision)
+    msg = 'Prepare for tag %s.' % version
+    cmd('git', 'commit', '-a', '-m "{}"'.format(msg))
+    cmd('git', 'push')
+    msg = 'Tagging version {}'.format(version)
+    cmd('git', 'tag', '-a', '{}'.format(version), '-m "{}"'.format(msg))
+    cmd('git', 'push', '--tags')
+
+
 def release(mode: str) -> None:
     """Release a new version of the webpage.
     """
     version = bump_version(mode)
-    git_revision = tag(version)
-    update_version_file(version, git_revision)
+    tag(version)
 
 
 

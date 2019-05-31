@@ -1,6 +1,6 @@
 # Automatically created by webpage/tag.py.
 # Do not edit by hand.
 
-version = "0.0.4"
-release_date = "2019-05-31 21:20:50.275433"
-git_revision = "638c0cf8a6b383efc6083b4085efc98e527171b1"
+version = "0.0.5"
+release_date = "2019-05-31 21:21:51.867174"
+git_revision = "97d439f13d8d3a54e3bcac8dc95c6e6e0a2289da"
