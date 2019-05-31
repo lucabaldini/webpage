@@ -75,7 +75,7 @@ def update_version_file(version: str, git_revision: str) -> None:
     with open(file_path, 'w') as input_file:
         input_file.write('# Automatically created by {}.\n'.format(__file__))
         input_file.write('# Do not edit by hand.\n\n')
-        input_file.write('version = "{}\n'.format(version))
+        input_file.write('version = "{}"\n'.format(version))
         input_file.write('release_date = "{}"\n'.format(datetime.datetime.now()))
         input_file.write('git_revision = "{}"\n'.format(git_revision))
     logging.info('Done.')
