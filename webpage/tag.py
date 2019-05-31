@@ -22,7 +22,7 @@ import logging
 import datetime
 
 from webpage import WEBPAGE_FOLDER
-from webpage.helpers import cmd, cmdoutput
+from webpage.helpers import cmd, cmdoutput, ArgumentParser
 from webpage.version import version as current_version
 
 
@@ -91,4 +91,7 @@ def release(mode: str) -> None:
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    release('patch')
+    parser = ArgumentParser()
+    parser.add_argument('--tagmode', required=True, choices=TAG_MODES)
+    args = parser.parse_args()
+    release(args.tagmode)
