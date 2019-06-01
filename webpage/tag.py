@@ -23,6 +23,7 @@ import os
 import sys
 import logging
 import datetime
+import textwrap
 
 from webpage import WEBPAGE_FOLDER
 from webpage.helpers import cmd, cmdoutput, ArgumentParser
@@ -60,10 +61,11 @@ def update_version_file(version: str, git_revision: str) -> None:
     text = """# Automatically created by {}, do not edit by hand.
     # pylint: skip-file
     #
-    # version = "{}"
-    # release_date = "{}"
-    # git_revision = "{}"
+    version = "{}"
+    release_date = "{}"
+    git_revision = "{}"
     """.format(__file__, version, datetime.datetime.now(), git_revision)
+    text = textwrap.dedent(text)
     with open(file_path, 'w') as input_file:
         input_file.write(text)
     logging.info('Done.')
