@@ -99,7 +99,6 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
         # Add the remaining lines (mind the last from the last step is relevant.)
         lines.append(line)
         lines += input_file.readlines()
-    print(''.join(lines))
     # Write all the crap to file.
     logging.info('Updating release notes...')
     with open(RELEASE_NOTES, 'w') as output_file:
