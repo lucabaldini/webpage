@@ -78,16 +78,26 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
     This prepends a line to the release notes with the tag information.
     """
     lines = []
+    # Read the current version of the relase notes.
     with open(RELEASE_NOTES, 'r') as input_file:
+        # Read the first line and make sure it's right.
         line = input_file.readline()
         assert line == 'Release notes\n'
         lines.append(line)
+        # Read the second line and make sure it's right.
         line = input_file.readline()
         assert line == '=============\n'
         lines.append(line)
-        lines.append('\n\n*webpage {} ({}) - {}*'.format(version, revision,
-                                                         timestamp))
+        # Append the release-manager-generated line.
+        line = '\n\n*webpage {} ({}) - {}*'.format(version, revision, timestamp)
+        lines.append(line)
+        # Skip any leading empty line.
+        while line.strip() == '\n':
+            line = input_file.readline()
+        # Add the remaining lines (mind the last from the last step is relevant.)
+        lines.append(line)
         lines += input_file.readlines()
+    # Write all the crap to file.
     logging.info('Updating release notes...')
     with open(RELEASE_NOTES, 'w') as output_file:
         output_file.writelines(lines)
