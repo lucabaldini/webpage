@@ -89,7 +89,7 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
                                                        timestamp))
         lines += input_file.readlines()
     logging.info('Updating release notes...')
-    with open(RELEASE_NOTES, 'r') as output_file:
+    with open(RELEASE_NOTES, 'w') as output_file:
         output_file.writelines(lines)
     logging.info('Done.')
 
