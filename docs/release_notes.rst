@@ -3,11 +3,7 @@ Release notes
 
 
 *webpage 0.3.2 (7118357fde1f51a77520e1811056938914efb848) - 2019-06-01 10:19:58.599464*
-
-*webpage 0.3.2 (7118357fde1f51a77520e1811056938914efb848) - 2019-06-01 10:19:58.599464*
-
-
-* Event more tinkering with the release manager.
+* Even more tinkering with the release manager.
 
 
 *webpage 0.3.1 (3e6ec322ed9c93107d499cc47f270b7f15b09e53) - 2019-06-01 10:13:50.201774*
