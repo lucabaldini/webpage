@@ -89,14 +89,16 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
         assert line == '=============\n'
         lines.append(line)
         # Append the release-manager-generated line.
-        line = '\n\n*webpage {} ({}) - {}*'.format(version, revision, timestamp)
+        line = '\n\n*webpage {} ({}) - {}*\n'.format(version, revision, timestamp)
         lines.append(line)
         # Skip any leading empty line.
-        while line.strip() == '\n':
+        line = ' '
+        while line.isspace():
             line = input_file.readline()
         # Add the remaining lines (mind the last from the last step is relevant.)
         lines.append(line)
         lines += input_file.readlines()
+    print(''.join(lines))
     # Write all the crap to file.
     logging.info('Updating release notes...')
     with open(RELEASE_NOTES, 'w') as output_file:
