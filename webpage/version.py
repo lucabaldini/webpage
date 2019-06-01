@@ -1,7 +1,7 @@
-# Automatically created by webpage/tag.py.
-# Do not edit by hand.
-# pylint: skip-file
-
-version = "0.1.1"
-release_date = "2019-05-31 21:40:51.963183"
-git_revision = "9b0a5b10034e21216c62551a7466546ad70a227c"
+# Automatically created by webpage/tag.py, do not edit by hand.
+    # pylint: skip-file
+    #
+    # version = "0.1.2"
+    # release_date = "2019-06-01 09:03:20.763655"
+    # git_revision = "446a68f7f41d72ed91297452d660db5ad6f6dfbc"
+    
