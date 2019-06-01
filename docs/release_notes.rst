@@ -2,6 +2,10 @@ Release notes
 =============
 
 
+*webpage 0.3.2 (7118357fde1f51a77520e1811056938914efb848) - 2019-06-01 10:19:58.599464*
+
+*webpage 0.3.2 (7118357fde1f51a77520e1811056938914efb848) - 2019-06-01 10:19:58.599464*
+
 
 * Event more tinkering with the release manager.
 
