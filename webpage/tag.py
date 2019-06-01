@@ -57,13 +57,15 @@ def update_version_file(version: str, git_revision: str) -> None:
     """
     file_path = os.path.join(WEBPAGE_FOLDER, 'version.py')
     logging.info('Writing version file "%s"...', file_path)
+    text = """# Automatically created by {}, do not edit by hand.
+    # pylint: skip-file
+    #
+    # version = "{}"
+    # release_date = "{}"
+    # git_revision = "{}"
+    """.format(__file__, version, datetime.datetime.now(), git_revision)
     with open(file_path, 'w') as input_file:
-        input_file.write('# Automatically created by {}.\n'.format(__file__))
-        input_file.write('# Do not edit by hand.\n')
-        input_file.write('# pylint: skip-file\n\n')
-        input_file.write('version = "{}"\n'.format(version))
-        input_file.write('release_date = "{}"\n'.format(datetime.datetime.now()))
-        input_file.write('git_revision = "{}"\n'.format(git_revision))
+        input_file.write(text)
     logging.info('Done.')
 
 
