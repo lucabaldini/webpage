@@ -58,7 +58,8 @@ def update_version_file(version: str, git_revision: str) -> None:
     """
     file_path = os.path.join(WEBPAGE_FOLDER, 'version.py')
     logging.info('Writing version file "%s"...', file_path)
-    text = """# Automatically created by {}, do not edit by hand.
+    text = """\
+    # Automatically created by {}, do not edit by hand.
     # pylint: skip-file
     #
     version = "{}"
