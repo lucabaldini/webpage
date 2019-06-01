@@ -11,6 +11,7 @@ Welcome to webpage's documentation!
    :caption: Contents:
 
    api
+   release_notes
 
 
 Indices and tables

@@ -89,7 +89,8 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
         assert line == '=============\n'
         lines.append(line)
         # Append the release-manager-generated line.
-        line = '\n\n*webpage {} ({}) - {}*\n'.format(version, revision, timestamp)
+        line = '\n\n*webpage {} ({}) - {}*\n\n'.format(version, revision,
+                                                       timestamp)
         lines.append(line)
         # Skip any leading empty line.
         line = ' '
