@@ -36,7 +36,7 @@ from webpage.orcid import ORCID
 #
 PAGE_AUTHOR = 'Luca Baldini'
 PAGE_DESCRIPTION = '%s\'s home page' % PAGE_AUTHOR
-PAGE_BASE_TITLE = 'Luca Baldini @ UNIPI/INFN&ndash;Pisa'
+PAGE_BASE_TITLE = 'Luca Baldini @ UNIPI/INFN'
 PAGE_HEADER_TEXT = PAGE_BASE_TITLE
 PAGE_KEYWORDS = ('Luca Baldini',
                  'INFN',
