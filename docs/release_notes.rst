@@ -2,6 +2,8 @@ Release notes
 =============
 
 
+*webpage 0.4.0 (37ef808b1f9ca14e3a44c52635fb78d6e45ee992) - 2019-06-01 14:59:43.740649*
+
 * Main page title changed.
 * Path fixed in conf.py for compiling the documentation.
 * README.md updated.
