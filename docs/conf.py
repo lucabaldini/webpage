@@ -15,7 +15,7 @@
 import datetime
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.abspath('..'), 'webpage'))
+sys.path.insert(0, os.path.join(os.path.abspath('..')))
 
 from webpage import __version__
 
