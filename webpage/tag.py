@@ -25,7 +25,7 @@ import logging
 import datetime
 import textwrap
 
-from webpage import WEBPAGE_FOLDER
+from webpage import WEBPAGE_FOLDER, RELEASE_NOTES
 from webpage.helpers import cmd, cmdoutput, ArgumentParser
 from webpage.version import version as current_version
 
@@ -53,7 +53,7 @@ def bump_version(mode: str) -> str:
     return new_version
 
 
-def update_version_file(version: str, git_revision: str) -> None:
+def update_version_file(version: str, timestamp: str, revision: str) -> None:
     """Update the version file.
     """
     file_path = os.path.join(WEBPAGE_FOLDER, 'version.py')
@@ -64,11 +64,33 @@ def update_version_file(version: str, git_revision: str) -> None:
     #
     version = "{}"
     release_date = "{}"
-    git_revision = "{}"
-    """.format(__file__, version, datetime.datetime.now(), git_revision)
+    revision = "{}"
+    """.format(__file__, version, timestamp, revision)
     text = textwrap.dedent(text)
     with open(file_path, 'w') as input_file:
         input_file.write(text)
+    logging.info('Done.')
+
+
+def update_release_notes(version: str, timestamp: str, revision: str) -> None:
+    """Update the release notes.
+
+    This prepends a line to the release notes with the tag information.
+    """
+    lines = []
+    with open(RELEASE_NOTES, 'r') as input_file:
+        line = input_file.readline()
+        assert line == 'Release notes\n'
+        lines.append(line)
+        line = input_file.readline()
+        assert line == '=============\n'
+        lines.append(line)
+        lines.append('\n\nwebpage {} ({}) - {}'.format(version, revision,
+                                                       timestamp))
+        lines += input_file.readlines()
+    logging.info('Updating release notes...')
+    with open(RELEASE_NOTES, 'r') as output_file:
+        output_file.writelines(lines)
     logging.info('Done.')
 
 
@@ -80,8 +102,10 @@ def tag(version: str) -> None:
         sys.exit('Trying to tag a branch different from the master... Abort.')
     cmd('git', 'pull')
     cmd('git', 'status')
-    git_revision = cmdoutput('git', 'rev-parse', 'HEAD')
-    update_version_file(version, git_revision)
+    timestamp = str(datetime.datetime.now())
+    revision = cmdoutput('git', 'rev-parse', 'HEAD')
+    update_version_file(version, timestamp, revision)
+    update_release_notes(version, timestamp, revision)
     msg = 'Prepare for tag %s.' % version
     cmd('git', 'commit', '-a', '-m "{}"'.format(msg))
     cmd('git', 'push')

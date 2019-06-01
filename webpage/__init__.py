@@ -45,6 +45,7 @@ CONTENTS_FOLDER = _join('contents')
 CSS_FOLDER_NAME = 'css'
 CSS_FOLDER = _join(BASE_FOLDER, CSS_FOLDER_NAME)
 DOCS_FOLDER = _join(BASE_FOLDER, 'docs')
+RELEASE_NOTES = os.path.join(DOCS_FOLDER, 'release_notes.rst')
 IMG_FOLDER_NAME = 'images'
 IMG_FOLDER = _join(BASE_FOLDER, IMG_FOLDER_NAME)
 ORCID_FOLDER = _join(BASE_FOLDER, 'orcid')
