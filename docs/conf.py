@@ -12,21 +12,30 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.abspath('..'), 'webpage'))
+
+from webpage import __version__
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'webpage'
-copyright = '2019, Luca Baldini'
 author = 'Luca Baldini'
+copyright_start_year = 2019
+copyright_end_year = datetime.datetime.now().year
+if copyright_end_year == copyright_start_year:
+    copyright = '{}'.format(copyright_end_year)
+else:
+    copyright = '{}-{}'.format(copyright_start_year, copyright_end_year)
+copyright = '{}, {}'.format(copyright, author)
 
 # The short X.Y version
-version = ''
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

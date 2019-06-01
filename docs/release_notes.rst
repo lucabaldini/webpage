@@ -2,6 +2,11 @@ Release notes
 =============
 
 
+*webpage 0.3.5 (da31a898f78c305a624dda3f5bae277d8a760871) - 2019-06-01 10:42:45.502976*
+
+* Sphinx version number and copyright notice updated.
+
+
 *webpage 0.3.4 (6fb96a2c9aea5988bfb479eb03beb99401e9f9c4) - 2019-06-01 10:33:08.182177*
 
 * Release notes added to sphinx.
