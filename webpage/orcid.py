@@ -276,6 +276,7 @@ class WorkList(List[Work]):
             class_ = 'publication-item'
             text = '[{}] {}'.format(i + 1, work.html())
             lines.append(HTML.list_item(text, indent + 1, class_))
+        lines.append(HTML.tag_close('ul', indent))
         return '\n'.join(lines)
 
     def latex(self) -> str:
