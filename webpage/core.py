@@ -244,13 +244,14 @@ class PageMenuEntry:
     """
 
     def __init__(self, title: str, target: str, icon: Optional[str] = None,
-                 hook=None) -> None:
+                 hook=None, language: str = 'en') -> None:
         """Constructor.
         """
         self.title = title
         self.target = target
         self.icon = icon
         self.hook = hook
+        self.language = language
 
     def points_to_file(self) -> bool:
         """Return True if the target is a html file name (i.e., not a folder).
@@ -300,10 +301,10 @@ class PageMenu(List[PageMenuEntry]):
     """
 
     def add_entry(self, title: str, target: str, icon: Optional[str] = None,
-                  hook=None) -> None:
+                  hook=None, language: str = 'en') -> None:
         """Add an entry to the menu.
         """
-        self.append(PageMenuEntry(title, target, icon, hook))
+        self.append(PageMenuEntry(title, target, icon, hook, language))
 
     def ascii(self) -> str:
         """ASCII representation.
