@@ -508,12 +508,13 @@ MENU.add_entry('Presentations', 'talks.html', 'far fa-comment-dots',
 MENU.add_entry('About me', 'aboutme.html', 'far fa-user')
 MENU.add_entry('Links', 'links.html', 'fab fa-hubspot')
 MENU.add_entry('Miscellanea', 'misc.html', 'fas fa-random')
-MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher')
+MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher',
+               language='it')
 MENU.add_entry('Private area', 'private', 'fas fa-lock')
 
 
 @memoize
-def page_template() -> str:
+def page_template(language: str = 'en') -> str:
     """Create the basic template for all the HTML pages in the website.
 
     The function is reading the basic template in the html file in the contents
@@ -521,10 +522,11 @@ def page_template() -> str:
     once and forever at the beginning, such as the last update. The template can
     then be interpolated to add the menu and the actual content.
 
-    Maybe this can be memoized?
+    Note this is wrapped with the @memoize decorator, so that we do not read
+    the html template more times than necessary (i.e., exactly once per line).
     """
     text = webpage.read_content('template.html')
-    text = text.format(base_title=PAGE_BASE_TITLE,
+    text = text.format(language=language, base_title=PAGE_BASE_TITLE,
                        keywords=PAGE_KEYWORDS_STRING,
                        description=PAGE_DESCRIPTION, author=PAGE_AUTHOR,
                        css_target=DEFAULT_CSS_HREF, header=PAGE_HEADER_TEXT,
@@ -535,13 +537,14 @@ def page_template() -> str:
     return text
 
 
-def _write_page(title: str, target: str, hook=None) -> None:
+def _write_page(title: str, target: str, hook=None,
+                language: str = 'en') -> None:
     """Write a single html page to file.
 
     This is the main workhorse function to wirte static html web pages.
     """
     logging.info('Processing page "%s"...', title)
-    template = page_template()
+    template = page_template(language)
     menu = HTML.indent(MENU.html(title), 4)
     content = HTML.indent(webpage.read_content(target), 4)
     if hook is not None:
@@ -560,7 +563,7 @@ def write_static_pages() -> None:
     # Write the static pages driven by the menu.
     for entry in MENU:
         if entry.points_to_file():
-            _write_page(entry.title, entry.target, entry.hook)
+            _write_page(entry.title, entry.target, entry.hook, entry.language)
     # And write everything else is necessary.
     _write_page('About this website', 'about.html')
 

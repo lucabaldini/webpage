@@ -64,21 +64,20 @@ def copy(src: str, dest: str) -> None:
 
 
 def memoize(func):
-    """Simple decorator to memoize the return value of a function with no
-    argument.
+    """Simple decorator to memoize the return value of a function.
 
     See https://stackoverflow.com/questions/5630409
     for the use of nonlocal in the body of the wrapper function.
     """
-    cache = None
+    cache = {}
     @functools.wraps(func)
-    def wrapper():
+    def wrapper(*args, **kwargs):
         """Simple wrapper for the function call.
         """
         nonlocal cache
-        if cache is None:
-            cache = func()
-        return cache
+        if not args in cache:
+            cache[args] = func(*args, **kwargs)
+        return cache[args]
     return wrapper
 
 

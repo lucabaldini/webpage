@@ -244,13 +244,14 @@ class PageMenuEntry:
     """
 
     def __init__(self, title: str, target: str, icon: Optional[str] = None,
-                 hook=None) -> None:
+                 hook=None, language: str = 'en') -> None:
         """Constructor.
         """
         self.title = title
         self.target = target
         self.icon = icon
         self.hook = hook
+        self.language = language
 
     def points_to_file(self) -> bool:
         """Return True if the target is a html file name (i.e., not a folder).
@@ -300,10 +301,10 @@ class PageMenu(List[PageMenuEntry]):
     """
 
     def add_entry(self, title: str, target: str, icon: Optional[str] = None,
-                  hook=None) -> None:
+                  hook=None, language: str = 'en') -> None:
         """Add an entry to the menu.
         """
-        self.append(PageMenuEntry(title, target, icon, hook))
+        self.append(PageMenuEntry(title, target, icon, hook, language))
 
     def ascii(self) -> str:
         """ASCII representation.
@@ -516,8 +517,13 @@ class Conference:
             text = '{}\n- {}'.format(text, contribution)
         return text
 
-    def html(self) -> str:
+    def html(self, indent: int = 0) -> str:
         """HTML formatting.
+
+        Mind we're passing an additional indentation argument to the function,
+        here, because otherwise it would be impossible to have the single
+        contributions lined up properly. Not the most elegant thing in the
+        world, admittedly.
         """
         if self.webpage is not None:
             text = '<a href="{}">{}</a>'.format(self.webpage, self.name)
@@ -525,7 +531,8 @@ class Conference:
             text = self.name
         text = '{}, {}, {}'.format(text, self.location, self.time_span.html())
         for contribution in self.contributions:
-            text = '{}{}\n{}'.format(text, HTML.break_(), contribution.html())
+            contr = HTML.indent(contribution.html(), indent + 1)
+            text = '{}{}\n{}'.format(text, HTML.break_(), contr)
         return text
 
     def latex(self) -> str:
@@ -574,6 +581,7 @@ class ConferenceList(list):
                 lines.append(HTML.list_item(conference.year(), indent + 1, class_))
                 current_year = conference.year()
             class_ = 'conference-item'
-            text = '[{}] {}'.format(i + 1, conference.html())
+            text = '[{}] {}'.format(i + 1, conference.html(indent + 1))
             lines.append(HTML.list_item(text, indent + 1, class_))
+        lines.append(HTML.tag_close('ul', indent))
         return '\n'.join(lines)
