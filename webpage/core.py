@@ -576,4 +576,5 @@ class ConferenceList(list):
             class_ = 'conference-item'
             text = '[{}] {}'.format(i + 1, conference.html())
             lines.append(HTML.list_item(text, indent + 1, class_))
+        lines.append(HTML.tag_close('ul', indent))
         return '\n'.join(lines)
