@@ -85,8 +85,8 @@ def update_release_notes(version: str, timestamp: str, revision: str) -> None:
         line = input_file.readline()
         assert line == '=============\n'
         lines.append(line)
-        lines.append('\n\nwebpage {} ({}) - {}'.format(version, revision,
-                                                       timestamp))
+        lines.append('\n\n*webpage {} ({}) - {}*'.format(version, revision,
+                                                         timestamp))
         lines += input_file.readlines()
     logging.info('Updating release notes...')
     with open(RELEASE_NOTES, 'w') as output_file:
