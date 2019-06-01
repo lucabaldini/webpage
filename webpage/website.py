@@ -513,6 +513,7 @@ MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher',
 MENU.add_entry('Private area', 'private', 'fas fa-lock')
 
 
+@memoize
 def page_template(language: str = 'en') -> str:
     """Create the basic template for all the HTML pages in the website.
 
@@ -521,10 +522,8 @@ def page_template(language: str = 'en') -> str:
     once and forever at the beginning, such as the last update. The template can
     then be interpolated to add the menu and the actual content.
 
-    At some point this used to be memoized, but when we added the possibility
-    of setting the language on a page-by-page basis, the original decorator
-    would need to be improved to handle function parameters. Maybe something
-    worth doing?
+    Note this is wrapped with the @memoize decorator, so that we do not read
+    the html template more times than necessary (i.e., exactly once per line).
     """
     text = webpage.read_content('template.html')
     text = text.format(language=language, base_title=PAGE_BASE_TITLE,
