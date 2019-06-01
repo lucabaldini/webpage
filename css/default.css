@@ -296,7 +296,7 @@ footer i
 {
   display: block;
   position: absolute;
-  content: attr(date);
+  content: attr(data-date);
   text-align: right;
   width: 30%;
   left: -30px;
