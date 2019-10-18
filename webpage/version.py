@@ -1,6 +1,6 @@
-# Automatically created by webpage/tag.py, do not edit by hand.
+# Automatically created by tag.py, do not edit by hand.
 # pylint: skip-file
 #
-version = "0.4.0"
-release_date = "2019-06-01 14:59:43.740649"
-revision = "37ef808b1f9ca14e3a44c52635fb78d6e45ee992"
+version = "0.4.1"
+release_date = "2019-10-18 13:53:51.814032"
+revision = "7bac8a598613bb81bc38e84fa04129ec348ea6ed"
