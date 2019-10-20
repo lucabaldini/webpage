@@ -15,14 +15,17 @@
 import datetime
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.abspath('..')))
+
+package_name = 'webpage'
+package_root = os.path.abspath('..')
+sys.path.insert(0, package_root)
+sys.path.insert(0, os.path.join(package_root, package_name))
 
 from webpage import __version__
 
-
 # -- Project information -----------------------------------------------------
 
-project = 'webpage'
+project = package_name
 author = 'Luca Baldini'
 copyright_start_year = 2019
 copyright_end_year = datetime.datetime.now().year
