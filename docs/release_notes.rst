@@ -1,6 +1,9 @@
 Release notes
 =============
 
+
+*webpage 0.5.0 (4423ac18a2537f625f65632f2fc98cf6734f3965) - 2019-10-20 22:28:12.358030*
+
 * Teaching section updated.
 
 
