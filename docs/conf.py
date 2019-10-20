@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(package_root, package_name))
 
 from webpage import __version__
 
+
 # -- Project information -----------------------------------------------------
 
 project = package_name
