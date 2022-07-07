@@ -64,6 +64,23 @@ REMOTE_URLS = ['lbaldini@galilinux.pi.infn.it:public_html',
 #
 CONFERENCE_LIST = ConferenceList()
 CONFERENCE_LIST.add_conference(
+    'European Astronomical Society Annual Meeting',
+    'Valencia (Spain)',
+    'https://eas.unige.ch/EAS2022/',
+    '2022-06-27', '2022-07-01'
+).add_contribution(
+    'The IXPE mission, behind the scenes... and in front ', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'XXX Giornate di Studio sui Rivelatori',
+    'Cogne (Italy)',
+    'http://gsr.to.infn.it/',
+    '2022-06-13', '2022-06-17'
+).add_contribution(
+    'The gas pixels detectors for the Imaging X-Ray Polarimetry Experiment',
+    notes='series of invited lectures'
+)
+CONFERENCE_LIST.add_conference(
     'CIV Congresso Nazionale della Società Italiana di Fisica',
     'Arcavacata di Rende (Italy)',
     'https://www.sif.it/attivita/congresso/104',
