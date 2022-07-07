@@ -2,6 +2,8 @@ Release notes
 =============
 
 
+* Ordinary mainteinance.
+
 *webpage 0.6.0 (5fe23a8286c4e25630ec8646e85399b3bb844130) - 2020-10-15 14:27:49.182731*
 
 *webpage 0.5.0 (4423ac18a2537f625f65632f2fc98cf6734f3965) - 2019-10-20 22:28:12.358030*
