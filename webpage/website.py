@@ -525,9 +525,7 @@ MENU.add_entry('Presentations', 'talks.html', 'far fa-comment-dots',
 MENU.add_entry('About me', 'aboutme.html', 'far fa-user')
 MENU.add_entry('Links', 'links.html', 'fab fa-hubspot')
 MENU.add_entry('Miscellanea', 'misc.html', 'fas fa-random')
-MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher',
-               language='it')
-MENU.add_entry('Private area', 'private', 'fas fa-lock')
+MENU.add_entry('Didattica', 'teaching.html', 'fas fa-chalkboard-teacher', language='it')
 
 
 @memoize
