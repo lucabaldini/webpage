@@ -2,6 +2,8 @@ Release notes
 =============
 
 
+*webpage 1.0.1 (418d816296cb0cdf98e05c237504571a277272cf) - 2022-07-13 07:24:30.470781*
+
 *webpage 1.0.0 (da4de4f1fbb9248455f7124f7431c9c902cd6929) - 2022-07-07 15:40:10.362634*
 
 * Ordinary mainteinance.
