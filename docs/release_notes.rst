@@ -1,6 +1,7 @@
 Release notes
 =============
 
+* Basic environment and pc seutup added.
 
 *webpage 1.0.1 (418d816296cb0cdf98e05c237504571a277272cf) - 2022-07-13 07:24:30.470781*
 
