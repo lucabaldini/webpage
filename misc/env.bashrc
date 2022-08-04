@@ -4,6 +4,7 @@ export INSTALL_ROOT=/data/install
 export PATH=$INSTALL_ROOT:$PATH
 
 export WORK_ROOT=/data/work
+export TMP_DIR=/data/temp
 
 export TEXLIVE_VERSION=2022
 export PATH=$INSTALL_ROOT/texlive/$TEXLIVE_VERSION/bin/x86_64-linux/:$PATH

@@ -5,6 +5,8 @@ sudo mkdir /data; chmod 775 /data
 mkdir /data/install
 mkdir /data/personal
 mkdir /data/work
+mkdir /data/work/presentations
+mkdir /data/temp
 
 #Setup the environment
 mkdir ~/.bashrc.d
