@@ -5,24 +5,31 @@
 </p>
 
 
-<h3>Setup thunderbird for the INFN mail server</h3>
+<h3>Basic pc setup</h3>
 
 <p>
-  Here is the basic information (more details
-  <a href="http://www.pi.infn.it/servizi/calcolo/mail/">here</a>):
+  Also know as the laundry list of things to do when I install Fedora on a new
+  computer.
 </p>
+
+<p>
+  A small <a href="misc/fedorainstall.sh">shell script</a> to install all the
+  necessary packages via dnf and pip,
+  my email client <a href="misc/signature.txt">signature</a>,
+  and the basic <a href="misc/environment.bashrc">environment setup</a>.
+</p>
+
+
+
+<h3>Setup thunderbird for the INFN mail server</h3>
+
 <ul>
   <li>Incoming server: mail.pi.infn.it (IMAP, port 993,
     secure connection SSL, normal password);</li>
   <li>Outgoing server: smtp.pi.infn.it (port 465, authentication SSL,
     normal password).</li>
 </ul>
-<p>
-  Mind that you'll have to accept the certificate and confirm the security
-  exception by hand (both for the inbox and the smtp), which will screw up the
-  thunderbird autodetection process. Not a big deal. And don't forget to import
-  the address book and the signature.
-</p>
+
 
 <h3>Setup eduroam</h3>
 
@@ -39,78 +46,3 @@
   <li>Use username@pi.infn.it as the username (the password is the
     normal afs password).</li>
 </ul>
-
-
-<h3>Enable rpmfusion on Fedora 14+</h3>
-
-<p>
-  All the details are <a href="http://rpmfusion.org/Configuration">here</a>,
-  but the bottmline is:
-</p>
-
-<p class="code">
-  su -c 'yum localinstall --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm'
-</p>
-
-
-<h3>Key exchange with SLAC</h3>
-
-<p>
-  First of all, generate the key pair.
-</p>
-
-<p class="code">
-  [lbaldini@nblbaldini ~]$ ssh-keygen -t rsa<br>
-  Generating public/private rsa key pair.<br>
-  Enter file in which to save the key (/home/lbaldini/.ssh/id_rsa):<br>
-  Created directory '/home/lbaldini/.ssh'.<br>
-  Enter passphrase (empty for no passphrase):<br>
-  Enter same passphrase again:<br>
-  Your identification has been saved in /home/lbaldini/.ssh/id_rsa.<br>
-  Your public key has been saved in /home/lbaldini/.ssh/id_rsa.pub.<br>
-  The key fingerprint is:<br>
-  [omissis]<br>
-  The key's randomart image is:<br>
-  [omissis]
-</p>
-
-<p>
-  Then append the public key (content of the file ~/.ssh/id_rsa.pub) at the
-  bottom of ~/.ssh/authorized_keys2 on the server (centaurusa).
-</p>
-
-
-<h3>SLAC hosts</h3>
-
-<p>
-  Get the latest file from
-  <a href="ftp://ftp.slac.stanford.edu/admin/known_hosts">here</a>
-  and copy the content at the bottom of ~/.ssh/known_hosts
-  (cleaning up all the obsolete SLAC entries).
-</p>
-
-<p>
-  For more information about ssh at SLAC, see
-  <a href="http://glast-ground.slac.stanford.edu/workbook/pages/getting_connected/pr_ssh_forunix.htm">here</a>
-</p>
-
-<h3>Mount remote disks with autofs</h3>
-
-<p>
-  First of all need to have autofs installed (and, since it is a service,
-  system-config-services is also handy).
-</p>
-
-<p class="code">
-  sudo yum install autofs system-config-services
-</p>
-
-<p>
-  As soon as the service starts running, a /net folder is creates,
-  where the available remote disks appear. You can create soft links.
-</p>
-
-<p class="code">
-  sudo ln -s /net/pcglast47/data0 /data47a<br>
-  sudo ln -s /net/pcglast47/data1 /data47b
-</p>
