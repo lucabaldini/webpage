@@ -3,6 +3,8 @@ alias rm="rm -i"
 export INSTALL_ROOT=/data/install
 export PATH=$INSTALL_ROOT:$PATH
 
+export WORK_ROOT=/data/work
+
 export TEXLIVE_VERSION=2022
 export PATH=$INSTALL_ROOT/texlive/$TEXLIVE_VERSION/bin/x86_64-linux/:$PATH
 
