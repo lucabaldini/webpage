@@ -48,6 +48,8 @@ DOCS_FOLDER = _join(BASE_FOLDER, 'docs')
 RELEASE_NOTES = os.path.join(DOCS_FOLDER, 'release_notes.rst')
 IMG_FOLDER_NAME = 'images'
 IMG_FOLDER = _join(BASE_FOLDER, IMG_FOLDER_NAME)
+MISC_FOLDER_NAME = 'misc'
+MISC_FOLDER = _join(BASE_FOLDER, MISC_FOLDER_NAME)
 ORCID_FOLDER = _join(BASE_FOLDER, 'orcid')
 WEBPAGE_FOLDER = _join(BASE_FOLDER, 'webpage')
 
@@ -80,12 +82,12 @@ def read_content(file_name: str) -> str:
 OUTPUT_FOLDER = _join(BASE_FOLDER, 'html')
 OUTPUT_CSS_FOLDER = _join(OUTPUT_FOLDER, CSS_FOLDER_NAME)
 OUTPUT_IMG_FOLDER = _join(OUTPUT_FOLDER, IMG_FOLDER_NAME)
-
+OUTPUT_MISC_FOLDER = _join(OUTPUT_FOLDER, MISC_FOLDER_NAME)
 
 def create_local_tree() -> None:
     """Create the necessary local tree for the html output, if necessary.
     """
-    for folder in [OUTPUT_FOLDER, OUTPUT_CSS_FOLDER, OUTPUT_IMG_FOLDER]:
+    for folder in (OUTPUT_FOLDER, OUTPUT_CSS_FOLDER, OUTPUT_IMG_FOLDER, OUTPUT_MISC_FOLDER):
         mktree(folder)
 
 

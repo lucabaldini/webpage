@@ -172,6 +172,16 @@ def copy_images(file_formats=('png',)) -> None:
         copy(src, dest)
 
 
+def copy_misc() -> None:
+    """Copy all the miscellanea files into the output folder.
+    """
+    logging.info('Copying miscellanea...')
+    file_list = glob.glob(os.path.join(webpage.MISC_FOLDER, '*'))
+    for src in file_list:
+        dest = os.path.join(webpage.OUTPUT_MISC_FOLDER, os.path.basename(src))
+        copy(src, dest)
+
+
 def upload_files() -> None:
     """Upload the static html files and all the necessary complements to the
     main remote server and its mirror.
@@ -190,5 +200,6 @@ def deploy(upload: bool = False):
     write_static_pages()
     copy_style_sheets()
     copy_images()
+    copy_misc()
     if upload:
         upload_files()
