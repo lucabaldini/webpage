@@ -5,7 +5,7 @@ sudo dnf update
 sudo dnf install \
   thunderbird \
   gedit emacs \
-  python3-scipy python3-matplotlib python3-mido \
+  python3-scipy python3-matplotlib python3-pylint \
   zlib-devel ncurses-devel libcurl-devel libXt-devel readline-devel gcc gcc-c++ \
   gcc gcc-gfortran perl-devel perl-ExtUtils-MakeMaker python3-devel make \
   cmake expat-devel hdf5-devel libX11-devel libXmu-devel mesa-libGLU-devel \
@@ -21,4 +21,4 @@ sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-releas
 sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 
 #And a few python packages to be installed via pip.
-pip install --user regions skyfield 
+pip install --user regions skyfield mido loguru pydata_sphinx_theme
