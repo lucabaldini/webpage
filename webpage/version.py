@@ -1,6 +1,6 @@
-# Automatically created by /data/work/webpage/webpage/tag.py, do not edit by hand.
+# Automatically created by /home/data/work/webpage/webpage/tag.py, do not edit by hand.
 # pylint: skip-file
 #
-version = "1.1.1"
-release_date = "2022-08-05 00:10:39.957365"
-revision = "a1c1a3c565349299bf982d788efe40461972e931"
+version = "1.1.2"
+release_date = "2022-12-15 08:31:51.658643"
+revision = "f223d5d8d82bc62b48d5d11fc7f4b8a98e885512"
