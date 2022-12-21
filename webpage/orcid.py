@@ -202,7 +202,10 @@ class Work(dict):
             return
         if citation_type.lower() == 'bibtex':
             bibtex = data['citation-value']
-            return {key: self._bibtex_value(key, bibtex) for key in self.BIBTEX_KEYS}
+            data = {key: self._bibtex_value(key, bibtex) for key in self.BIBTEX_KEYS}
+            if data['volume'] is None:
+                logger.info(f'No volume information available for {self.info}')
+            return data
         logger.warning(f'Unknown citation type ({citation_type}) for {self.info}')
 
     @staticmethod
@@ -245,6 +248,10 @@ class Work(dict):
         if self.citation_data is None:
             return f'{self.author_string}, "{title}", {self.journal} ({self.year})'
         citation = self._citation_string(self.citation_data, dash)
+        if citation == '':
+            return f'{self.author_string}, "{title}", {self.journal} ({self.year})'
+        if citation.startswith(', '):
+            citation = citation.replace(', ', '')
         return f'{self.author_string}, "{title}", {self.journal}, {citation} ({self.year})'
 
     def ascii(self) -> str:
