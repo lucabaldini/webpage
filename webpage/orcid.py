@@ -25,6 +25,7 @@ import datetime
 
 from typing import Optional, List, Any
 
+from loguru import logger
 import requests
 
 from webpage import ORCID_FOLDER
@@ -59,11 +60,13 @@ class Work(dict):
     object is non trivial.
     """
 
-    def __init__(self, work_dict: dict) -> None:
+    BIBTEX_KEYS = ('volume', 'number', 'pages')
+
+    def __init__(self, json_dict: dict) -> None:
         """Constructor.
         """
         super().__init__(self)
-        self.update(work_dict)
+        self.update(json_dict)
         # We perform the following two raw (unguarded) accesses to the dict content
         # as a minimal diagnostics tool in case something goes wrong. All the
         # rest should be embedded into a _navigate() call.
@@ -71,11 +74,20 @@ class Work(dict):
         self.title = self['title']['title']['value']
         # And the following is the minimum info refer to the paper to in case
         # we want to print out some diagnostics.
-        self.info = 'path {} ({})'.format(self.path, self.title)
-        self.date = self.__date()
-        self.external_ids = self.__external_ids()
-        self.author_string = self.__author_string()
-        self.citation_data = self.__citation_data()
+        self.info = f'path {self.path} ({self.title})'
+        # Now start parsing the actual content.
+        self.date = self._date()
+        self.year = self.date.year
+        self.type_ = self._navigate('type')
+        self.journal = self._navigate('journal-title', 'value')
+        self.external_ids = self._external_ids()
+        self.doi = self.external_ids.get('doi', None)
+        if self.doi is None:
+            self.doi_url = None
+        else:
+            self.doi_url = f'https://doi.org/{self.doi}'
+        self.author_string = self._author_string()
+        self.citation_data = self._citation_data()
 
     def _navigate(self, *keys, default: Any = None, quiet: bool = False):
         """Helper function to access nested values in the top-level dictionary.
@@ -98,7 +110,7 @@ class Work(dict):
                 return default
         return item
 
-    def __date(self) -> datetime.date:
+    def _date(self) -> datetime.date:
         """Return the publication date.
 
         This is another one that we implement in the form of a private
@@ -116,7 +128,7 @@ class Work(dict):
         day = self._navigate('publication-date', 'day', 'value', quiet=True, default=1)
         return datetime.date(int(year), int(month), int(day))
 
-    def __external_ids(self) -> dict:
+    def _external_ids(self) -> dict:
         """Return a dictionary with all the external identifiers.
 
         Note we implement this as a "private" class method that is called only
@@ -138,7 +150,7 @@ class Work(dict):
         name = contributor['credit-name']['value']
         return name
 
-    def __author_string(self, max_num_authors: int = 8) -> str:
+    def _author_string(self, max_num_authors: int = 8) -> str:
         """Return a formatted author list.
 
         The author list is truncated to the maximum number of authors, and, if
@@ -159,12 +171,13 @@ class Work(dict):
         names = (self._format_credit_name(item) for item in contributors)
         author_string = ', '.join(names)
         if num_authors > max_num_authors:
-            author_string = '{} et al.'.format(author_string)
+            author_string = f'{author_string} et al.'
         return author_string
 
     @staticmethod
-    def __citation_value(key, text):
-        """
+    def _bibtex_value(key, text):
+        """Process a bibtex string and extract the value for a particular key
+        (e.g., volume, number or pages).
         """
         if key not in text:
             return None
@@ -172,87 +185,84 @@ class Work(dict):
         value = value.replace(' ', '').replace('=', '').strip('={}')
         return value
 
-    def __citation_data(self):
-        """
+    def _citation_data(self):
+        """Retrieve the citation data (e.g., volume, number and pages) from the
+        `citation` field.
+
+        This typically implies digging into the bibtex entry associated with the
+        record and extracting the information by hand.
         """
         data = self._navigate('citation')
         if data is None:
-            logging.warning('No citation data available for %s', self.info)
+            logger.warning(f'No citation data available for {self.info}')
             return
         citation_type = data.get('citation-type')
         if citation_type is None:
-            logging.warning('No citation-type available for %s', self.info)
+            logger.warning(f'No citation-type available for {self.info}' )
             return
         if citation_type.lower() == 'bibtex':
-            value = data['citation-value']
-            volume = self.__citation_value('volume', value)
-            number = self.__citation_value('number', value)
-            pages = self.__citation_value('pages', value)
-            citation = ''
-            if volume is not None:
-                citation = f'Volume {volume}'
-            if number is not None:
-                citation = f'{citation}, Number {number}'
-            if pages is not None:
-                pages = pages.replace('--', '-')
-                citation = f'{citation}, page(s) {pages}'
-            return citation
+            bibtex = data['citation-value']
+            return {key: self._bibtex_value(key, bibtex) for key in self.BIBTEX_KEYS}
+        logger.warning(f'Unknown citation type ({citation_type}) for {self.info}')
 
-    def type_(self) -> str:
-        """Return the type of the work.
+    @staticmethod
+    def _citation_string(data, dash='-'):
+        """Assemble the citation data into a suitable string designed to display
+        in the proper format all the information available.
         """
-        return self._navigate('type')
+        volume, number, pages = [data[key] for key in Work.BIBTEX_KEYS]
+        text = ''
+        if volume is not None:
+            text = f'Volume {volume}'
+        if number is not None:
+            text = f'{text}, Number {number}'
+        if pages is not None:
+            pages = pages.replace('--', '-')
+            if dash != '-':
+                pages = pages.replace('-', dash)
+            text = f'{text}, page(s) {pages}'
+        return text
 
-    def journal(self) -> str:
-        """Return the journal name for the work.
-        """
-        return self._navigate('journal-title', 'value')
+    def _repr(self, title : str = None, dash='-') -> str:
+        """Basic formatting function to help expressing the content of a work in
+        several different formats, e.g., plain text, html or LaTeX.
 
-    def year(self) -> Optional[int]:
-        """Return the year of the publication.
-        """
-        return self.date.year
+        Arguments
+        ---------
+        title : str
+            The title of the work---this serves the purpose of being able to
+            enclose the title into an hyperlink for the html and LaTeX formatting.
+            If not provided, this defaults to the plain text representation of the
+            work title.
 
-    def doi(self) -> str:
-        """Return the doi of the publication.
+        dash : str
+            The characted to be used to render the dash within page ranges.
         """
-        return self.external_ids.get('doi', None)
-
-    def doi_url(self) -> str:
-        """Return the DOI url corresponding to the publication.
-        """
-        doi = self.doi()
-        if doi is None:
-            return None
-        return 'https://doi.org/{}'.format(doi)
+        if title is None:
+            title = self.title
+        if self.journal is None:
+            return f'{self.author_string}, "{title}" ({self.year})'
+        if self.citation_data is None:
+            return f'{self.author_string}, "{title}", {self.journal} ({self.year})'
+        citation = self._citation_string(self.citation_data, dash)
+        return f'{self.author_string}, "{title}", {self.journal}, {citation} ({self.year})'
 
     def ascii(self) -> str:
         """ASCII representation.
         """
-        return '{}, "{}", {} ({})'.format(self.author_string, self.title,
-                                          self.journal(), self.year())
+        return self._repr()
 
     def html(self) -> str:
         """HTML formatting.
         """
-        title = HTML.emph(HTML.hyperlink(self.title, self.doi_url()))
-        journal = self.journal()
-        if journal is None:
-            return '{}, "{}" ({})'.format(self.author_string, title, self.year())
-        else:
-            return '{}, "{}", {}, {} ({})'.format(self.author_string, title,
-                                              journal, self.citation_data, self.year())
+        title = HTML.emph(HTML.hyperlink(self.title, self.doi_url))
+        return self._repr(title, '&ndash;')
 
     def latex(self) -> str:
         """LaTeX formatting.
         """
-        title = LaTeX.hyperlink(LaTeX.emph(self.title), self.doi_url())
-        journal = self.journal()
-        if journal is None:
-            return '{}, "{}" ({})'.format(self.author_string, title, self.year())
-        else:
-            return '{}, "{}", {} ({})'.format(self.author_string, title,
-                                              journal, self.year())
+        title = LaTeX.hyperlink(LaTeX.emph(self.title), self.doi_url)
+        return self._repr(title, '--')
 
     def __lt__(self, other) -> bool:
         """Comparison operator so sort publication lists.
@@ -279,10 +289,10 @@ class WorkList(List[Work]):
         lines = []
         current_year = None
         for i, work in enumerate(self):
-            if work.year() != current_year:
+            if work.year != current_year:
                 # Drop a special entry for the year in case of change.
-                lines.append('{}'.format(year_formatter(work.year())))
-                current_year = work.year()
+                lines.append('{}'.format(year_formatter(work.year)))
+                current_year = work.year
             # And this is the actual element for the publication.
             lines.append('[{}] {}'.format(i + 1, work_formatter(work)))
         return lines
@@ -302,7 +312,7 @@ class WorkList(List[Work]):
         lines = self._format(HTML.heading3, Work.html)
         return HTML.list(lines, indent)
 
-    def  html(self, indent: int = 4) -> str:
+    def html(self, indent: int = 4) -> str:
         """HTML representation.
 
         We initially though we could do this reusing the logic in the _format()
@@ -314,10 +324,10 @@ class WorkList(List[Work]):
         lines = [HTML.tag_open('ul', indent, class_='publication-list')]
         current_year = None
         for i, work in enumerate(self):
-            if work.year() != current_year:
+            if work.year != current_year:
                 class_ = 'publication-year'
-                lines.append(HTML.list_item(str(work.year()), indent + 1, class_))
-                current_year = work.year()
+                lines.append(HTML.list_item(str(work.year), indent + 1, class_))
+                current_year = work.year
             class_ = 'publication-item'
             text = '[{}] {}'.format(i + 1, work.html())
             lines.append(HTML.list_item(text, indent + 1, class_))
