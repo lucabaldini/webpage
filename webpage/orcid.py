@@ -61,6 +61,15 @@ class Work(dict):
     """
 
     BIBTEX_KEYS = ('volume', 'number', 'pages')
+    PROCEEDINGS_PATTERNS = (
+        'Proceedings',
+        'Conference',
+        'Space Telescopes and Instrumentation',
+        'Advanced Technology and Particle Physics',
+        'Calorimetry in Particle Physics',
+        'Frontiers of Fundamental Physics',
+        'European Space Agency, (Special Publication) ESA SP'
+        )
 
     def __init__(self, json_dict: dict) -> None:
         """Constructor.
@@ -204,7 +213,15 @@ class Work(dict):
             bibtex = data['citation-value']
             data = {key: self._bibtex_value(key, bibtex) for key in self.BIBTEX_KEYS}
             if data['volume'] is None:
-                logger.info(f'No volume information available for {self.info}')
+                proceedings = False
+                if self.journal is not None:
+                    for pattern in self.PROCEEDINGS_PATTERNS:
+                        if pattern in self.journal:
+                            proceedings = True
+                            break
+                if not proceedings:
+                    print(self.journal)
+                    logger.warning(f'No volume information available for {self.info}')
             return data
         logger.warning(f'Unknown citation type ({citation_type}) for {self.info}')
 
