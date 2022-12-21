@@ -94,7 +94,6 @@ class Work(dict):
                 msg = 'Cannot navigate %s for %s. ' +\
                       'Offending key is \'%s\', with underlying exception: %s.'
                 logging.warning(msg, keys, self.info, key, exception)
-                #input()
                 return default
         return item
 
@@ -112,10 +111,8 @@ class Work(dict):
         explicit default value.
         """
         year = self._navigate('publication-date', 'year', 'value')
-        month = self._navigate('publication-date', 'month', 'value',
-                               quiet=True, default=1)
-        day = self._navigate('publication-date', 'day', 'value',
-                             quiet=True, default=1)
+        month = self._navigate('publication-date', 'month', 'value', quiet=True, default=1)
+        day = self._navigate('publication-date', 'day', 'value', quiet=True, default=1)
         return datetime.date(int(year), int(month), int(day))
 
     def __external_ids(self) -> dict:
@@ -148,7 +145,11 @@ class Work(dict):
         in parenthesis.
         """
         contributors = self._navigate('contributors', 'contributor')
-        num_authors = len(contributors)
+        try:
+            num_authors = len(contributors)
+        except TypeError as exception:
+            logging.warning(exception)
+            num_authors = 0
         if num_authors == 0:
             msg = 'Empty author list for %s'
             logging.warning(msg, self.info)
@@ -157,8 +158,7 @@ class Work(dict):
         names = (self._format_credit_name(item) for item in contributors)
         author_string = ', '.join(names)
         if num_authors > max_num_authors:
-            author_string = '{} et al. ({} authors)'.format(author_string,
-                                                            num_authors)
+            author_string = '{} et al.'.format(author_string)
         return author_string
 
     def type_(self) -> str:
@@ -352,8 +352,7 @@ class ORCID:
     BASE_URL = 'http://pub.orcid.org'
     LOCAL_FOLDER = ORCID_FOLDER
 
-    def __init__(self, orcid_id: str = '0000-0002-9785-7726',
-                 force_fetch: bool = False) -> None:
+    def __init__(self, orcid_id: str = '0000-0002-9785-7726', force_fetch: bool = False) -> None:
         """Constructor.
 
         Here we are essentially fetching the ORCID data from either a local
@@ -423,8 +422,7 @@ class ORCID:
         return data
 
     @classmethod
-    def _load(cls, url: str, file_path: str,
-              force_fetch: bool = False) -> dict:
+    def _load(cls, url: str, file_path: str, force_fetch: bool = False) -> dict:
         """Load some ORCID data from either a local json file (if it exists
         and the force_fetch flag is set to False), or fetching directly from
         the server.
@@ -440,8 +438,7 @@ class ORCID:
     def dump(json_item: dict, sort_keys: bool = False) -> str:
         """Formatting function for json elements.
         """
-        return json.dumps(json_item, sort_keys=sort_keys, indent=2,
-                          separators=(',', ': '))
+        return json.dumps(json_item, sort_keys=sort_keys, indent=2, separators=(',', ': '))
 
     @staticmethod
     def work_summary(work: dict) -> dict:
