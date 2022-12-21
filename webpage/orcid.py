@@ -220,7 +220,6 @@ class Work(dict):
                             proceedings = True
                             break
                 if not proceedings:
-                    print(self.journal)
                     logger.warning(f'No volume information available for {self.info}')
             return data
         logger.warning(f'Unknown citation type ({citation_type}) for {self.info}')
