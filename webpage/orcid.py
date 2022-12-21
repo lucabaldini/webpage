@@ -199,15 +199,23 @@ class Work(dict):
         """HTML formatting.
         """
         title = HTML.emph(HTML.hyperlink(self.title, self.doi_url()))
-        return '{}, "{}", {} ({})'.format(self.author_string, title,
-                                          self.journal(), self.year())
+        journal = self.journal()
+        if journal is None:
+            return '{}, "{}" ({})'.format(self.author_string, title, self.year())
+        else:
+            return '{}, "{}", {} ({})'.format(self.author_string, title,
+                                              journal, self.year())
 
     def latex(self) -> str:
         """LaTeX formatting.
         """
         title = LaTeX.hyperlink(LaTeX.emph(self.title), self.doi_url())
-        return '{}, "{}", {} ({})'.format(self.author_string, title,
-                                          self.journal(), self.year())
+        journal = self.journal()
+        if journal is None:
+            return '{}, "{}" ({})'.format(self.author_string, title, self.year())
+        else:
+            return '{}, "{}", {} ({})'.format(self.author_string, title,
+                                              journal, self.year())
 
     def __lt__(self, other) -> bool:
         """Comparison operator so sort publication lists.
