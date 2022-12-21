@@ -75,6 +75,7 @@ class Work(dict):
         self.date = self.__date()
         self.external_ids = self.__external_ids()
         self.author_string = self.__author_string()
+        self.citation_data = self.__citation_data()
 
     def _navigate(self, *keys, default: Any = None, quiet: bool = False):
         """Helper function to access nested values in the top-level dictionary.
@@ -161,6 +162,42 @@ class Work(dict):
             author_string = '{} et al.'.format(author_string)
         return author_string
 
+    @staticmethod
+    def __citation_value(key, text):
+        """
+        """
+        if key not in text:
+            return None
+        value = text.split(key)[-1].split(',')[0]
+        value = value.replace(' ', '').replace('=', '').strip('={}')
+        return value
+
+    def __citation_data(self):
+        """
+        """
+        data = self._navigate('citation')
+        if data is None:
+            logging.warning('No citation data available for %s', self.info)
+            return
+        citation_type = data.get('citation-type')
+        if citation_type is None:
+            logging.warning('No citation-type available for %s', self.info)
+            return
+        if citation_type.lower() == 'bibtex':
+            value = data['citation-value']
+            volume = self.__citation_value('volume', value)
+            number = self.__citation_value('number', value)
+            pages = self.__citation_value('pages', value)
+            citation = ''
+            if volume is not None:
+                citation = f'Volume {volume}'
+            if number is not None:
+                citation = f'{citation}, Number {number}'
+            if pages is not None:
+                pages = pages.replace('--', '-')
+                citation = f'{citation}, page(s) {pages}'
+            return citation
+
     def type_(self) -> str:
         """Return the type of the work.
         """
@@ -203,8 +240,8 @@ class Work(dict):
         if journal is None:
             return '{}, "{}" ({})'.format(self.author_string, title, self.year())
         else:
-            return '{}, "{}", {} ({})'.format(self.author_string, title,
-                                              journal, self.year())
+            return '{}, "{}", {}, {} ({})'.format(self.author_string, title,
+                                              journal, self.citation_data, self.year())
 
     def latex(self) -> str:
         """LaTeX formatting.
