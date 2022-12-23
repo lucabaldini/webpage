@@ -160,7 +160,7 @@ def copy_style_sheets() -> None:
         copy(src, dest)
 
 
-def copy_images(file_formats=('png',)) -> None:
+def copy_images(file_formats=('png', 'jpg')) -> None:
     """Copy all the relevant images into the output folder.
     """
     logging.info('Copying images...')
