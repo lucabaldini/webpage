@@ -24,7 +24,30 @@ from webpage.core import ConferenceList
 
 CONFERENCE_LIST = ConferenceList()
 
-
+CONFERENCE_LIST.add_conference(
+    'HEACIT splinter at the 20th Divisional Meeting of the High Energy Astrophysics Division',
+    'Waikoloa, Hawaii (USA)',
+    'https://aas.org/meetings/head20',
+    '2023-03-26', '2023-03-30'
+).add_contribution(
+    'ixpeobssim: status and prospects', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Pontecorvo Colloquium',
+    'Pisa (Italy)',
+    'https://sites.google.com/a/unipi.it/research-in-the-pontecorvo-area/pontecorvo-colloquia',
+    '2023-03-01'
+).add_contribution(
+    'Imaging X-ray Polarimetry Explorer (IXPE): il primo compleanno in orbita'
+)
+CONFERENCE_LIST.add_conference(
+    'Workshop "IXPE: la nuova finestra osservativa sul cosmo ad alte energie"',
+    'Rome (Italy)',
+    'https://www.asi.it/event/workshop-ixpe-la-nuova-finestra-osservativa-sul-cosmo-ad-alte-energie/',
+    '2023-02-23', '2023-02-24'
+).add_contribution(
+    'Support to the scientific community for data simulations and data analysis', invited=True
+)
 CONFERENCE_LIST.add_conference(
     'European Astronomical Society Annual Meeting',
     'Valencia (Spain)',
@@ -66,6 +89,14 @@ CONFERENCE_LIST.add_conference(
     '2018-04-03', '2018-04-06'
 ).add_contribution(
     'The Imaging X-ray Polarimetry Explorer (IXPE) Mission ', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'Pontecorvo Colloquium',
+    'Pisa (Italy)',
+    'https://sites.google.com/a/unipi.it/research-in-the-pontecorvo-area/pontecorvo-colloquia',
+    '2017-03-08'
+).add_contribution(
+    'La missione spaziale IXPE: una nuove finestra osservativa sull\'universo'
 )
 CONFERENCE_LIST.add_conference(
     'INFN in space: review of existing and forthcoming projects',
