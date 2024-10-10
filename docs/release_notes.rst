@@ -1,6 +1,9 @@
 Release notes
 =============
 
+
+*webpage 2.1.0 (6161f6e964b54bacac48c3ea1671a25bdca461f8) - 2024-10-10 11:22:22.232779*
+
 * Links updated.
 * Conferences updated.
 * Teaching updated.
