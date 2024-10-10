@@ -25,6 +25,31 @@ from webpage.core import ConferenceList
 CONFERENCE_LIST = ConferenceList()
 
 CONFERENCE_LIST.add_conference(
+    'CX Congresso Nazionale della Società Italiana di Fisica',
+    'Bologna (Italy)',
+    'https://2024.congresso.sif.it/',
+    '2024-09-09', '2024-09-13'
+).add_contribution(
+    'ASIX: Analog Spectral Imager for X-rays', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'SST - PhD National Days',
+    'L\'Aquila (Italy)',
+    'https://indico.gssi.it/event/636/',
+    '2024-06-06', '2024-06-08'
+).add_contribution(
+    'Probing the Universe with X-ray Polarimetry', invited=True
+)
+CONFERENCE_LIST.add_conference(
+    'ASI school on IXPE data analysis for general observers',
+    'Roma (Italy)',
+    'https://www.asi.it/formazione_esterna/alta-formazione/asi-school-on-ixpe-data-analysis-for-general-observers/',
+    '2024-02-19', '2024-02-22'
+).add_contribution(
+    'The ixpeobssim software suite: simulation and data analysis tools',
+    notes='series of invited lectures'
+)
+CONFERENCE_LIST.add_conference(
     'HEACIT splinter at the 20th Divisional Meeting of the High Energy Astrophysics Division',
     'Waikoloa, Hawaii (USA)',
     'https://aas.org/meetings/head20',
