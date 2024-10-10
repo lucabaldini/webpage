@@ -1,6 +1,8 @@
 Release notes
 =============
 
+* Links updated.
+* Conferences updated.
 
 *webpage 2.0.2 (bacfdc7ba290a279aaa91d7d5e0aa8535a47f489) - 2023-07-27 11:12:27.408389*
 
