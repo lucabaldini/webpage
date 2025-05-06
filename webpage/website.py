@@ -160,13 +160,13 @@ def copy_style_sheets() -> None:
         copy(src, dest)
 
 
-def copy_images(file_formats=('png', 'jpg')) -> None:
+def copy_images(file_formats=('png', 'jpg', 'jpeg')) -> None:
     """Copy all the relevant images into the output folder.
     """
     logging.info('Copying images...')
     file_list: List[str] = []
     for fmt in file_formats:
-        file_list = glob.glob(os.path.join(webpage.IMG_FOLDER, '*.%s' % fmt))
+        file_list += glob.glob(os.path.join(webpage.IMG_FOLDER, '*.%s' % fmt))
     for src in file_list:
         dest = os.path.join(webpage.OUTPUT_IMG_FOLDER, os.path.basename(src))
         copy(src, dest)
